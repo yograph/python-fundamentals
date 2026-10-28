@@ -1,0 +1,13 @@
+{
+  "name": "@flashcards/audio-gen",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Zero-dependency text-to-speech generator for deck words. Gemini TTS in, Opus-in-Ogg under data/audio/ out.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "generate": "node src/generate.mjs"
+  }
+}

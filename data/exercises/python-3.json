@@ -1,0 +1,2268 @@
+{
+  "schemaVersion": 2,
+  "lessons": [
+    {
+      "id": "functions",
+      "title": "Functions: def, parameters and return",
+      "summary": "Write a function that takes inputs and returns a result, and know the difference between return and print.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "A function is a named recipe: **def** writes it down, calling it runs it, and **return** hands one value back to whoever called it."
+        },
+        {
+          "type": "text",
+          "text": "A function lets you write a piece of code once and run it as often as you like, each time with different inputs. Recursion is built entirely out of functions, so this is the foundation for everything that follows."
+        },
+        {
+          "type": "code",
+          "caption": "Defining a function, then calling it twice",
+          "code": "def square(x):\n    return x * x\n\nresult = square(4)\nprint(result)\nprint(square(3) + 1)",
+          "output": "16\n10"
+        },
+        {
+          "type": "table",
+          "caption": "The parts of a function",
+          "headers": [
+            "Part",
+            "Example",
+            "What it is"
+          ],
+          "rows": [
+            [
+              "Definition",
+              "**def square(x):**",
+              "Writes the recipe down. Nothing runs yet."
+            ],
+            [
+              "Parameter",
+              "**x** in the def line",
+              "A name for the input. It gets its value when the function is called."
+            ],
+            [
+              "Argument",
+              "**4** in **square(4)**",
+              "The actual value you pass in when you call it."
+            ],
+            [
+              "Call",
+              "**square(4)**",
+              "Runs the body with x = 4."
+            ],
+            [
+              "Return value",
+              "**return x \\* x**",
+              "The value the call turns into: square(4) becomes 16."
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "return versus print"
+        },
+        {
+          "type": "text",
+          "text": "**print** only shows a value on the screen. **return** sends the value back to the caller, who can store it, add to it or pass it on. A function that only prints gives the caller nothing to work with."
+        },
+        {
+          "type": "code",
+          "caption": "A function without return gives back None",
+          "code": "def show_double(x):\n    print(x * 2)\n\ndef double(x):\n    return x * 2\n\na = show_double(5)\nb = double(5)\nprint(a, b)",
+          "output": "10\nNone 10"
+        },
+        {
+          "type": "text",
+          "text": "If a function ends without reaching a **return**, Python returns **None** for you. So **a** above is **None**: the 10 was printed, never returned."
+        },
+        {
+          "type": "heading",
+          "text": "return ends the function"
+        },
+        {
+          "type": "text",
+          "text": "The moment Python reaches **return**, the function stops, even in the middle of a loop. Lines after it never run."
+        },
+        {
+          "type": "bug",
+          "wrong": "def has_negative(nums):\n    for n in nums:\n        if n < 0:\n            return True\n        else:\n            return False",
+          "right": "def has_negative(nums):\n    for n in nums:\n        if n < 0:\n            return True\n    return False",
+          "why": "The wrong version returns after looking at the **first** item only. Return **False** only after the loop has checked every item."
+        },
+        {
+          "type": "heading",
+          "text": "Define first, call with the right arguments"
+        },
+        {
+          "type": "bug",
+          "wrong": "print(greet(\"Sam\"))\n\ndef greet(name):\n    return \"Hi \" + name",
+          "right": "def greet(name):\n    return \"Hi \" + name\n\nprint(greet(\"Sam\"))",
+          "why": "Python runs a file from top to bottom. The **def** must have run before the line that calls the function, otherwise you get a **NameError**."
+        },
+        {
+          "type": "code",
+          "caption": "One argument for each parameter, or Python refuses",
+          "code": "def add(a, b):\n    return a + b\n\nprint(add(1))",
+          "output": "TypeError: add() missing 1 required positional argument: 'b'"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**def** only defines. Nothing happens until you call the function.",
+            "Pass one argument per parameter, in the same order.",
+            "**return** gives a value back and ends the function right away.",
+            "No **return** means the call gives back **None**.",
+            "Use **return** when the caller needs the result. Use **print** only to show something to a person."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scope-and-lists",
+      "title": "Scope, and passing lists to functions",
+      "summary": "Predict which variables a function can see, and when a function changes a list you passed in.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "Names made inside a function are **local**: they exist only while that call runs. But a list you pass in is the **same list** the caller has, so changing it inside the function changes it outside too."
+        },
+        {
+          "type": "heading",
+          "text": "Local variables"
+        },
+        {
+          "type": "text",
+          "text": "Every call gets its own fresh set of local variables, including its parameters. When the call returns, they are gone. The caller only gets what you **return**."
+        },
+        {
+          "type": "code",
+          "caption": "A local variable vanishes after the call",
+          "code": "def make_total():\n    total = 10\n    return total\n\nmake_total()\nprint(total)",
+          "output": "NameError: name 'total' is not defined"
+        },
+        {
+          "type": "code",
+          "caption": "Same name, different variable",
+          "code": "x = 1\n\ndef change():\n    x = 99\n    return x\n\nprint(change())\nprint(x)",
+          "output": "99\n1"
+        },
+        {
+          "type": "text",
+          "text": "Inside **change**, the assignment **x = 99** makes a new local **x**. The global **x** outside is untouched. A function can read a global variable, but relying on one makes the function hard to test and reuse. Pass values in as parameters instead."
+        },
+        {
+          "type": "heading",
+          "text": "Passing a list passes the same list"
+        },
+        {
+          "type": "text",
+          "text": "When you call **f(nums)**, the parameter becomes a second name for the very same list. Nothing is copied. So **append**, **pop** or **lst[i] = ...** inside the function change the caller's list too."
+        },
+        {
+          "type": "code",
+          "caption": "Changing a list in place reaches the caller",
+          "code": "def add_zero(lst):\n    lst.append(0)\n\nnums = [1, 2]\nadd_zero(nums)\nprint(nums)",
+          "output": "[1, 2, 0]"
+        },
+        {
+          "type": "code",
+          "caption": "Reassigning the parameter does not",
+          "code": "def reset(lst):\n    lst = []\n\nnums = [1, 2]\nreset(nums)\nprint(nums)",
+          "output": "[1, 2]"
+        },
+        {
+          "type": "table",
+          "caption": "What reaches the caller?",
+          "headers": [
+            "Inside the function",
+            "The caller's value"
+          ],
+          "rows": [
+            [
+              "**lst.append(x)**, **lst.pop()**, **lst[i] = x**",
+              "Changed: it is the same list, changed in place"
+            ],
+            [
+              "**lst = []** or **lst = lst + [x]**",
+              "Not changed: the local name now points to a new list"
+            ],
+            [
+              "**word = word.upper()** or **n = n + 1**",
+              "Not changed: strings and numbers can never be changed in place"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Return a new list, or change it in place?"
+        },
+        {
+          "type": "text",
+          "text": "Pick one and be clear about it. A function that builds and **returns** a new list leaves the original alone. A function that changes the list **in place** usually returns nothing (**None**), like **list.sort()**."
+        },
+        {
+          "type": "bug",
+          "wrong": "nums = [3, 1, 2]\nnums = nums.sort()\nprint(nums)",
+          "right": "nums = [3, 1, 2]\nnums.sort()\nprint(nums)",
+          "why": "**sort()** changes the list in place and returns **None**, so the wrong version throws the sorted list away and prints **None**. Use **sorted(nums)** if you want a new list back."
+        },
+        {
+          "type": "tip",
+          "text": "This matters a lot for recursion on mazes and combinations. Every recursive call shares the same **maze** grid or **path** list, which is exactly why you must undo your changes (backtrack) and store copies."
+        }
+      ]
+    },
+    {
+      "id": "recursion-basics",
+      "title": "Recursion basics: base case and recursive case",
+      "summary": "Write a recursive function with a base case, a recursive case, and calls that always get closer to the base case.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "Every recursive function needs three things: (1) a **base case** that returns an answer without recursing, (2) a **recursive case** that calls the function on a **smaller** problem, and (3) every call must get **closer** to the base case."
+        },
+        {
+          "type": "text",
+          "text": "A recursive function solves a problem by calling itself on a smaller version of the same problem, then using that answer. Trust the smaller call to be right, the same way you trust **len()** without reading its code. Your job is only this call: handle the smallest case, and build this answer from the smaller one."
+        },
+        {
+          "type": "code",
+          "caption": "Factorial: 5! = 5 × 4 × 3 × 2 × 1",
+          "code": "def factorial(n):\n    if n == 0:          # base case\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(5))",
+          "output": "120"
+        },
+        {
+          "type": "table",
+          "caption": "How factorial(3) unfolds: down to the base case, then the answers come back up",
+          "headers": [
+            "Call",
+            "Waits for",
+            "Returns"
+          ],
+          "rows": [
+            [
+              "**factorial(3)**",
+              "3 × factorial(2)",
+              "3 × 2 = 6"
+            ],
+            [
+              "**factorial(2)**",
+              "2 × factorial(1)",
+              "2 × 1 = 2"
+            ],
+            [
+              "**factorial(1)**",
+              "1 × factorial(0)",
+              "1 × 1 = 1"
+            ],
+            [
+              "**factorial(0)**",
+              "nothing: base case",
+              "1"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Recursion versus a loop"
+        },
+        {
+          "type": "text",
+          "text": "Anything a loop repeats, recursion can repeat too. In a loop you write the start, the stop and the step yourself. In recursion, the **base case** is the stop, and the smaller argument in the call (**n - 1**) is the step toward it."
+        },
+        {
+          "type": "code",
+          "caption": "1 + 2 + ... + n with a loop",
+          "code": "def total_loop(n):\n    s = 0\n    for i in range(1, n + 1):\n        s += i\n    return s\n\nprint(total_loop(4))",
+          "output": "10"
+        },
+        {
+          "type": "code",
+          "caption": "The same sum, recursively",
+          "code": "def total(n):\n    if n == 0:\n        return 0\n    return n + total(n - 1)\n\nprint(total(4))",
+          "output": "10"
+        },
+        {
+          "type": "table",
+          "caption": "The same three jobs, done in two ways",
+          "headers": [
+            "Job",
+            "In the loop",
+            "In the recursion"
+          ],
+          "rows": [
+            [
+              "Stop",
+              "the end of **range(1, n + 1)**",
+              "the base case **n == 0**"
+            ],
+            [
+              "Step closer",
+              "the loop moves **i** to the next number",
+              "the smaller argument **n - 1**"
+            ],
+            [
+              "Combine",
+              "**s += i**",
+              "**n + total(n - 1)**"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Three classic bugs"
+        },
+        {
+          "type": "bug",
+          "wrong": "def countdown(n):\n    print(n)\n    countdown(n - 1)",
+          "right": "def countdown(n):\n    if n == 0:\n        return\n    print(n)\n    countdown(n - 1)",
+          "why": "No base case: the calls never stop. Python gives up after about 1000 nested calls with a **RecursionError**."
+        },
+        {
+          "type": "bug",
+          "wrong": "def total(n):\n    if n == 0:\n        return 0\n    n + total(n - 1)",
+          "right": "def total(n):\n    if n == 0:\n        return 0\n    return n + total(n - 1)",
+          "why": "The wrong version computes the answer and throws it away. Without **return**, every call except the base case gives back **None**, and the next call up crashes trying to add a number to **None**."
+        },
+        {
+          "type": "bug",
+          "wrong": "def down_by_two(n):\n    if n == 0:\n        return \"done\"\n    return down_by_two(n - 2)",
+          "right": "def down_by_two(n):\n    if n <= 0:\n        return \"done\"\n    return down_by_two(n - 2)",
+          "why": "Starting from an odd number, n goes 5, 3, 1, -1, ... and skips 0, so the base case is never reached: **RecursionError**. Make the base case catch every way the problem can end."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Write the base case first, at the top of the function.",
+            "Check that the recursive call gets a smaller problem (**n - 1**, a shorter list).",
+            "Always **return** the recursive result when the function should give back a value.",
+            "**RecursionError** means the base case is missing or never reached."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "recursion-on-strings-and-lists",
+      "title": "Recursion on strings and lists",
+      "summary": "Solve a string or list problem by handling the first item yourself and recursing on the rest.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "Handle the **first** item yourself and let the recursive call handle **the rest**: **s[0]** and **s[1:]**, or **lst[0]** and **lst[1:]**. The base case is the **empty** string or list."
+        },
+        {
+          "type": "text",
+          "text": "**s[1:]** is everything except the first character, so it is one shorter than **s**. That is the smaller problem that guarantees you end at the empty string, where the answer is obvious."
+        },
+        {
+          "type": "code",
+          "caption": "Sum of a list",
+          "code": "def total(lst):\n    if lst == []:\n        return 0\n    return lst[0] + total(lst[1:])\n\nprint(total([4, 1, 5]))",
+          "output": "10"
+        },
+        {
+          "type": "table",
+          "caption": "How total([4, 1, 5]) unfolds",
+          "headers": [
+            "Call",
+            "First",
+            "Rest",
+            "Returns"
+          ],
+          "rows": [
+            [
+              "**total([4, 1, 5])**",
+              "4",
+              "[1, 5]",
+              "4 + 6 = 10"
+            ],
+            [
+              "**total([1, 5])**",
+              "1",
+              "[5]",
+              "1 + 5 = 6"
+            ],
+            [
+              "**total([5])**",
+              "5",
+              "[]",
+              "5 + 0 = 5"
+            ],
+            [
+              "**total([])**",
+              "none",
+              "none",
+              "0 (base case)"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "caption": "Reverse a string: the first character goes to the end",
+          "code": "def reverse(s):\n    if s == \"\":\n        return \"\"\n    return reverse(s[1:]) + s[0]\n\nprint(reverse(\"abc\"))",
+          "output": "cba"
+        },
+        {
+          "type": "code",
+          "caption": "Count how often a value appears",
+          "code": "def count(lst, x):\n    if lst == []:\n        return 0\n    if lst[0] == x:\n        return 1 + count(lst[1:], x)\n    return count(lst[1:], x)\n\nprint(count([2, 7, 2, 2], 2))",
+          "output": "3"
+        },
+        {
+          "type": "code",
+          "caption": "Palindrome: compare both ends, then recurse on the middle",
+          "code": "def is_pal(s):\n    if len(s) <= 1:\n        return True\n    if s[0] != s[-1]:\n        return False\n    return is_pal(s[1:-1])\n\nprint(is_pal(\"level\"), is_pal(\"lever\"))",
+          "output": "True False"
+        },
+        {
+          "type": "text",
+          "text": "Here the base case is **len(s) <= 1**, because each call removes two characters. An odd length ends at one character, an even length at the empty string, and the base case has to catch both."
+        },
+        {
+          "type": "heading",
+          "text": "The index style: no copying"
+        },
+        {
+          "type": "text",
+          "text": "Every **lst[1:]** makes a new copy of the rest of the list. Instead, you can pass the same list every time together with a position **i**. The base case becomes **i == len(lst)** (you walked past the end), and the step is **i + 1**."
+        },
+        {
+          "type": "code",
+          "caption": "Contains, with an index",
+          "code": "def contains(lst, x, i):\n    if i == len(lst):\n        return False\n    if lst[i] == x:\n        return True\n    return contains(lst, x, i + 1)\n\nprint(contains([5, 8, 3], 3, 0))",
+          "output": "True"
+        },
+        {
+          "type": "bug",
+          "wrong": "def length(lst):\n    if lst == []:\n        return 0\n    return 1 + length(lst)",
+          "right": "def length(lst):\n    if lst == []:\n        return 0\n    return 1 + length(lst[1:])",
+          "why": "**length(lst)** calls itself with the same list, so nothing gets smaller and it never reaches **[]**: **RecursionError**. Always recurse on **lst[1:]** (or on **i + 1**)."
+        },
+        {
+          "type": "bug",
+          "wrong": "def biggest(lst):\n    if lst == []:\n        return 0\n    rest = biggest(lst[1:])\n    if lst[0] > rest:\n        return lst[0]\n    return rest",
+          "right": "def biggest(lst):\n    if len(lst) == 1:\n        return lst[0]\n    rest = biggest(lst[1:])\n    if lst[0] > rest:\n        return lst[0]\n    return rest",
+          "why": "With base case 0, a list of only negative numbers like **[-3, -7]** gives 0, which is not even in the list. The biggest item of a one-item list is that item, so use that as the base case."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Base case: the empty string or list, or **len(s) <= 1** when you remove from both ends.",
+            "Recursive case: do something with item **[0]**, recurse on **[1:]**.",
+            "To avoid copying, pass **i** and recurse on **i + 1**; the base case is **i == len(lst)**."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tracing-recursion",
+      "title": "Tracing recursion: the call stack",
+      "summary": "Trace a recursive function by hand: what runs on the way down, what runs on the way back up, and how many calls happen.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "Each call **waits** for the call it made to finish. Code **before** the recursive call runs on the way **down**; code **after** it runs on the way back **up**, in reverse order."
+        },
+        {
+          "type": "text",
+          "text": "Python keeps a stack of calls that have started but not finished. A new call goes on top. When it returns, it comes off, and the call below carries on from exactly where it paused, with its own values of the variables."
+        },
+        {
+          "type": "code",
+          "caption": "Print before the call: runs on the way down",
+          "code": "def down(n):\n    if n == 0:\n        return\n    print(n)\n    down(n - 1)\n\ndown(3)",
+          "output": "3\n2\n1"
+        },
+        {
+          "type": "code",
+          "caption": "Print after the call: runs on the way back up",
+          "code": "def up(n):\n    if n == 0:\n        return\n    up(n - 1)\n    print(n)\n\nup(3)",
+          "output": "1\n2\n3"
+        },
+        {
+          "type": "table",
+          "caption": "The stack while up(3) runs",
+          "headers": [
+            "Step",
+            "Stack (newest last)",
+            "What happens"
+          ],
+          "rows": [
+            [
+              "1",
+              "up(3)",
+              "calls up(2) and waits"
+            ],
+            [
+              "2",
+              "up(3), up(2)",
+              "calls up(1) and waits"
+            ],
+            [
+              "3",
+              "up(3), up(2), up(1)",
+              "calls up(0) and waits"
+            ],
+            [
+              "4",
+              "up(3), up(2), up(1), up(0)",
+              "base case: returns at once"
+            ],
+            [
+              "5",
+              "up(3), up(2), up(1)",
+              "carries on: prints 1, returns"
+            ],
+            [
+              "6",
+              "up(3), up(2)",
+              "carries on: prints 2, returns"
+            ],
+            [
+              "7",
+              "up(3)",
+              "carries on: prints 3, returns"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "caption": "Both directions in one function",
+          "code": "def show(n):\n    if n == 0:\n        print(\"base\")\n        return\n    print(\"down\", n)\n    show(n - 1)\n    print(\"up\", n)\n\nshow(2)",
+          "output": "down 2\ndown 1\nbase\nup 1\nup 2"
+        },
+        {
+          "type": "heading",
+          "text": "Following return values back up"
+        },
+        {
+          "type": "text",
+          "text": "To find what a call returns, go down to the base case first, then fill in the answers on the way back up. Write each call on its own line and its result next to it, starting from the bottom."
+        },
+        {
+          "type": "heading",
+          "text": "Two recursive calls make a tree"
+        },
+        {
+          "type": "text",
+          "text": "When a function calls itself twice, each of those calls makes two more, and so on. The calls form a tree, and the number of calls grows very fast."
+        },
+        {
+          "type": "code",
+          "caption": "Fibonacci: each number is the sum of the two before it",
+          "code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(6))",
+          "output": "8"
+        },
+        {
+          "type": "code",
+          "caption": "Counting the calls (global lets the function change the counter outside it)",
+          "code": "calls = 0\n\ndef fib(n):\n    global calls\n    calls += 1\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfib(5)\nprint(calls)",
+          "output": "15"
+        },
+        {
+          "type": "tip",
+          "text": "**fib(5)** makes 15 calls, but **fib(30)** makes over 2.6 million, because the same small values are worked out again and again. With two recursive calls per call, the work roughly doubles every time n goes up by one."
+        },
+        {
+          "type": "bug",
+          "wrong": "def print_up_to(n):\n    if n == 0:\n        return\n    print(n)\n    print_up_to(n - 1)",
+          "right": "def print_up_to(n):\n    if n == 0:\n        return\n    print_up_to(n - 1)\n    print(n)",
+          "why": "To print 1, 2, ..., n in increasing order, the print must come **after** the recursive call, so it runs on the way back up. Printing first gives n down to 1."
+        }
+      ]
+    },
+    {
+      "id": "maze-recursion",
+      "title": "Recursion on mazes",
+      "summary": "Write and trace solve(maze, r, c): the base cases in the right order, marking visited cells, and backtracking.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "To solve a maze from cell (r, c), check in this order: (1) **out of bounds**: False, (2) **wall**: False, (3) **already visited**: False, (4) **exit**: True. Otherwise (5) **mark** the cell visited, (6) try **up, down, left, right** and return True as soon as one works, (7) return **False**."
+        },
+        {
+          "type": "text",
+          "text": "The maze is a grid: a list of rows, where each row is a list of cells. **maze[r][c]** is the cell in row **r**, column **c**. Here **\"#\"** is a wall, **\".\"** is open, **\"S\"** is the start and **\"E\"** is the exit."
+        },
+        {
+          "type": "code",
+          "caption": "A maze as a list of lists: 3 rows, 3 columns",
+          "code": "maze = [\n    [\"S\", \".\", \"#\"],\n    [\"#\", \".\", \"#\"],\n    [\"#\", \".\", \"E\"],\n]\nprint(len(maze), len(maze[0]))\nprint(maze[2][2])",
+          "output": "3 3\nE"
+        },
+        {
+          "type": "table",
+          "caption": "Moving from cell (r, c)",
+          "headers": [
+            "Direction",
+            "Next cell"
+          ],
+          "rows": [
+            [
+              "Up",
+              "(r - 1, c)"
+            ],
+            [
+              "Down",
+              "(r + 1, c)"
+            ],
+            [
+              "Left",
+              "(r, c - 1)"
+            ],
+            [
+              "Right",
+              "(r, c + 1)"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "caption": "The full recipe, one step per line",
+          "code": "def solve(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return False\n    if c < 0 or c >= len(maze[0]):\n        return False\n    if maze[r][c] == \"#\":\n        return False\n    if maze[r][c] == \"v\":\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    maze[r][c] = \"v\"\n    if solve(maze, r - 1, c):\n        return True\n    if solve(maze, r + 1, c):\n        return True\n    if solve(maze, r, c - 1):\n        return True\n    if solve(maze, r, c + 1):\n        return True\n    return False\n\nmaze = [\n    [\"S\", \".\", \"#\"],\n    [\"#\", \".\", \"#\"],\n    [\"#\", \".\", \"E\"],\n]\nprint(solve(maze, 0, 0))",
+          "output": "True"
+        },
+        {
+          "type": "text",
+          "text": "The visited mark is the letter **\"v\"** written into the grid. You could also keep a separate grid of True and False values; the idea is the same. Many solutions shorten the four direction checks to one **return** with **or**, which also stops at the first direction that gives True."
+        },
+        {
+          "type": "heading",
+          "text": "Why the order of the checks matters"
+        },
+        {
+          "type": "text",
+          "text": "The bounds check must come **first**. **maze[r][c]** with **r = 3** in a 3-row maze crashes with an **IndexError**. Worse, **r = -1** does not crash at all: Python reads the **last** row, so your search silently wraps around the edge."
+        },
+        {
+          "type": "bug",
+          "wrong": "def solve(maze, r, c):\n    if maze[r][c] == \"#\":\n        return False\n    if r < 0 or r >= len(maze):\n        return False",
+          "right": "def solve(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return False\n    if maze[r][c] == \"#\":\n        return False",
+          "why": "Indexing first crashes (or wraps around for negative indexes) before the bounds check ever runs. Check the bounds, then look at the cell."
+        },
+        {
+          "type": "heading",
+          "text": "Why you must mark visited cells"
+        },
+        {
+          "type": "text",
+          "text": "Without a visited mark, the search steps down, then back up to where it was, then down again, forever. Each step is a new call, so it ends in a **RecursionError**. Marking a cell before exploring its neighbours means you never enter it twice."
+        },
+        {
+          "type": "bug",
+          "wrong": "if maze[r][c] == \"E\":\n    return True\nif solve(maze, r - 1, c):\n    return True",
+          "right": "if maze[r][c] == \"E\":\n    return True\nmaze[r][c] = \"v\"\nif solve(maze, r - 1, c):\n    return True",
+          "why": "Forgetting to mark the cell lets two neighbouring cells send the search back and forth between them forever: **RecursionError**."
+        },
+        {
+          "type": "heading",
+          "text": "Backtracking: undo on the way out"
+        },
+        {
+          "type": "text",
+          "text": "To **record the path**, append the cell when you enter it and pop it again when that cell leads nowhere. To **count all paths**, unmark the cell before returning, so other paths may use it. Undoing your change on the way out is called **backtracking**."
+        },
+        {
+          "type": "code",
+          "caption": "Recording the path: append on the way in, pop at a dead end",
+          "code": "def solve(maze, r, c, path):\n    if r < 0 or r >= len(maze):\n        return False\n    if c < 0 or c >= len(maze[0]):\n        return False\n    if maze[r][c] == \"#\" or maze[r][c] == \"v\":\n        return False\n    path.append((r, c))\n    if maze[r][c] == \"E\":\n        return True\n    maze[r][c] = \"v\"\n    if (solve(maze, r - 1, c, path)\n            or solve(maze, r + 1, c, path)\n            or solve(maze, r, c - 1, path)\n            or solve(maze, r, c + 1, path)):\n        return True\n    path.pop()\n    return False\n\nmaze = [\n    [\"S\", \".\", \".\"],\n    [\"#\", \"#\", \".\"],\n    [\"E\", \".\", \".\"],\n]\npath = []\nsolve(maze, 0, 0, path)\nprint(path)",
+          "output": "[(0, 0), (0, 1), (0, 2), (1, 2), (2, 2), (2, 1), (2, 0)]"
+        },
+        {
+          "type": "code",
+          "caption": "Counting all paths: unmark before returning",
+          "code": "def count_paths(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return 0\n    if c < 0 or c >= len(maze[0]):\n        return 0\n    if maze[r][c] == \"#\" or maze[r][c] == \"v\":\n        return 0\n    if maze[r][c] == \"E\":\n        return 1\n    maze[r][c] = \"v\"\n    total = (count_paths(maze, r - 1, c)\n             + count_paths(maze, r + 1, c)\n             + count_paths(maze, r, c - 1)\n             + count_paths(maze, r, c + 1))\n    maze[r][c] = \".\"\n    return total\n\nmaze = [\n    [\"S\", \".\", \".\"],\n    [\".\", \"#\", \".\"],\n    [\".\", \".\", \"E\"],\n]\nprint(count_paths(maze, 0, 0))",
+          "output": "2"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Bounds first, then wall, then visited, then exit.",
+            "Mark the cell **before** you explore its neighbours.",
+            "Return **True** as soon as one direction succeeds; return **False** only after all four failed.",
+            "Unmark (backtrack) when you need **all** paths, and pop the cell from **path** when it was a dead end."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "combinations",
+      "title": "Recursion with combinations",
+      "summary": "Generate subsets, binary strings, k-combinations and permutations with the choose, explore, un-choose pattern.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "For every item, make a **choice** and recurse on the rest: **include it or leave it out** (subsets), or **pick which one comes next** (permutations). Choose, explore, **un-choose**: **path.append(x)**, recurse, **path.pop()**."
+        },
+        {
+          "type": "text",
+          "text": "Combination problems ask for **every** possible selection. Recursion fits because each decision splits the work into smaller problems: decide about the first item, then let the recursive call decide about the rest."
+        },
+        {
+          "type": "heading",
+          "text": "Subsets: in or out"
+        },
+        {
+          "type": "code",
+          "caption": "All subsets of a list",
+          "code": "def subsets(items, i, path, result):\n    if i == len(items):\n        result.append(path[:])\n        return\n    path.append(items[i])      # choose: include\n    subsets(items, i + 1, path, result)\n    path.pop()                 # un-choose\n    subsets(items, i + 1, path, result)\n\nresult = []\nsubsets([\"a\", \"b\", \"c\"], 0, [], result)\nprint(result)\nprint(len(result))",
+          "output": "[['a', 'b', 'c'], ['a', 'b'], ['a', 'c'], ['a'], ['b', 'c'], ['b'], ['c'], []]\n8"
+        },
+        {
+          "type": "text",
+          "text": "Each item doubles the number of possibilities: it is in or out. So **n** items give **2 to the power n** subsets: 3 items give 8, 10 items give 1024. The base case is **i == len(items)**: every item has been decided, so **path** is one finished subset."
+        },
+        {
+          "type": "heading",
+          "text": "Store a copy"
+        },
+        {
+          "type": "text",
+          "text": "There is only **one** path list, shared by every call and changed all the time by **append** and **pop**. If you store **path** itself, every entry in **result** is that same list, which is empty once all the pops are done. Store **path[:]** or **list(path)**: a copy of how it looks right now."
+        },
+        {
+          "type": "code",
+          "caption": "What happens without the copy",
+          "code": "def subsets(items, i, path, result):\n    if i == len(items):\n        result.append(path)\n        return\n    path.append(items[i])\n    subsets(items, i + 1, path, result)\n    path.pop()\n    subsets(items, i + 1, path, result)\n\nresult = []\nsubsets([1, 2], 0, [], result)\nprint(result)",
+          "output": "[[], [], [], []]"
+        },
+        {
+          "type": "bug",
+          "wrong": "if i == len(items):\n    result.append(path)\n    return",
+          "right": "if i == len(items):\n    result.append(path[:])\n    return",
+          "why": "Without the copy, all entries are the same list. After the last **pop()** it is empty, so you get a list of empty lists."
+        },
+        {
+          "type": "heading",
+          "text": "Binary strings: the same tree"
+        },
+        {
+          "type": "code",
+          "caption": "Every string of 0s and 1s of length n",
+          "code": "def binary(n, prefix):\n    if len(prefix) == n:\n        print(prefix)\n        return\n    binary(n, prefix + \"0\")\n    binary(n, prefix + \"1\")\n\nbinary(2, \"\")",
+          "output": "00\n01\n10\n11"
+        },
+        {
+          "type": "text",
+          "text": "No un-choose is needed here, because **prefix + \"0\"** builds a **new** string for each call (strings can never be changed in place). With a list and **append**, you must **pop**."
+        },
+        {
+          "type": "heading",
+          "text": "Choose k of n"
+        },
+        {
+          "type": "code",
+          "caption": "All ways to pick k items, keeping list order",
+          "code": "def choose(items, k, start, path):\n    if len(path) == k:\n        print(path)\n        return\n    for i in range(start, len(items)):\n        path.append(items[i])\n        choose(items, k, i + 1, path)\n        path.pop()\n\nchoose([\"a\", \"b\", \"c\", \"d\"], 2, 0, [])",
+          "output": "['a', 'b']\n['a', 'c']\n['a', 'd']\n['b', 'c']\n['b', 'd']\n['c', 'd']"
+        },
+        {
+          "type": "text",
+          "text": "**start** stops you from picking an earlier item again, so a, b and b, a count only once. The base case is **len(path) == k**: you have picked enough."
+        },
+        {
+          "type": "heading",
+          "text": "Permutations: every order"
+        },
+        {
+          "type": "code",
+          "caption": "Pick each unused item next",
+          "code": "def perms(items, path):\n    if len(path) == len(items):\n        print(path)\n        return\n    for x in items:\n        if x not in path:\n            path.append(x)\n            perms(items, path)\n            path.pop()\n\nperms([1, 2, 3], [])",
+          "output": "[1, 2, 3]\n[1, 3, 2]\n[2, 1, 3]\n[2, 3, 1]\n[3, 1, 2]\n[3, 2, 1]"
+        },
+        {
+          "type": "table",
+          "caption": "Which pattern for which question?",
+          "headers": [
+            "Question",
+            "Choice at each step",
+            "How many results"
+          ],
+          "rows": [
+            [
+              "All subsets",
+              "include item i, or leave it out",
+              "2 to the power n"
+            ],
+            [
+              "All strings of 0s and 1s of length n",
+              "add \"0\" or add \"1\"",
+              "2 to the power n"
+            ],
+            [
+              "Choose k of n",
+              "which later item to add next",
+              "n! / (k! (n - k)!)"
+            ],
+            [
+              "All orders (permutations)",
+              "which unused item comes next",
+              "n! (n factorial)"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Counting instead of generating"
+        },
+        {
+          "type": "text",
+          "text": "When you only need **how many**, return numbers instead of building lists: the base case returns 1 (or 0), and each call adds up the counts from its choices. No path, no copies."
+        },
+        {
+          "type": "code",
+          "caption": "How many subsets add up to 5? (1 + 4 and 2 + 3)",
+          "code": "def count_sums(nums, i, target):\n    if i == len(nums):\n        if target == 0:\n            return 1\n        return 0\n    take = count_sums(nums, i + 1, target - nums[i])\n    skip = count_sums(nums, i + 1, target)\n    return take + skip\n\nprint(count_sums([1, 2, 3, 4], 0, 5))",
+          "output": "2"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Base case: every item decided (**i == len(items)**) or enough picked (**len(path) == k**).",
+            "Choose, explore, un-choose: **append**, recurse, **pop**.",
+            "Store **path[:]**, never **path** itself.",
+            "Results come out in the order the choices are tried: include-first gives the full set first, leave-out-first gives the empty set first."
+          ]
+        }
+      ]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "def-only-defines",
+      "prompt": "What happens when Python reaches a def line?",
+      "choices": [
+        "It runs the body of the function once",
+        "It stores the recipe under its name; the body runs only when the function is called",
+        "It runs the body once for each parameter",
+        "It checks the body for mistakes and then runs it"
+      ],
+      "answerIndex": 1,
+      "explanation": "def only writes the function down under its name. The body runs each time you call it, for example square(4).",
+      "tags": [
+        "functions",
+        "concept"
+      ]
+    },
+    {
+      "id": "parameter-vs-argument",
+      "prompt": "Given def area(w, h): and the call area(3, 5), which are the arguments?",
+      "choices": [
+        "w and h",
+        "area and 3",
+        "3 and 5",
+        "w, h, 3 and 5"
+      ],
+      "answerIndex": 2,
+      "explanation": "Arguments are the actual values passed in a call: 3 and 5. Parameters are the names in the def line, w and h, that receive them.",
+      "tags": [
+        "functions",
+        "concept"
+      ]
+    },
+    {
+      "id": "print-is-not-return-output",
+      "prompt": "What does this print?",
+      "code": "def double(x):\n    print(x * 2)\n\ny = double(4)\nprint(y)",
+      "choices": [
+        "8\nNone",
+        "8\n8",
+        "8",
+        "None\n8"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "double prints 8 but has no return, so the call gives back None. y is None, and printing it shows None.",
+      "tags": [
+        "functions",
+        "output"
+      ]
+    },
+    {
+      "id": "return-ends-function-output",
+      "prompt": "What does this print?",
+      "code": "def f():\n    print(\"a\")\n    return 1\n    print(\"b\")\n\nprint(f())",
+      "choices": [
+        "a\nb\n1",
+        "1",
+        "a\nb",
+        "a\n1"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "return ends the function at once, so print(\"b\") never runs. The call prints a, then gives back 1, which the outer print shows.",
+      "tags": [
+        "functions",
+        "output"
+      ]
+    },
+    {
+      "id": "return-inside-loop-output",
+      "prompt": "What does this print?",
+      "code": "def total(nums):\n    s = 0\n    for n in nums:\n        s = s + n\n        return s\n\nprint(total([4, 5, 6]))",
+      "choices": [
+        "4",
+        "15",
+        "6",
+        "None"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "The return is indented inside the loop, so the function returns after adding only the first number. Move return s one level left, after the loop, to get 15.",
+      "tags": [
+        "functions",
+        "output"
+      ]
+    },
+    {
+      "id": "call-before-def-output",
+      "prompt": "What happens when this file runs?",
+      "code": "print(cube(2))\n\ndef cube(x):\n    return x ** 3",
+      "choices": [
+        "8",
+        "NameError",
+        "None",
+        "6"
+      ],
+      "answerIndex": 1,
+      "explanation": "Python runs top to bottom. When the print line runs, cube has not been defined yet, so the name is unknown: NameError.",
+      "tags": [
+        "functions",
+        "output"
+      ]
+    },
+    {
+      "id": "missing-argument-output",
+      "prompt": "What happens?",
+      "code": "def area(w, h):\n    return w * h\n\nprint(area(3))",
+      "choices": [
+        "TypeError",
+        "3",
+        "0",
+        "None"
+      ],
+      "answerIndex": 0,
+      "explanation": "area has two parameters but the call passes one argument. Python refuses to run it: TypeError, missing 1 required positional argument.",
+      "tags": [
+        "functions",
+        "output"
+      ]
+    },
+    {
+      "id": "cw-contains-else-return",
+      "prompt": "Task: return True if target is in the list, otherwise False. Is this implementation correct?",
+      "code": "def contains(nums, target):\n    for n in nums:\n        if n == target:\n            return True\n        else:\n            return False",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The else returns False as soon as the first item does not match, so later items are never checked: contains([7, 3, 9], 9) gives False. Return False only after the loop.",
+      "tags": [
+        "functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-count-even",
+      "prompt": "Task: return how many even numbers are in the list. Is this implementation correct?",
+      "code": "def count_even(nums):\n    count = 0\n    for n in nums:\n        if n % 2 == 0:\n            count += 1\n    return count",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "count starts at 0, goes up by one for each even number, and is returned after the loop has seen every item. An empty list correctly gives 0.",
+      "tags": [
+        "functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-bigger-prints",
+      "prompt": "Task: give back the larger of two numbers, so the caller can use it, as in bigger(3, 8) + 1. Is this implementation correct?",
+      "code": "def bigger(a, b):\n    if a > b:\n        print(a)\n    else:\n        print(b)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "It prints the larger number but returns nothing, so bigger(3, 8) is None and bigger(3, 8) + 1 crashes with a TypeError. Write return a and return b instead of print.",
+      "tags": [
+        "functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-return-average",
+      "prompt": "Fill in the blank so average gives back the mean of the list.",
+      "code": "def average(nums):\n    total = 0\n    for n in nums:\n        total += n\n    ___",
+      "choices": [
+        "print(total / len(nums))",
+        "return total",
+        "return total / len(nums)",
+        "average = total / len(nums)"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "The caller needs the value, so it must be returned, and the mean is the total divided by how many numbers there are. Printing it, or storing it in a name, gives the caller None.",
+      "tags": [
+        "functions",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "no-return-gives-none",
+      "prompt": "A function reaches its last line without hitting a return. What does the call give back?",
+      "choices": [
+        "0",
+        "The value of its last line",
+        "An error",
+        "None"
+      ],
+      "answerIndex": 3,
+      "explanation": "Python adds an invisible return None at the end of every function. That is why a function that only prints gives None to its caller.",
+      "tags": [
+        "functions",
+        "concept"
+      ]
+    },
+    {
+      "id": "local-vanishes-output",
+      "prompt": "What happens?",
+      "code": "def f():\n    y = 5\n    return y * 2\n\nf()\nprint(y)",
+      "choices": [
+        "5",
+        "10",
+        "NameError",
+        "None"
+      ],
+      "answerIndex": 2,
+      "explanation": "y is local to f. It exists only while f runs, so after the call the name y is not defined: NameError. The returned 10 was thrown away too, because the call was not stored.",
+      "tags": [
+        "scope-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "same-name-local-output",
+      "prompt": "What does this print?",
+      "code": "count = 0\n\ndef bump():\n    count = 5\n    return count\n\nbump()\nprint(count)",
+      "choices": [
+        "0",
+        "5",
+        "None",
+        "UnboundLocalError"
+      ],
+      "answerIndex": 0,
+      "explanation": "count = 5 inside bump makes a new local variable that disappears after the call. The global count stays 0.",
+      "tags": [
+        "scope-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "append-changes-caller-output",
+      "prompt": "What does this print?",
+      "code": "def add_name(names):\n    names.append(\"Bo\")\n\ngroup = [\"Al\"]\nadd_name(group)\nadd_name(group)\nprint(group)",
+      "choices": [
+        "['Al']",
+        "['Al', 'Bo']",
+        "None",
+        "['Al', 'Bo', 'Bo']"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "names is the same list as group, so each call appends to the caller's list. Two calls add Bo twice.",
+      "tags": [
+        "scope-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "reassign-param-output",
+      "prompt": "What does this print?",
+      "code": "def clear(lst):\n    lst = []\n    return lst\n\nnums = [4, 5]\nclear(nums)\nprint(nums)",
+      "choices": [
+        "[]",
+        "[4, 5]",
+        "None",
+        "[4]"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "lst = [] points the local name lst at a brand-new list. The caller's list is untouched, and the returned empty list was never stored.",
+      "tags": [
+        "scope-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "string-param-output",
+      "prompt": "What does this print?",
+      "code": "def shout(word):\n    word = word.upper()\n\nw = \"hi\"\nshout(w)\nprint(w)",
+      "choices": [
+        "hi",
+        "HI",
+        "None",
+        "Hi"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "Strings can never be changed in place. word.upper() makes a new string and the assignment only changes the local name. Return it and write w = shout(w) instead.",
+      "tags": [
+        "scope-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "sort-returns-none-output",
+      "prompt": "What does this print?",
+      "code": "nums = [3, 1, 2]\nresult = nums.sort()\nprint(result, nums)",
+      "choices": [
+        "[1, 2, 3] [1, 2, 3]",
+        "None [1, 2, 3]",
+        "[1, 2, 3] [3, 1, 2]",
+        "None [3, 1, 2]"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "sort() changes nums in place and returns None, so result is None while nums is now sorted.",
+      "tags": [
+        "scope-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "local-scope-rule",
+      "prompt": "Which statement about variables created inside a function is true?",
+      "choices": [
+        "They can be used anywhere in the file after the first call",
+        "They keep their values from one call to the next",
+        "Every call shares the same ones",
+        "They exist only while that call runs"
+      ],
+      "answerIndex": 3,
+      "explanation": "Each call gets its own fresh local variables, and they disappear when the call returns. This is also why every recursive call has its own n.",
+      "tags": [
+        "scope-and-lists",
+        "concept"
+      ]
+    },
+    {
+      "id": "why-parameters-not-globals",
+      "prompt": "Why should a function get its data as parameters instead of reading global variables?",
+      "choices": [
+        "Reading globals is slower",
+        "It can then be called with any input and tested on its own",
+        "Python does not allow reading globals inside a function",
+        "Parameters are copies, so nothing can ever be changed"
+      ],
+      "answerIndex": 1,
+      "explanation": "A function that takes its inputs as parameters works for any input and can be tested by calling it. Reading globals ties it to one set of values. Python does allow reading globals; it is just bad practice.",
+      "tags": [
+        "scope-and-lists",
+        "concept"
+      ]
+    },
+    {
+      "id": "cw-doubled-new-list",
+      "prompt": "Task: return a NEW list with every number doubled, and leave the original list unchanged. Is this implementation correct?",
+      "code": "def doubled(nums):\n    result = []\n    for n in nums:\n        result.append(n * 2)\n    return result",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "It builds a separate result list and returns it. The original list is only read, never changed.",
+      "tags": [
+        "scope-and-lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-drop-negatives-reassign",
+      "prompt": "Task: remove every negative number from the caller's list, in place (the function returns nothing). Is this implementation correct?",
+      "code": "def drop_negatives(nums):\n    kept = []\n    for n in nums:\n        if n >= 0:\n            kept.append(n)\n    nums = kept",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "nums = kept only points the local name at the new list. The caller's list still holds the negatives. To change it in place write nums[:] = kept, or return kept and let the caller store it.",
+      "tags": [
+        "scope-and-lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-add-item-in-place",
+      "prompt": "Task: add item to the end of the caller's list, changing it in place. Is this implementation correct?",
+      "code": "def add_item(lst, item):\n    lst.append(item)\n\nshopping = [\"milk\"]\nadd_item(shopping, \"eggs\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "lst is the very same list as shopping, so append changes the caller's list. No return is needed for an in-place change.",
+      "tags": [
+        "scope-and-lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-change-in-place",
+      "prompt": "Fill in the blank so the function adds 1 to every number in the caller's list.",
+      "code": "def add_one_each(nums):\n    for i in range(len(nums)):\n        ___",
+      "choices": [
+        "n = nums[i] + 1",
+        "i = i + 1",
+        "nums[i] = nums[i] + 1",
+        "nums = nums + [1]"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "Assigning to nums[i] writes into the shared list itself. A new name n, or rebinding nums to a new list, never reaches the caller.",
+      "tags": [
+        "scope-and-lists",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "three-parts-of-recursion",
+      "prompt": "Which three things does every correct recursive function need?",
+      "choices": [
+        "A loop, a counter and a return",
+        "A base case, a recursive case on a smaller problem, and progress toward the base case",
+        "A global variable, a print and a return",
+        "Two recursive calls and an if statement"
+      ],
+      "answerIndex": 1,
+      "explanation": "The base case stops the recursion, the recursive case solves a smaller version of the problem, and each call must get closer to the base case so it is eventually reached.",
+      "tags": [
+        "recursion-basics",
+        "concept"
+      ]
+    },
+    {
+      "id": "base-case-is-the-stop",
+      "prompt": "In a recursive function, what does the job of a while loop's stop condition?",
+      "choices": [
+        "The recursive call",
+        "The return value",
+        "The base case",
+        "The parameter"
+      ],
+      "answerIndex": 2,
+      "explanation": "The base case is where the calls stop. The recursive call with a smaller argument is the step that moves toward it.",
+      "tags": [
+        "recursion-basics",
+        "concept"
+      ]
+    },
+    {
+      "id": "factorial-4-output",
+      "prompt": "What does this print?",
+      "code": "def fact(n):\n    if n == 1:\n        return 1\n    return n * fact(n - 1)\n\nprint(fact(4))",
+      "choices": [
+        "24",
+        "10",
+        "4",
+        "RecursionError"
+      ],
+      "answerIndex": 0,
+      "explanation": "fact(4) = 4 × fact(3) = 4 × 3 × fact(2) = 4 × 3 × 2 × fact(1) = 4 × 3 × 2 × 1 = 24.",
+      "tags": [
+        "recursion-basics",
+        "output"
+      ]
+    },
+    {
+      "id": "countdown-output",
+      "prompt": "What does this print?",
+      "code": "def countdown(n):\n    if n == 0:\n        print(\"Go!\")\n        return\n    print(n)\n    countdown(n - 1)\n\ncountdown(3)",
+      "choices": [
+        "3\n2\n1",
+        "Go!\n1\n2\n3",
+        "3\n2\n1\n0\nGo!",
+        "3\n2\n1\nGo!"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "Each call prints its n, then calls countdown with n - 1. When n reaches 0 the base case prints Go! and stops; 0 itself is never printed.",
+      "tags": [
+        "recursion-basics",
+        "output"
+      ]
+    },
+    {
+      "id": "no-base-case-output",
+      "prompt": "What happens?",
+      "code": "def forever(n):\n    return forever(n - 1)\n\nprint(forever(3))",
+      "choices": [
+        "0",
+        "RecursionError",
+        "3",
+        "None"
+      ],
+      "answerIndex": 1,
+      "explanation": "There is no base case, so every call makes another call. Python stops it after about 1000 nested calls with a RecursionError.",
+      "tags": [
+        "recursion-basics",
+        "output"
+      ]
+    },
+    {
+      "id": "missing-return-output",
+      "prompt": "What does this print?",
+      "code": "def total(n):\n    if n == 0:\n        return 0\n    n + total(n - 1)\n\nprint(total(1))",
+      "choices": [
+        "1",
+        "0",
+        "None",
+        "TypeError"
+      ],
+      "answerIndex": 2,
+      "explanation": "total(1) computes 1 + total(0) but does not return it, so the call gives back None. With total(2) it would even crash, because 2 + None is a TypeError.",
+      "tags": [
+        "recursion-basics",
+        "output"
+      ]
+    },
+    {
+      "id": "cw-power-base-case",
+      "prompt": "Task: return base to the power exp, for any whole number exp of 0 or more. Is this implementation correct?",
+      "code": "def power(base, exp):\n    if exp == 1:\n        return base\n    return base * power(base, exp - 1)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "For exp = 0 the base case exp == 1 is never reached: exp goes 0, -1, -2, ... until a RecursionError. Use exp == 0 returning 1, which covers every allowed input.",
+      "tags": [
+        "recursion-basics",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-digit-sum",
+      "prompt": "Task: return the sum of the digits of a whole number of 0 or more, so digit_sum(472) gives 13. Is this implementation correct?",
+      "code": "def digit_sum(n):\n    if n < 10:\n        return n\n    return n % 10 + digit_sum(n // 10)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "n % 10 is the last digit and n // 10 drops it, so each call has one digit fewer. A single digit (n < 10) is its own digit sum, which is the base case.",
+      "tags": [
+        "recursion-basics",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-count-down-wrong-step",
+      "prompt": "Task: return a list counting down from n to 1, so count_down(3) gives [3, 2, 1]. Is this implementation correct?",
+      "code": "def count_down(n):\n    if n == 0:\n        return []\n    return [n] + count_down(n + 1)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The call uses n + 1, which moves AWAY from the base case n == 0, so it never stops: RecursionError. The step must be n - 1.",
+      "tags": [
+        "recursion-basics",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-repeat-string",
+      "prompt": "Task: return the string s repeated n times (n is 0 or more), so repeat(\"ab\", 3) gives \"ababab\". Is this implementation correct?",
+      "code": "def repeat(s, n):\n    if n == 0:\n        return \"\"\n    return s + repeat(s, n - 1)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "repeat(s, 0) is the empty string, and each call adds one copy of s while lowering n by one. The recursive result is returned, so the copies build up correctly.",
+      "tags": [
+        "recursion-basics",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-factorial-base-case",
+      "prompt": "Fill in the base case so factorial(n) works for every n of 0 or more (0! is 1).",
+      "code": "def factorial(n):\n    if ___:\n        return 1\n    return n * factorial(n - 1)",
+      "choices": [
+        "n == 0",
+        "n == 1",
+        "n < 0",
+        "n == 2"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "The base case must catch the smallest allowed input. With n == 1, factorial(0) would recurse to -1, -2, ... and crash with a RecursionError.",
+      "tags": [
+        "recursion-basics",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "fill-sum-recursive-step",
+      "prompt": "Fill in the blank so total(n) returns 1 + 2 + ... + n.",
+      "code": "def total(n):\n    if n == 0:\n        return 0\n    return ___",
+      "choices": [
+        "total(n - 1)",
+        "n + total(n)",
+        "n + total(n + 1)",
+        "n + total(n - 1)"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "Each call adds its own n to the answer for the smaller problem, total(n - 1). Calling total(n) or total(n + 1) never gets closer to 0, so it never stops.",
+      "tags": [
+        "recursion-basics",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "what-is-lst-1-colon",
+      "prompt": "In recursion on a list lst, what does lst[1:] give you?",
+      "choices": [
+        "The first item",
+        "Everything except the first item",
+        "The last item",
+        "Everything except the last item"
+      ],
+      "answerIndex": 1,
+      "explanation": "lst[1:] is a slice from index 1 to the end: the list without its first item. It is one shorter, which is what makes the recursion progress.",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "concept"
+      ]
+    },
+    {
+      "id": "string-base-case",
+      "prompt": "A recursive function walks through a string with s[0] and s[1:]. Which base case does it need?",
+      "choices": [
+        "len(s) == 2",
+        "s[1:] == s",
+        "s == \"\"",
+        "s[0] == s[-1]"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "Every call removes one character, so you always end at the empty string. That is the case you can answer without recursing.",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "concept"
+      ]
+    },
+    {
+      "id": "sum-list-output",
+      "prompt": "What does this print?",
+      "code": "def total(lst):\n    if lst == []:\n        return 0\n    return lst[0] + total(lst[1:])\n\nprint(total([3, 6, 2]))",
+      "choices": [
+        "11",
+        "3",
+        "2",
+        "0"
+      ],
+      "answerIndex": 0,
+      "explanation": "3 + total([6, 2]) = 3 + 6 + total([2]) = 3 + 6 + 2 + total([]) = 3 + 6 + 2 + 0 = 11.",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "reverse-output",
+      "prompt": "What does this print?",
+      "code": "def rev(s):\n    if s == \"\":\n        return \"\"\n    return rev(s[1:]) + s[0]\n\nprint(rev(\"dog\"))",
+      "choices": [
+        "god",
+        "dog",
+        "ogd",
+        "gdo"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "The first character goes AFTER the reversed rest: rev(\"dog\") = rev(\"og\") + \"d\" = \"go\" + \"d\" = \"god\".",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "count-output",
+      "prompt": "What does this print?",
+      "code": "def count(lst, x):\n    if lst == []:\n        return 0\n    if lst[0] == x:\n        return 1 + count(lst[1:], x)\n    return count(lst[1:], x)\n\nprint(count([\"a\", \"b\", \"a\"], \"a\"))",
+      "choices": [
+        "3",
+        "1",
+        "0",
+        "2"
+      ],
+      "answerIndex": 3,
+      "explanation": "Each call checks only the first item: it adds 1 when that item matches, and passes the rest on. Two items match.",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "palindrome-output",
+      "prompt": "What does this print?",
+      "code": "def is_pal(s):\n    if len(s) <= 1:\n        return True\n    if s[0] != s[-1]:\n        return False\n    return is_pal(s[1:-1])\n\nprint(is_pal(\"racecar\"))\nprint(is_pal(\"abca\"))",
+      "choices": [
+        "True\nTrue",
+        "False\nFalse",
+        "True\nFalse",
+        "False\nTrue"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "racecar: r and r match, a and a, c and c, then one letter e is left, so True. abca: a and a match, then b and c differ, so False.",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "length-same-list-output",
+      "prompt": "What happens?",
+      "code": "def length(lst):\n    if lst == []:\n        return 0\n    return 1 + length(lst)\n\nprint(length([1, 2]))",
+      "choices": [
+        "2",
+        "1",
+        "0",
+        "RecursionError"
+      ],
+      "answerIndex": 3,
+      "explanation": "The call passes the same list, not lst[1:], so it never gets smaller and never reaches []. Python stops it with a RecursionError.",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "output"
+      ]
+    },
+    {
+      "id": "cw-biggest-base-zero",
+      "prompt": "Task: return the largest number in a non-empty list. The numbers may be negative. Is this implementation correct?",
+      "code": "def biggest(lst):\n    if lst == []:\n        return 0\n    rest = biggest(lst[1:])\n    if lst[0] > rest:\n        return lst[0]\n    return rest",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "For [-3, -7] it returns 0, the base case value, which is not even in the list. Use a one-item list as the base case: if len(lst) == 1: return lst[0].",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-contains-index",
+      "prompt": "Task: return True if x is somewhere in lst, otherwise False. It is first called as contains(lst, x, 0). Is this implementation correct?",
+      "code": "def contains(lst, x, i):\n    if i == len(lst):\n        return False\n    if lst[i] == x:\n        return True\n    return contains(lst, x, i + 1)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "i moves one step right per call, so it reaches len(lst) at the end. That base case answers False only after every position was checked, and a match returns True straight away.",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-count-vowels",
+      "prompt": "Task: return how many vowels (a, e, i, o, u) the lowercase string s contains. Is this implementation correct?",
+      "code": "def vowels(s):\n    if s == \"\":\n        return 0\n    rest = vowels(s[1:])\n    if s[0] in \"aeiou\":\n        return 1 + rest\n    return rest",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "The base case is the empty string, which has 0 vowels. Each call counts its own first letter (1 or 0) on top of the count for the rest.",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-index-sum-off-by-one",
+      "prompt": "Task: return the sum of all numbers in lst. It is first called as total(lst, 0). Is this implementation correct?",
+      "code": "def total(lst, i):\n    if i == len(lst) - 1:\n        return 0\n    return lst[i] + total(lst, i + 1)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The base case fires at the last index, before that item is added, so the last number is skipped: [1, 2, 3] gives 3. The base case must be i == len(lst), one step past the end.",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-reverse-step",
+      "prompt": "Fill in the blank so rev(s) returns s reversed.",
+      "code": "def rev(s):\n    if s == \"\":\n        return \"\"\n    return ___",
+      "choices": [
+        "s[0] + rev(s[1:])",
+        "rev(s[1:]) + s[0]",
+        "rev(s) + s[0]",
+        "rev(s[1:])"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "Reverse the rest first, then put the first character at the end. s[0] + rev(s[1:]) keeps the original order instead.",
+      "tags": [
+        "recursion-on-strings-and-lists",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "call-waits",
+      "prompt": "While fact(3) is waiting for fact(2) to return, what is fact(3) doing?",
+      "choices": [
+        "It has finished and been removed",
+        "It will restart from the top when fact(2) returns",
+        "It is paused, keeping its own n = 3, and carries on when fact(2) returns",
+        "It is running at the same time as fact(2)"
+      ],
+      "answerIndex": 2,
+      "explanation": "A call that makes a recursive call pauses at that line. Its variables are kept, and it carries on from exactly that point once the inner call returns.",
+      "tags": [
+        "tracing-recursion",
+        "concept"
+      ]
+    },
+    {
+      "id": "after-call-runs-on-way-up",
+      "prompt": "In a recursive function, when does a line that comes AFTER the recursive call run?",
+      "choices": [
+        "Before any recursive call is made",
+        "On the way back up, after the deeper calls have returned, deepest call first",
+        "Only in the base case",
+        "Never, because the recursive call ends the function"
+      ],
+      "answerIndex": 1,
+      "explanation": "Each call reaches that line only once the call it made has returned. The deepest call finishes first, so after-lines run from the bottom up.",
+      "tags": [
+        "tracing-recursion",
+        "concept"
+      ]
+    },
+    {
+      "id": "print-after-call-output",
+      "prompt": "What does this print?",
+      "code": "def f(n):\n    if n == 0:\n        return\n    f(n - 1)\n    print(n)\n\nf(4)",
+      "choices": [
+        "1\n2\n3\n4",
+        "4\n3\n2\n1",
+        "0\n1\n2\n3\n4",
+        "4"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "The print comes after the recursive call, so each call prints only after all deeper calls are done. f(1) prints first and f(4) last.",
+      "tags": [
+        "tracing-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "print-before-and-after-output",
+      "prompt": "What does this print?",
+      "code": "def f(n):\n    if n == 0:\n        return\n    print(n)\n    f(n - 1)\n    print(n)\n\nf(2)",
+      "choices": [
+        "2\n1\n2\n1",
+        "2\n1\n1\n2",
+        "1\n2\n2\n1",
+        "2\n2\n1\n1"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "On the way down the first print shows 2, then 1. On the way back up the second print runs in reverse order: 1, then 2.",
+      "tags": [
+        "tracing-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "fib-5-output",
+      "prompt": "What does this print?",
+      "code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(5))",
+      "choices": [
+        "8",
+        "3",
+        "15",
+        "5"
+      ],
+      "answerIndex": 3,
+      "explanation": "Count up from the base cases: fib(0) to fib(5) are 0, 1, 1, 2, 3, 5. So fib(5) is 5.",
+      "tags": [
+        "tracing-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "fib-call-count-output",
+      "prompt": "How many calls does fib(4) make in total? What does this print?",
+      "code": "calls = 0\n\ndef fib(n):\n    global calls\n    calls += 1\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfib(4)\nprint(calls)",
+      "choices": [
+        "4",
+        "5",
+        "9",
+        "16"
+      ],
+      "answerIndex": 2,
+      "explanation": "fib(4) calls fib(3) and fib(2); fib(3) calls fib(2) and fib(1); each fib(2) calls fib(1) and fib(0). Counting every call in that tree gives 1 + 1 + 2 + 3 + 2 = 9.",
+      "tags": [
+        "tracing-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "return-values-up-output",
+      "prompt": "What does this print?",
+      "code": "def g(n):\n    if n == 1:\n        return 1\n    return 2 * g(n - 1) + 1\n\nprint(g(3))",
+      "choices": [
+        "7",
+        "5",
+        "6",
+        "3"
+      ],
+      "answerIndex": 0,
+      "explanation": "Work up from the base case: g(1) = 1, g(2) = 2 × 1 + 1 = 3, g(3) = 2 × 3 + 1 = 7.",
+      "tags": [
+        "tracing-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "each-call-own-n-output",
+      "prompt": "What does this print?",
+      "code": "def f(n):\n    if n == 0:\n        return \"\"\n    s = f(n - 1)\n    return s + str(n)\n\nprint(f(3))",
+      "choices": [
+        "321",
+        "333",
+        "3",
+        "123"
+      ],
+      "answerIndex": 3,
+      "explanation": "Each call has its own n. f(1) returns \"1\", f(2) adds \"2\" after it, f(3) adds \"3\", so the pieces join in the order the calls finish: 123.",
+      "tags": [
+        "tracing-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "cw-print-up-before-call",
+      "prompt": "Task: print the numbers 1 up to n in increasing order, one per line. Is this implementation correct?",
+      "code": "def print_up(n):\n    if n == 0:\n        return\n    print(n)\n    print_up(n - 1)\n\nprint_up(3)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The print runs before the recursive call, on the way down, so it prints 3, 2, 1. Move print(n) after print_up(n - 1) to print on the way back up.",
+      "tags": [
+        "tracing-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-build-list-up",
+      "prompt": "Task: return a list of the numbers from 1 to n in increasing order, so build(3) gives [1, 2, 3]. Is this implementation correct?",
+      "code": "def build(n):\n    if n == 0:\n        return []\n    return build(n - 1) + [n]",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "build(n - 1) gives [1, ..., n - 1] and n is added at the end, after it. The base case build(0) is the empty list.",
+      "tags": [
+        "tracing-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-fib-one-base-case",
+      "prompt": "Task: return the nth Fibonacci number, where fib(0) is 0, fib(1) is 1 and each next one is the sum of the two before. Is this implementation correct?",
+      "code": "def fib(n):\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "fib(2) calls fib(0), which is not a base case, so it calls fib(-1) and fib(-2) and never stops: RecursionError. With two recursive calls you need base cases for both n == 0 and n == 1, for example if n <= 1: return n.",
+      "tags": [
+        "tracing-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fix-print-increasing",
+      "prompt": "Which version prints 1, 2, 3 (one per line) when called as show(3)?",
+      "choices": [
+        "def show(n):\n    if n == 0:\n        return\n    print(n)\n    show(n - 1)\n\nshow(3)",
+        "def show(n):\n    print(n)\n    if n == 0:\n        return\n    show(n - 1)\n\nshow(3)",
+        "def show(n):\n    if n == 0:\n        return\n    show(n - 1)\n    print(n)\n\nshow(3)"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "The print must come after the recursive call so it runs on the way back up, deepest call first. Printing before the call gives 3, 2, 1, and printing before the base case also prints 0.",
+      "tags": [
+        "tracing-recursion",
+        "fix"
+      ]
+    },
+    {
+      "id": "maze-first-check",
+      "prompt": "In solve(maze, r, c), which check must come first?",
+      "choices": [
+        "Is maze[r][c] the exit?",
+        "Is (r, c) inside the grid?",
+        "Is maze[r][c] a wall?",
+        "Has (r, c) been visited?"
+      ],
+      "answerIndex": 1,
+      "explanation": "Every other check reads maze[r][c], which crashes with an IndexError (or wraps around for a negative index) when (r, c) is outside the grid. Bounds come first.",
+      "tags": [
+        "maze-recursion",
+        "concept"
+      ]
+    },
+    {
+      "id": "why-mark-visited",
+      "prompt": "What goes wrong if solve never marks cells as visited?",
+      "choices": [
+        "It can walk back and forth between two open cells forever and crash with a RecursionError",
+        "It finds a longer path, but still finishes",
+        "Nothing; marking only makes it faster",
+        "It always returns False"
+      ],
+      "answerIndex": 0,
+      "explanation": "Without a mark, stepping down and then up brings the search back to a cell it is still exploring, and it repeats that forever. Each step is a new call, so the stack overflows: RecursionError.",
+      "tags": [
+        "maze-recursion",
+        "concept"
+      ]
+    },
+    {
+      "id": "negative-index-wraps",
+      "prompt": "You stepped off the top of the maze, so r is -1. Why is reading maze[r][c] dangerous?",
+      "choices": [
+        "It raises a SyntaxError",
+        "It returns None",
+        "It silently reads the last row instead of crashing",
+        "It raises an IndexError"
+      ],
+      "answerIndex": 2,
+      "explanation": "Negative indexes count from the end, so maze[-1] is the bottom row. The search would wrap around the edge with no error at all, which is why you check r < 0 yourself.",
+      "tags": [
+        "maze-recursion",
+        "concept"
+      ]
+    },
+    {
+      "id": "grid-indexing-output",
+      "prompt": "What does this print?",
+      "code": "maze = [\n    [\"S\", \".\", \"#\"],\n    [\"#\", \".\", \".\"],\n    [\"#\", \"E\", \"#\"],\n]\nprint(maze[1][2], maze[2][1])",
+      "choices": [
+        "# #",
+        "E .",
+        ". #",
+        ". E"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "maze[r][c] is row r, then column c. maze[1][2] is row 1, column 2: \".\". maze[2][1] is row 2, column 1: \"E\".",
+      "tags": [
+        "maze-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "bounds-check-too-late-output",
+      "prompt": "What happens?",
+      "code": "maze = [\n    [\".\", \".\"],\n    [\".\", \"E\"],\n]\nr, c = 2, 0\nif maze[r][c] == \"#\" or r >= len(maze):\n    print(\"blocked\")",
+      "choices": [
+        "blocked",
+        "Nothing is printed",
+        "E",
+        "IndexError"
+      ],
+      "answerIndex": 3,
+      "explanation": "Python evaluates the left side of or first, so maze[2] is read before r >= len(maze) is checked. Row 2 does not exist: IndexError. Put the bounds check first.",
+      "tags": [
+        "maze-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "solve-around-wall-output",
+      "prompt": "What does this print?",
+      "code": "def solve(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return False\n    if c < 0 or c >= len(maze[0]):\n        return False\n    if maze[r][c] == \"#\" or maze[r][c] == \"v\":\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    maze[r][c] = \"v\"\n    return (solve(maze, r - 1, c)\n            or solve(maze, r + 1, c)\n            or solve(maze, r, c - 1)\n            or solve(maze, r, c + 1))\n\nmaze = [[\"S\", \"#\", \"E\"],\n        [\".\", \"#\", \".\"],\n        [\".\", \".\", \".\"]]\nprint(solve(maze, 0, 0))",
+      "choices": [
+        "True",
+        "False",
+        "RecursionError",
+        "IndexError"
+      ],
+      "answerIndex": 0,
+      "explanation": "The middle column of walls blocks the direct way, but the search goes down the left side, along the bottom and up the right side to E. Any route at all makes solve return True.",
+      "tags": [
+        "maze-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "solve-sealed-exit-output",
+      "prompt": "What does this print?",
+      "code": "def solve(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return False\n    if c < 0 or c >= len(maze[0]):\n        return False\n    if maze[r][c] == \"#\" or maze[r][c] == \"v\":\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    maze[r][c] = \"v\"\n    return (solve(maze, r - 1, c)\n            or solve(maze, r + 1, c)\n            or solve(maze, r, c - 1)\n            or solve(maze, r, c + 1))\n\nmaze = [[\"S\", \".\", \"#\"],\n        [\".\", \"#\", \"E\"],\n        [\".\", \".\", \"#\"]]\nprint(solve(maze, 0, 0))",
+      "choices": [
+        "True",
+        "False",
+        "RecursionError",
+        "None"
+      ],
+      "answerIndex": 1,
+      "explanation": "Every neighbour of E is a wall or the edge, so every branch ends at a wall, the edge or a visited cell. When all four directions fail everywhere, solve returns False.",
+      "tags": [
+        "maze-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "count-paths-output",
+      "prompt": "What does this print?",
+      "code": "def count(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return 0\n    if c < 0 or c >= len(maze[0]):\n        return 0\n    if maze[r][c] == \"#\" or maze[r][c] == \"v\":\n        return 0\n    if maze[r][c] == \"E\":\n        return 1\n    maze[r][c] = \"v\"\n    total = (count(maze, r - 1, c)\n             + count(maze, r + 1, c)\n             + count(maze, r, c - 1)\n             + count(maze, r, c + 1))\n    maze[r][c] = \".\"\n    return total\n\nmaze = [[\"S\", \".\", \".\"],\n        [\".\", \".\", \"E\"]]\nprint(count(maze, 0, 0))",
+      "choices": [
+        "3",
+        "4",
+        "2",
+        "6"
+      ],
+      "answerIndex": 1,
+      "explanation": "Each cell is unmarked on the way out, so other paths may reuse it. The four paths are: right-right-down, right-down-right, down-right-right, and down-right-up-right-down.",
+      "tags": [
+        "maze-recursion",
+        "output"
+      ]
+    },
+    {
+      "id": "cw-maze-no-visited",
+      "prompt": "Task: return True if the exit E can be reached from (r, c) by moving up, down, left or right through open cells. Is this implementation correct?",
+      "code": "def solve(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return False\n    if c < 0 or c >= len(maze[0]):\n        return False\n    if maze[r][c] == \"#\":\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    return (solve(maze, r - 1, c)\n            or solve(maze, r + 1, c)\n            or solve(maze, r, c - 1)\n            or solve(maze, r, c + 1))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Nothing marks visited cells, so the search goes down from (0, 1) to (1, 1) and straight back up, forever: RecursionError. Mark maze[r][c] before trying the four directions, and treat a marked cell as blocked.",
+      "tags": [
+        "maze-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-maze-regrouped-checks",
+      "prompt": "Task: return True if the exit E can be reached from (r, c) by moving up, down, left or right through open cells (\".\" or the start \"S\"). Is this implementation correct?",
+      "code": "def solve(maze, r, c):\n    if r < 0 or c < 0:\n        return False\n    if r >= len(maze) or c >= len(maze[0]):\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    if maze[r][c] != \".\" and maze[r][c] != \"S\":\n        return False\n    maze[r][c] = \"v\"\n    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n        if solve(maze, r + dr, c + dc):\n            return True\n    return False",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "It checks bounds before indexing, accepts the exit, treats anything that is not open (a wall or a visited mark) as blocked, marks the cell before exploring, and returns True as soon as one direction works. The checks are grouped differently from the recipe, but all of them are there, in a safe order.",
+      "tags": [
+        "maze-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-maze-else-return-false",
+      "prompt": "Task: return True if the exit E can be reached from (r, c) by moving up, down, left or right through open cells. Is this implementation correct?",
+      "code": "def solve(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return False\n    if c < 0 or c >= len(maze[0]):\n        return False\n    if maze[r][c] == \"#\" or maze[r][c] == \"v\":\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    maze[r][c] = \"v\"\n    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n        if solve(maze, r + dr, c + dc):\n            return True\n        else:\n            return False",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The else returns False as soon as the FIRST direction (up) fails, so the other three directions are never tried. Return False only after the loop has tried all four. It is the same bug as a return inside a search loop.",
+      "tags": [
+        "maze-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-maze-count-no-unmark",
+      "prompt": "Task: return how many different paths lead from (r, c) to E without visiting any cell twice. Is this implementation correct?",
+      "code": "def count(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return 0\n    if c < 0 or c >= len(maze[0]):\n        return 0\n    if maze[r][c] == \"#\" or maze[r][c] == \"v\":\n        return 0\n    if maze[r][c] == \"E\":\n        return 1\n    maze[r][c] = \"v\"\n    return (count(maze, r - 1, c)\n            + count(maze, r + 1, c)\n            + count(maze, r, c - 1)\n            + count(maze, r, c + 1))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Cells stay marked after a path is counted, so later paths cannot reuse them and some paths are never found: the open 2 by 3 maze gives 2 instead of 4. Unmark the cell (maze[r][c] = \".\") before returning the total.",
+      "tags": [
+        "maze-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-maze-mark-visited",
+      "prompt": "Fill in the blank so the search cannot walk in circles.",
+      "code": "def solve(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return False\n    if c < 0 or c >= len(maze[0]):\n        return False\n    if maze[r][c] == \"#\" or maze[r][c] == \"v\":\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    ___\n    return (solve(maze, r - 1, c)\n            or solve(maze, r + 1, c)\n            or solve(maze, r, c - 1)\n            or solve(maze, r, c + 1))",
+      "choices": [
+        "maze[r][c] == \"v\"",
+        "visited = True",
+        "maze[r][c] = \"v\"",
+        "maze[r][c] = \"E\""
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "Writing \"v\" into the cell marks it, and the visited check above then blocks it on every later visit. == only compares and changes nothing, a local variable visited is not tied to the cell, and writing \"E\" would make the cell look like the exit.",
+      "tags": [
+        "maze-recursion",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "subsets-of-four",
+      "prompt": "How many subsets does a list of 4 different items have, counting the empty one and the whole list?",
+      "choices": [
+        "4",
+        "8",
+        "16",
+        "24"
+      ],
+      "answerIndex": 2,
+      "explanation": "Each item is either in or out, so every item doubles the count: 2 × 2 × 2 × 2 = 16.",
+      "tags": [
+        "combinations",
+        "concept"
+      ]
+    },
+    {
+      "id": "why-copy-path",
+      "prompt": "Why do we write result.append(path[:]) instead of result.append(path)?",
+      "choices": [
+        "path[:] is faster to append",
+        "path[:] removes the first item",
+        "result.append(path) raises a TypeError",
+        "path is one shared list that keeps changing, so without a copy every entry is that same list, empty at the end"
+      ],
+      "answerIndex": 3,
+      "explanation": "All calls share one path list and keep appending and popping. Storing it stores the list itself, not its current contents, so later pops change every stored entry.",
+      "tags": [
+        "combinations",
+        "concept"
+      ]
+    },
+    {
+      "id": "why-pop",
+      "prompt": "In the choose, explore, un-choose pattern, why do we call path.pop() after the recursive call?",
+      "choices": [
+        "To undo the choice, so the next option starts from the same path",
+        "To print the result",
+        "To stop the recursion",
+        "To make path shorter so it reaches the base case"
+      ],
+      "answerIndex": 0,
+      "explanation": "After exploring everything that starts with this choice, you remove it so the path is back to how it was. Then the next choice (leave it out, or the next item in the loop) starts clean.",
+      "tags": [
+        "combinations",
+        "concept"
+      ]
+    },
+    {
+      "id": "binary-strings-output",
+      "prompt": "What does this print?",
+      "code": "def binary(n, prefix):\n    if len(prefix) == n:\n        print(prefix)\n        return\n    binary(n, prefix + \"0\")\n    binary(n, prefix + \"1\")\n\nbinary(3, \"\")",
+      "choices": [
+        "111\n110\n101\n100\n011\n010\n001\n000",
+        "000\n001\n010\n011\n100\n101\n110\n111",
+        "000\n100\n010\n110\n001\n101\n011\n111",
+        "000\n001\n010\n011"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "At every position the \"0\" branch is explored completely before the \"1\" branch, so the strings come out in counting order, 2 × 2 × 2 = 8 of them.",
+      "tags": [
+        "combinations",
+        "output"
+      ]
+    },
+    {
+      "id": "subsets-leave-out-first-output",
+      "prompt": "What does this print?",
+      "code": "def subsets(items, i, path):\n    if i == len(items):\n        print(path)\n        return\n    subsets(items, i + 1, path)\n    path.append(items[i])\n    subsets(items, i + 1, path)\n    path.pop()\n\nsubsets([\"x\", \"y\"], 0, [])",
+      "choices": [
+        "['x', 'y']\n['x']\n['y']\n[]",
+        "[]\n['x']\n['y']\n['x', 'y']",
+        "[]\n['y']\n['x']\n['x', 'y']",
+        "[]\n['y']\n['x']"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "Leaving the item out is tried first, so the empty subset comes first. For each choice about x, both choices about y are tried: out, then in.",
+      "tags": [
+        "combinations",
+        "output"
+      ]
+    },
+    {
+      "id": "store-path-no-copy-output",
+      "prompt": "What does this print?",
+      "code": "result = []\n\ndef subsets(items, i, path):\n    if i == len(items):\n        result.append(path)\n        return\n    path.append(items[i])\n    subsets(items, i + 1, path)\n    path.pop()\n    subsets(items, i + 1, path)\n\nsubsets([1, 2], 0, [])\nprint(result)",
+      "choices": [
+        "[[1, 2], [1], [2], []]",
+        "[[], [], [], []]",
+        "[[1, 2], [1, 2], [1, 2], [1, 2]]",
+        "[]"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "result holds the same path list four times. Every append was undone by a pop, so at the end that one list is empty, and all four entries show it.",
+      "tags": [
+        "combinations",
+        "output"
+      ]
+    },
+    {
+      "id": "choose-2-of-3-output",
+      "prompt": "What does this print?",
+      "code": "def choose(items, k, start, path):\n    if len(path) == k:\n        print(path)\n        return\n    for i in range(start, len(items)):\n        path.append(items[i])\n        choose(items, k, i + 1, path)\n        path.pop()\n\nchoose([\"a\", \"b\", \"c\"], 2, 0, [])",
+      "choices": [
+        "['a', 'b']\n['a', 'c']\n['b', 'a']\n['b', 'c']\n['c', 'a']\n['c', 'b']",
+        "['a', 'b']\n['b', 'c']",
+        "['a']\n['b']\n['c']",
+        "['a', 'b']\n['a', 'c']\n['b', 'c']"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "start = i + 1 means you only ever pick items after the last one picked, so each pair appears once, in list order: ab, ac, bc. That is the 3 ways to choose 2 of 3.",
+      "tags": [
+        "combinations",
+        "output"
+      ]
+    },
+    {
+      "id": "perms-count-output",
+      "prompt": "What does this print?",
+      "code": "count = 0\n\ndef perms(items, path):\n    global count\n    if len(path) == len(items):\n        count += 1\n        return\n    for x in items:\n        if x not in path:\n            path.append(x)\n            perms(items, path)\n            path.pop()\n\nperms([\"a\", \"b\", \"c\", \"d\"], [])\nprint(count)",
+      "choices": [
+        "16",
+        "12",
+        "4",
+        "24"
+      ],
+      "answerIndex": 3,
+      "explanation": "4 choices for the first item, 3 for the second, 2 for the third and 1 for the last: 4 × 3 × 2 × 1 = 24 orders. 16 would be the number of subsets, a different question.",
+      "tags": [
+        "combinations",
+        "output"
+      ]
+    },
+    {
+      "id": "cw-subsets-out-then-in",
+      "prompt": "Task: after result = [] and subsets(items, 0, [], result), result must hold every subset of items exactly once, in any order. Is this implementation correct?",
+      "code": "def subsets(items, i, path, result):\n    if i == len(items):\n        result.append(list(path))\n        return\n    subsets(items, i + 1, path, result)\n    path.append(items[i])\n    subsets(items, i + 1, path, result)\n    path.pop()",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "It first leaves the item out, then puts it in, explores, and pops it again, so both branches start from the same path. list(path) stores a copy, just like path[:].",
+      "tags": [
+        "combinations",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-perms-no-pop",
+      "prompt": "Task: print every order (permutation) of the items, each exactly once. Is this implementation correct?",
+      "code": "def perms(items, path):\n    if len(path) == len(items):\n        print(path)\n        return\n    for x in items:\n        if x not in path:\n            path.append(x)\n            perms(items, path)\n\nperms([1, 2, 3], [])",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Without path.pop() a choice is never undone. After [1, 2, 3] is printed the path stays full, every item counts as used, and nothing else is printed.",
+      "tags": [
+        "combinations",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-ways-to-choose",
+      "prompt": "Task: return how many ways there are to choose k items from n items (order does not matter), for 0 <= k <= n. Is this implementation correct?",
+      "code": "def ways(n, k):\n    if k == 0:\n        return 1\n    if n == 0:\n        return 0\n    return ways(n - 1, k - 1) + ways(n - 1, k)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Either the last item is picked (choose k - 1 from the other n - 1) or it is not (choose k from the other n - 1). k == 0 means exactly one way, pick nothing; no items left while k > 0 means no way at all.",
+      "tags": [
+        "combinations",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "cw-ab-words",
+      "prompt": "Task: print every string of length n made of the letters a and b, in alphabetical order, one per line. Is this implementation correct?",
+      "code": "def words(n, prefix):\n    if len(prefix) == n:\n        print(prefix)\n        return\n    for letter in \"ab\":\n        words(n, prefix + letter)\n\nwords(2, \"\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Each call tries a, then b, at its position and recurses for the rest, so the a branch is finished before the b branch: aa, ab, ba, bb. No pop is needed, because prefix + letter makes a new string.",
+      "tags": [
+        "combinations",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-unchoose",
+      "prompt": "Fill in the blank to un-choose, so every permutation is printed.",
+      "code": "def perms(items, path):\n    if len(path) == len(items):\n        print(path)\n        return\n    for x in items:\n        if x not in path:\n            path.append(x)\n            perms(items, path)\n            ___\n\nperms([\"a\", \"b\", \"c\"], [])",
+      "choices": [
+        "return",
+        "path = []",
+        "path.pop()",
+        "path.remove(items[0])"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "pop() removes exactly the item you just appended, so the path is back to how it was before this choice. path = [] only rebinds the local name, and return stops after the first permutation.",
+      "tags": [
+        "combinations",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "fill-subsets-base-case",
+      "prompt": "Fill in the base case so result gets every subset exactly once.",
+      "code": "def subsets(items, i, path, result):\n    if ___:\n        result.append(path[:])\n        return\n    path.append(items[i])\n    subsets(items, i + 1, path, result)\n    path.pop()\n    subsets(items, i + 1, path, result)\n\nresult = []\nsubsets([1, 2, 3], 0, [], result)",
+      "choices": [
+        "i == len(items)",
+        "i == len(items) - 1",
+        "len(path) == len(items)",
+        "i > len(items)"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "A subset is finished only when every item has been decided, which is when i has moved one past the last index: i == len(items). Stopping at len(items) - 1 never decides the last item.",
+      "tags": [
+        "combinations",
+        "fill-in"
+      ]
+    }
+  ]
+}

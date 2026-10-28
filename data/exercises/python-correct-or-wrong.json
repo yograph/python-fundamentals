@@ -1,0 +1,725 @@
+{
+  "schemaVersion": 2,
+  "exercises": [
+    {
+      "id": "input-age-next-year",
+      "prompt": "Task: ask for the user's age and print the age they will be next year, as a number. Is this implementation correct?",
+      "code": "age = input(\"Age? \")  # the user types 17\nprint(age + 1)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "input() always gives back a str, even when the user types digits. So age is \"17\" and \"17\" + 1 crashes with a TypeError. Convert first: age = int(input(\"Age? \")).",
+      "tags": [
+        "input",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "input-square-fstring",
+      "prompt": "Task: read a whole number n and print \"n squared is X\". For example, when the user types 7 it prints 7 squared is 49. Is this implementation correct?",
+      "code": "n = input(\"n? \")  # the user types 7\nprint(f\"{n} squared is {int(n) ** 2}\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "n stays a str, which looks suspicious, but it is only ever shown, never used in maths. The one place that needs a number, the squaring, converts it with int(n) first.",
+      "tags": [
+        "input",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "input-price-int",
+      "prompt": "Task: read a price such as 2.50 and print double the price. Is this implementation correct?",
+      "code": "price = int(input())  # the user types 2.50\nprint(price * 2)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "int() only accepts whole-number text, so int(\"2.50\") crashes with a ValueError. A price can have decimals, so it needs float(input(...)).",
+      "tags": [
+        "input",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strings-reverse-prepend",
+      "prompt": "Task: return the string s reversed. reverse(\"\") must return \"\". Is this implementation correct?",
+      "code": "def reverse(s):\n    result = \"\"\n    for ch in s:\n        result = ch + result\n    return result",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Each character is put in front of what was built so far, so the first character ends up last. For an empty string the loop never runs and \"\" is returned, which is right.",
+      "tags": [
+        "strings",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strings-capitalise-assign",
+      "prompt": "Task: return word with its first letter changed to upper case, for example capitalise(\"hello\") returns \"Hello\". Is this implementation correct?",
+      "code": "def capitalise(word):\n    word[0] = word[0].upper()\n    return word",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Strings are immutable: you cannot change one character in place, so word[0] = ... crashes with a TypeError. Build a new string instead: word[0].upper() + word[1:].",
+      "tags": [
+        "strings",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strings-count-vowels-lower",
+      "prompt": "Task: return how many vowels (a, e, i, o, u, in upper or lower case) are in s. Is this implementation correct?",
+      "code": "def count_vowels(s):\n    count = 0\n    for ch in s.lower():\n        if ch in \"aeiou\":\n            count += 1\n    return count",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "s.lower() makes a lower-case copy to loop over, so \"A\" is counted as \"a\" and the vowel check only needs lower-case letters. An empty string gives 0.",
+      "tags": [
+        "strings",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "conditions-even-and-positive",
+      "prompt": "Task: return True when n is even and greater than 0, otherwise False. Is this implementation correct?",
+      "code": "def even_and_positive(n):\n    if n <= 0:\n        return False\n    return n % 2 == 0",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "There is no else, but none is needed: return ends the function, so the last line only runs for n > 0. It then returns the result of the even test, which is already True or False.",
+      "tags": [
+        "conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "conditions-grade-elif-order",
+      "prompt": "Task: return \"A\" for a score of 90 or more, \"B\" for 80 to 89 and \"C\" for anything below 80. Is this implementation correct?",
+      "code": "def grade(score):\n    if score >= 80:\n        return \"B\"\n    elif score >= 90:\n        return \"A\"\n    else:\n        return \"C\"",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Python takes the first branch that is true. Any score of 90 or more is also 80 or more, so grade(95) returns \"B\" and the \"A\" branch can never run. Test the highest band first.",
+      "tags": [
+        "conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "conditions-single-equals",
+      "prompt": "Task: read a whole number and print \"zero\" if it is 0, otherwise \"not zero\". Is this implementation correct?",
+      "code": "n = int(input(\"n? \"))  # the user types 0\nif n = 0:\n    print(\"zero\")\nelse:\n    print(\"not zero\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "A single = means \"store this value\", it is not a comparison, so if n = 0: is a SyntaxError and nothing runs at all. Comparing needs ==.",
+      "tags": [
+        "conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "while-countdown-truthy",
+      "prompt": "Task: print 3, 2 and 1, one per line, and then Go! Is this implementation correct?",
+      "code": "n = 3\nwhile n:\n    print(n)\n    n -= 1\nprint(\"Go!\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "while n: keeps going as long as n is not 0, because 0 counts as False. The update n -= 1 is inside the loop, so n reaches 0 after printing 1 and the loop stops.",
+      "tags": [
+        "while-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "while-print-one-to-five-update-outside",
+      "prompt": "Task: print the numbers 1 to 5, one per line. Is this implementation correct?",
+      "code": "i = 1\nwhile i <= 5:\n    print(i)\ni += 1",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "i += 1 is not indented, so it is not part of the loop. Inside the loop i stays 1 forever, so it prints 1 again and again and never stops.",
+      "tags": [
+        "while-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "while-sum-one-to-n-off-by-one",
+      "prompt": "Task: return 1 + 2 + ... + n for any n of 1 or more. Is this implementation correct?",
+      "code": "def total(n):\n    i = 1\n    s = 0\n    while i < n:\n        s += i\n        i += 1\n    return s",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The condition i < n stops before i reaches n, so n itself is never added: total(3) gives 3 instead of 6, and total(1) gives 0. The condition must be i <= n.",
+      "tags": [
+        "while-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "while-digit-sum",
+      "prompt": "Task: return the sum of the digits of a whole number n of 0 or more, for example digit_sum(123) is 6 and digit_sum(0) is 0. Is this implementation correct?",
+      "code": "def digit_sum(n):\n    total = 0\n    while n > 0:\n        total += n % 10\n        n //= 10\n    return total",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "n % 10 is the last digit and n //= 10 chops it off, so every pass handles one digit and n shrinks toward 0. For n = 0 the loop runs zero times and 0 is returned, which is right.",
+      "tags": [
+        "while-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "for-count-adding-bools",
+      "prompt": "Task: return how many times the character c appears in the string s. Is this implementation correct?",
+      "code": "def count(s, c):\n    n = 0\n    for ch in s:\n        n += ch == c\n    return n",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "ch == c is True or False, and in arithmetic True counts as 1 and False as 0. So n goes up by 1 exactly when the characters match. An empty s gives 0.",
+      "tags": [
+        "for-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "for-double-all-loop-variable",
+      "prompt": "Task: double every number in the list nums in place, so the caller's list changes. Nothing needs to be returned. Is this implementation correct?",
+      "code": "def double_all(nums):\n    for x in nums:\n        x = x * 2",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "x is a name for one item at a time. Giving x a new value makes x point to a new number but never touches the list, so [1, 2, 3] stays [1, 2, 3]. Change the list through its index instead: nums[i] = nums[i] * 2.",
+      "tags": [
+        "for-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "for-has-negative-return-in-loop",
+      "prompt": "Task: return True if any number in nums is negative, otherwise False. An empty list gives False. Is this implementation correct?",
+      "code": "def has_negative(nums):\n    for x in nums:\n        if x < 0:\n            return True\n        else:\n            return False",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "return ends the function, so both branches stop the loop on the very first item. has_negative([1, -2]) returns False without ever looking at -2, and an empty list returns None. return False belongs after the loop.",
+      "tags": [
+        "for-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "range-is-sorted-index-error",
+      "prompt": "Task: return True if lst is sorted from small to large, otherwise False. Is this implementation correct?",
+      "code": "def is_sorted(lst):\n    for i in range(len(lst)):\n        if lst[i] > lst[i + 1]:\n            return False\n    return True",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "On the last pass i is the last index, so lst[i + 1] is one past the end and crashes with an IndexError, for example on [1, 2, 3]. Compare pairs with range(len(lst) - 1).",
+      "tags": [
+        "range",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "range-print-backwards",
+      "prompt": "Task: print the items of lst from the last one to the first one, one per line. Is this implementation correct?",
+      "code": "def print_backwards(lst):\n    for i in range(len(lst) - 1, -1, -1):\n        print(lst[i])",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "range(start, stop, step) stops before stop. With stop = -1 and step -1, i goes len(lst) - 1, ..., 1, 0, so index 0 is included. For an empty list the range is empty and nothing prints.",
+      "tags": [
+        "range",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "range-even-positions",
+      "prompt": "Task: return a new list with the items at index 0, 2, 4 and so on of lst. Is this implementation correct?",
+      "code": "def even_positions(lst):\n    result = []\n    for i in range(0, len(lst), 2):\n        result.append(lst[i])\n    return result",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "The step of 2 makes i jump 0, 2, 4, and it stops before len(lst), so lst[i] never goes past the end, even for odd lengths. An empty list gives [].",
+      "tags": [
+        "range",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "lists-swap-ends",
+      "prompt": "Task: swap the first and last items of lst in place. lst has at least one item. Is this implementation correct?",
+      "code": "def swap_ends(lst):\n    lst[0], lst[-1] = lst[-1], lst[0]",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "The right-hand side is worked out completely before anything is stored, so no temporary variable is needed. With one item, index 0 and index -1 are the same cell, and nothing changes, which is right.",
+      "tags": [
+        "lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "lists-squares-append-assign",
+      "prompt": "Task: return a new list with the square of every number in nums. Is this implementation correct?",
+      "code": "def squares(nums):\n    result = []\n    for x in nums:\n        result = result.append(x * x)\n    return result",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "append changes the list and returns None. So after the first pass result is None, and on the second pass None.append crashes with an AttributeError. Write result.append(x * x) on its own line.",
+      "tags": [
+        "lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "lists-with-item-aliasing",
+      "prompt": "Task: return a new list that is lst with value added at the end. The original lst must not change. Is this implementation correct?",
+      "code": "def with_item(lst, value):\n    new = lst\n    new.append(value)\n    return new",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "new = lst does not copy the list, it gives the same list a second name. Appending through new also changes the caller's lst. Copy it first with lst[:] or list(lst).",
+      "tags": [
+        "lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "lists-with-item-concat",
+      "prompt": "Task: return a new list that is lst with value added at the end. The original lst must not change. Is this implementation correct?",
+      "code": "def with_item(lst, value):\n    return lst + [value]",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "+ on two lists builds a brand-new list and leaves both originals alone. It is not the same as append, which changes the list in place.",
+      "tags": [
+        "lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "patterns-total-reset-inside",
+      "prompt": "Task: return the sum of the numbers in nums. An empty list gives 0. Is this implementation correct?",
+      "code": "def total(nums):\n    for x in nums:\n        s = 0\n        s += x\n    return s",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "s = 0 is inside the loop, so the running total is wiped on every pass and only the last number survives: total([1, 2, 3]) gives 3. An empty list crashes because s is never created. Put s = 0 before the loop.",
+      "tags": [
+        "loop-patterns",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "patterns-smallest-from-first",
+      "prompt": "Task: return the smallest number in nums. nums has at least one item. Is this implementation correct?",
+      "code": "def smallest(nums):\n    best = nums[0]\n    for x in nums[1:]:\n        if x < best:\n            best = x\n    return best",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "best starts as a real item from the list, so it works with negatives too. Skipping the first item with nums[1:] is fine because it is already in best. With one item the loop runs zero times and that item is returned.",
+      "tags": [
+        "loop-patterns",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "patterns-largest-start-zero",
+      "prompt": "Task: return the largest number in nums. nums has at least one item and may contain negative numbers. Is this implementation correct?",
+      "code": "def largest(nums):\n    best = 0\n    for x in nums:\n        if x > best:\n            best = x\n    return best",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "best starts at 0, a number that is not in the list. If every number is negative none of them beats 0, so largest([-5, -2]) returns 0. Start with best = nums[0].",
+      "tags": [
+        "loop-patterns",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "patterns-find-while-and",
+      "prompt": "Task: return the index of the first time target appears in lst, or -1 if it is not there. Is this implementation correct?",
+      "code": "def find(lst, target):\n    i = 0\n    while i < len(lst) and lst[i] != target:\n        i += 1\n    if i == len(lst):\n        return -1\n    return i",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "and stops checking as soon as the left side is False, so lst[i] is never read once i reaches len(lst). The loop stops either at the target or at the end, and the if tells the two apart.",
+      "tags": [
+        "loop-patterns",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "grids-inside-neighbours",
+      "prompt": "Task: grid is a list of rows. Return how many of the 4 neighbours of cell (r, c), up, down, left and right, are inside the grid. Is this implementation correct?",
+      "code": "def inside_count(grid, r, c):\n    count = 0\n    moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]\n    for dr, dc in moves:\n        nr, nc = r + dr, c + dc\n        if (0 <= nr < len(grid)\n                and 0 <= nc < len(grid[0])):\n            count += 1\n    return count",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Rows are checked against len(grid) and columns against len(grid[0]), the length of a row, so it also works for grids that are not square. Each check rejects -1 as well as one past the end.",
+      "tags": [
+        "grids",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "grids-make-grid-shared-rows",
+      "prompt": "Task: return a grid with rows rows and cols columns, all 0, where changing one cell changes only that cell. Is this implementation correct?",
+      "code": "def make_grid(rows, cols):\n    return [[0] * cols] * rows",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Multiplying the outer list repeats the same row object, it does not copy it. Every row is the same list, so setting g[0][0] = 1 also changes g[1][0]. Build each row separately: [[0] * cols for r in range(rows)].",
+      "tags": [
+        "grids",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "grids-sum-square-only",
+      "prompt": "Task: grid is a list of rows of numbers. Return the sum of all the numbers. Rows can be longer or shorter than the number of rows. Is this implementation correct?",
+      "code": "def grid_sum(grid):\n    total = 0\n    for r in range(len(grid)):\n        for c in range(len(grid)):\n            total += grid[r][c]\n    return total",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The inner loop uses len(grid), the number of rows, as the number of columns. That only works for square grids: a 2 by 3 grid misses its last column, and a 3 by 2 grid crashes with an IndexError. Use len(grid[r]).",
+      "tags": [
+        "grids",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "functions-area-print-not-return",
+      "prompt": "Task: return the area of a rectangle so it can be used in later calculations, for example area(2, 3) + 1 is 7. Is this implementation correct?",
+      "code": "def area(w, h):\n    print(w * h)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "print only shows the number on the screen. The function has no return, so it gives back None, and area(2, 3) + 1 crashes with a TypeError. It needs return w * h.",
+      "tags": [
+        "functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "functions-absolute-no-else",
+      "prompt": "Task: return the absolute value of n without using abs(). Is this implementation correct?",
+      "code": "def absolute(n):\n    if n < 0:\n        return -n\n    return n",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "There is no else, but return leaves the function straight away, so the last line only runs when n is 0 or more. Both paths return a value.",
+      "tags": [
+        "functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "functions-add-one-in-place",
+      "prompt": "Task: add 1 to every number in nums in place, so the caller's list changes. The function returns nothing. Is this implementation correct?",
+      "code": "def add_one(nums):\n    for i in range(len(nums)):\n        nums[i] += 1",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "The function gets the caller's own list, not a copy, and nums[i] += 1 writes into that list by index. No return is needed because the task asks for an in-place change.",
+      "tags": [
+        "functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "recursion-factorial-no-base",
+      "prompt": "Task: return n! (n factorial) for any n of 0 or more. factorial(0) is 1. Is this implementation correct?",
+      "code": "def factorial(n):\n    return n * factorial(n - 1)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "There is no base case, so nothing ever stops the calls: n goes 5, 4, ..., 0, -1, -2 and on until Python gives up with a RecursionError. Add if n == 0: return 1 before the recursive line.",
+      "tags": [
+        "recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "recursion-palindrome-short-base",
+      "prompt": "Task: return True if s reads the same forwards and backwards. \"\" and one-letter strings count as palindromes. Is this implementation correct?",
+      "code": "def is_pal(s):\n    if len(s) < 2:\n        return True\n    if s[0] != s[-1]:\n        return False\n    return is_pal(s[1:-1])",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "len(s) < 2 covers both the empty string and a single letter, so even and odd lengths both end in a base case. Each call removes two characters, so the string always gets closer to that base case.",
+      "tags": [
+        "recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "recursion-power-missing-return",
+      "prompt": "Task: return base to the power exp, for exp of 0 or more, using recursion. Is this implementation correct?",
+      "code": "def power(base, exp):\n    if exp == 0:\n        return 1\n    base * power(base, exp - 1)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The recursive line works out the answer and then throws it away, because there is no return. So power(2, 1) returns None, and power(2, 2) crashes trying to multiply 2 by None. It must be return base * power(base, exp - 1).",
+      "tags": [
+        "recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "recursion-sum-from-the-end",
+      "prompt": "Task: return the sum of the numbers in lst using recursion. An empty list gives 0. Is this implementation correct?",
+      "code": "def total(lst):\n    if not lst:\n        return 0\n    return lst[-1] + total(lst[:-1])",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "It peels off the last item instead of the first, which is unusual but fine: lst[:-1] is everything except the last item, so the list gets shorter each call. not lst is True for the empty list, the base case.",
+      "tags": [
+        "recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "recursion-count-down-by-two-skips-base",
+      "prompt": "Task: print n, n - 2, n - 4 and so on, one per line, stopping before 0 or a negative number. count_down(5) prints 5, 3, 1 and count_down(4) prints 4, 2. Is this implementation correct?",
+      "code": "def count_down(n):\n    if n == 0:\n        return\n    print(n)\n    count_down(n - 2)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The base case only catches exactly 0. For odd n the values go 5, 3, 1, -1, -3 and jump over 0, so the base case is never reached and it ends in a RecursionError. Use if n <= 0: return.",
+      "tags": [
+        "recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "mazes-no-visited",
+      "prompt": "Task: maze is a list of strings where '#' is a wall, '.' is open and 'E' is the exit. Return True if you can walk from (r, c) to the exit moving up, down, left or right, else False. It is called as escape(maze, r, c). Is this implementation correct?",
+      "code": "def escape(maze, r, c):\n    if r < 0 or r >= len(maze):\n        return False\n    if c < 0 or c >= len(maze[0]):\n        return False\n    if maze[r][c] == \"#\":\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    return (escape(maze, r + 1, c)\n            or escape(maze, r - 1, c)\n            or escape(maze, r, c + 1)\n            or escape(maze, r, c - 1))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Nothing remembers which cells were already visited. In any open area it steps down, then back up, then down again forever, and ends in a RecursionError. Mark each cell as visited before exploring from it.",
+      "tags": [
+        "mazes",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "mazes-for-loop-any-direction",
+      "prompt": "Task: maze is a list of strings where '#' is a wall, '.' is open and 'E' is the exit. Return True if you can walk from (r, c) to the exit moving up, down, left or right, else False. It is called as escape(maze, r, c, set()). Is this implementation correct?",
+      "code": "MOVES = [(1, 0), (-1, 0), (0, 1), (0, -1)]\n\ndef escape(maze, r, c, seen):\n    if not 0 <= r < len(maze):\n        return False\n    if not 0 <= c < len(maze[r]):\n        return False\n    if maze[r][c] == \"#\" or (r, c) in seen:\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    seen.add((r, c))\n    for dr, dc in MOVES:\n        if escape(maze, r + dr, c + dc, seen):\n            return True\n    return False",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "return True sits inside an if, so the loop only stops early when a direction actually reaches the exit. Only after all four directions fail does it reach return False. Bounds, walls and visited cells are all checked before anything else.",
+      "tags": [
+        "mazes",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "mazes-bounds-after-indexing",
+      "prompt": "Task: maze is a list of strings where '#' is a wall, '.' is open and 'E' is the exit. Return True if you can walk from (r, c) to the exit moving up, down, left or right, else False. It is called as escape(maze, r, c, set()). Is this implementation correct?",
+      "code": "def escape(maze, r, c, seen):\n    if maze[r][c] == \"#\" or (r, c) in seen:\n        return False\n    if r < 0 or r >= len(maze):\n        return False\n    if c < 0 or c >= len(maze[0]):\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    seen.add((r, c))\n    return (escape(maze, r + 1, c, seen)\n            or escape(maze, r - 1, c, seen)\n            or escape(maze, r, c + 1, seen)\n            or escape(maze, r, c - 1, seen))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "It reads maze[r][c] before checking that (r, c) is inside the maze. As soon as it steps off the bottom edge, maze[r] crashes with an IndexError, for example from (0, 0) in [\"..\", \".E\"]. The bounds checks must come first.",
+      "tags": [
+        "mazes",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "mazes-mark-in-grid",
+      "prompt": "Task: maze is a list of lists of one-character strings: '#' is a wall, '.' is open and 'E' is the exit. Return True if you can walk from (r, c) to the exit moving up, down, left or right, else False. The function may change maze. Is this implementation correct?",
+      "code": "def escape(maze, r, c):\n    if not (0 <= r < len(maze)\n            and 0 <= c < len(maze[0])):\n        return False\n    if maze[r][c] == \"E\":\n        return True\n    if maze[r][c] != \".\":\n        return False\n    maze[r][c] = \"v\"\n    return (escape(maze, r + 1, c)\n            or escape(maze, r - 1, c)\n            or escape(maze, r, c + 1)\n            or escape(maze, r, c - 1))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Writing \"v\" into the cell is the visited marking. The check maze[r][c] != \".\" then rejects walls and visited cells in one go. The exit is tested before that check, so \"E\" is not mistaken for a wall.",
+      "tags": [
+        "mazes",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "mazes-count-paths-right-down",
+      "prompt": "Task: return how many different paths go from the top-left cell to the bottom-right cell of an empty grid with rows rows and cols columns (both 1 or more), moving only right or down. paths(2, 2) is 2 and paths(3, 3) is 6. Is this implementation correct?",
+      "code": "def paths(rows, cols):\n    if rows == 1 or cols == 1:\n        return 1\n    down = paths(rows - 1, cols)\n    right = paths(rows, cols - 1)\n    return down + right",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "With a single row or a single column there is exactly one path, a straight line, so that is a valid base case. Otherwise every path starts with either a step down (a grid one row smaller) or a step right (one column smaller), and the two counts add up.",
+      "tags": [
+        "mazes",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "combinations-choose-pascal",
+      "prompt": "Task: return how many ways there are to choose k items from n items (0 <= k <= n). choose(4, 2) is 6. Is this implementation correct?",
+      "code": "def choose(n, k):\n    if k == 0 or k == n:\n        return 1\n    return choose(n - 1, k - 1) + choose(n - 1, k)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Look at the last item: either you take it and still need k - 1 from the other n - 1, or you skip it and need all k from the other n - 1. Choosing none, or all of them, can be done exactly one way, and every call moves toward one of those base cases.",
+      "tags": [
+        "combinations",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "combinations-subsets-store-path",
+      "prompt": "Task: put every subset of items, as a list, into result, in any order. It is called as subsets(items, 0, [], result); for [1, 2] result must hold [], [1], [2] and [1, 2]. Is this implementation correct?",
+      "code": "def subsets(items, i, path, result):\n    if i == len(items):\n        result.append(path)\n        return\n    path.append(items[i])\n    subsets(items, i + 1, path, result)\n    path.pop()\n    subsets(items, i + 1, path, result)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "result.append(path) stores the path list itself, not a snapshot of it. Every entry is the same list, which is empty again by the end, so result is [[], [], [], []]. Store a copy: result.append(path[:]).",
+      "tags": [
+        "combinations",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "combinations-subsets-path-plus",
+      "prompt": "Task: put every subset of items, as a list, into result, in any order. It is called as subsets(items, 0, [], result); for [1, 2] result must hold [], [1], [2] and [1, 2]. Is this implementation correct?",
+      "code": "def subsets(items, i, path, result):\n    if i == len(items):\n        result.append(path)\n        return\n    with_it = path + [items[i]]\n    subsets(items, i + 1, with_it, result)\n    subsets(items, i + 1, path, result)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "There is no pop and no copy, which looks wrong, but path + [items[i]] builds a new list and never changes path. Nothing is ever changed after it is stored, so storing path directly is safe.",
+      "tags": [
+        "combinations",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "combinations-binary-no-pop",
+      "prompt": "Task: print every binary string of length n, one per line. It is called as binary(n, []); binary(2, []) prints 00, 01, 10 and 11. Is this implementation correct?",
+      "code": "def binary(n, path):\n    if len(path) == n:\n        print(\"\".join(path))\n        return\n    for bit in \"01\":\n        path.append(bit)\n        binary(n, path)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "After the recursive call the bit is never removed, because path.pop() is missing. After printing 00 it appends 1 to get 001, which is already too long; the length never equals n again, and it ends in a RecursionError.",
+      "tags": [
+        "combinations",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "combinations-permutations-copy-pop",
+      "prompt": "Task: put every ordering (permutation) of the distinct items in items into result, each as a list, in any order. It is called as perms(items, [], result). Is this implementation correct?",
+      "code": "def perms(items, path, result):\n    if len(path) == len(items):\n        result.append(path[:])\n        return\n    for x in items:\n        if x not in path:\n            path.append(x)\n            perms(items, path, result)\n            path.pop()",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "It follows choose, explore, unchoose: append x, recurse, then pop x so the next choice starts clean. x not in path stops an item being used twice, and path[:] stores a copy, so later pops cannot change stored results.",
+      "tags": [
+        "combinations",
+        "correct-or-wrong"
+      ]
+    }
+  ]
+}

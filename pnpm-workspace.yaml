@@ -1,0 +1,7 @@
+packages:
+  - frontend
+  - tools/*
+
+# pnpm 10 blocks postinstall scripts by default. Only these need to run.
+onlyBuiltDependencies:
+  - esbuild

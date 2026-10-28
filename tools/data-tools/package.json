@@ -1,0 +1,15 @@
+{
+  "name": "@flashcards/data-tools",
+  "private": true,
+  "type": "module",
+  "version": "2.0.0",
+  "description": "Zero-dependency scripts that build and validate the static data/ payload (schema 2).",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "validate": "node src/validate.mjs",
+    "manifest": "node src/build-manifest.mjs",
+    "migrate": "node src/migrate-v1-to-v2.mjs"
+  }
+}

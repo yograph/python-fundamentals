@@ -1,0 +1,31 @@
+version: 2
+
+updates:
+  # The workflows pin action majors (@v4, @v5), which quietly go stale and
+  # eventually get deprecated by GitHub. One grouped PR a month is enough.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore(actions)"
+
+  # Root pnpm workspace: dependabot reads pnpm-lock.yaml and covers every
+  # workspace package from here.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    groups:
+      dev-dependencies:
+        dependency-type: development
+        patterns: ["*"]
+      production-dependencies:
+        dependency-type: production
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore(deps)"

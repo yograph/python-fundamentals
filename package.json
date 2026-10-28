@@ -1,0 +1,29 @@
+{
+  "name": "python-fundamentals",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Python fundamentals: lessons and quizzes for an intro programming course. Static frontend on GitHub Pages, content as plain files in data/.",
+  "packageManager": "pnpm@10.18.3",
+  "scripts": {
+    "dev": "pnpm --filter @flashcards/frontend dev",
+    "build": "pnpm --filter @flashcards/frontend build",
+    "preview": "pnpm --filter @flashcards/frontend preview",
+    "check": "biome check --write .",
+    "ci:check": "biome ci .",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "typecheck": "pnpm --filter @flashcards/frontend typecheck",
+    "data:validate": "pnpm --filter @flashcards/data-tools validate",
+    "data:manifest": "pnpm --filter @flashcards/data-tools manifest",
+    "data:audio": "pnpm --filter @flashcards/audio-gen generate",
+    "course:check": "for f in tools/course-check/checks/*.json; do python3 tools/course-check/check_course.py data/exercises/$(basename $f) $f || exit 1; done",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "husky": "^9.1.7"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

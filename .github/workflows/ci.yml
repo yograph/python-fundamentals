@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# A newer commit on the same branch makes the previous answer worthless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check, typecheck, validate, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # No version input: pnpm/action-setup reads packageManager from the root
+      # package.json, so the lockfile and CI can never disagree about pnpm.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Formatting, lint and import order in one pass. `biome ci` never writes.
+      - name: Biome
+        run: pnpm ci:check
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      # Guards the data contract before anything is built from it.
+      - name: Validate data
+        run: pnpm data:validate
+
+      # Runs the code behind every question: an answer key that disagrees with
+      # Python would teach the wrong thing, so it fails the build.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Check answer keys
+        run: pnpm course:check
+
+      - name: Build
+        run: pnpm build

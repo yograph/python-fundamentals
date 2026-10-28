@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 2,
+  "decks": [],
+  "exerciseSets": [
+    {
+      "id": "python-1",
+      "name": "Python 1: Basics",
+      "kind": "grammar",
+      "level": "1",
+      "course": "Python fundamentals",
+      "color": "#3776AB",
+      "icon": "code"
+    },
+    {
+      "id": "python-2",
+      "name": "Python 2: Loops & lists",
+      "kind": "grammar",
+      "level": "2",
+      "course": "Python fundamentals",
+      "color": "#0F766E",
+      "icon": "code"
+    },
+    {
+      "id": "python-3",
+      "name": "Python 3: Functions & recursion",
+      "kind": "grammar",
+      "level": "3",
+      "course": "Python fundamentals",
+      "color": "#6D28D9",
+      "icon": "code"
+    },
+    {
+      "id": "python-correct-or-wrong",
+      "name": "Correct or wrong?",
+      "kind": "grammar",
+      "course": "Python fundamentals",
+      "color": "#A16207",
+      "icon": "bug"
+    }
+  ]
+}

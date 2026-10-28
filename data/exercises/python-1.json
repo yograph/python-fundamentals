@@ -1,0 +1,2287 @@
+{
+  "schemaVersion": 2,
+  "lessons": [
+    {
+      "id": "values-and-types",
+      "title": "Values and types",
+      "summary": "Tell the four basic types apart and know which type a value has.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "Every value has a **type**. The type decides what you are allowed to do with the value."
+        },
+        {
+          "type": "text",
+          "text": "Python has four basic types that you will use all the time. You never write the type yourself: Python looks at how the value is written and knows."
+        },
+        {
+          "type": "table",
+          "caption": "The four basic types",
+          "headers": [
+            "Type",
+            "What it holds",
+            "Examples"
+          ],
+          "rows": [
+            [
+              "**int**",
+              "whole numbers, no decimal point",
+              "0, 7, -3, 2026"
+            ],
+            [
+              "**float**",
+              "numbers with a decimal point",
+              "3.14, 0.5, 2.0, -1.5"
+            ],
+            [
+              "**str**",
+              "text, always inside quotes",
+              "\"hello\", 'a', \"42\", \"\""
+            ],
+            [
+              "**bool**",
+              "a yes/no answer",
+              "True, False"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The quotes are what make a **str**. **5** is an int, **\"5\"** is a str and **5.0** is a float. They look alike on screen, but they are three different values that behave differently."
+        },
+        {
+          "type": "code",
+          "caption": "**type()** tells you the type of any value:",
+          "code": "print(type(5))\nprint(type(\"5\"))\nprint(type(5.0))\nprint(type(True))",
+          "output": "<class 'int'>\n<class 'str'>\n<class 'float'>\n<class 'bool'>"
+        },
+        {
+          "type": "text",
+          "text": "Use **type()** whenever you are not sure what you are holding. It answers the question \"what is this?\"."
+        },
+        {
+          "type": "code",
+          "caption": "Same digits, different types, different results:",
+          "code": "print(5 + 5)\nprint(\"5\" + \"5\")\nprint(5.0 + 5)",
+          "output": "10\n55\n10.0"
+        },
+        {
+          "type": "text",
+          "text": "With numbers, **+** adds. With strings, **+** glues the text together. Mixing an int with a float gives a float."
+        },
+        {
+          "type": "bug",
+          "wrong": "is_raining = true",
+          "right": "is_raining = True",
+          "why": "**True** and **False** start with a capital letter. Lowercase **true** is just an unknown name, so Python raises a **NameError**."
+        },
+        {
+          "type": "bug",
+          "wrong": "name = Alice",
+          "right": "name = \"Alice\"",
+          "why": "Without quotes, Python thinks **Alice** is the name of a variable. Text always needs quotes."
+        },
+        {
+          "type": "tip",
+          "text": "A number inside quotes is text, not a number. **\"7\" + 1** is an error. You will see this again with **input()**, which always gives you text."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**int** for counting, **float** for measuring, **str** for text, **bool** for yes/no.",
+            "Quotes make a str: **\"5\"** is text.",
+            "A decimal point makes a float: **5.0** is a float.",
+            "**True** and **False** are written with a capital letter."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "variables",
+      "title": "Variables and assignment",
+      "summary": "Store values in variables, update them, and read an assignment the right way round.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "**=** means \"store the value on the right under the name on the left\". It is not the equals sign from maths."
+        },
+        {
+          "type": "text",
+          "text": "Python always works out the **right side first**. Then it stores the result under the name on the left. The name keeps that value until you store something else in it."
+        },
+        {
+          "type": "code",
+          "code": "age = 17\nprint(age)\nage = 18\nprint(age)",
+          "output": "17\n18"
+        },
+        {
+          "type": "text",
+          "text": "Storing a new value replaces the old one. Python does not remember the 17 any more."
+        },
+        {
+          "type": "heading",
+          "text": "Updating a variable"
+        },
+        {
+          "type": "code",
+          "caption": "Read it as: take the current x, add 1, store the result back in x.",
+          "code": "x = 5\nx = x + 1\nprint(x)",
+          "output": "6"
+        },
+        {
+          "type": "text",
+          "text": "**x = x + 1** is impossible in maths, but in Python it is one of the most common lines you will write. The right side uses the old value, and the result becomes the new value."
+        },
+        {
+          "type": "code",
+          "caption": "A variable stores a value, not a formula:",
+          "code": "a = 2\nb = a * 3\na = 10\nprint(b)",
+          "output": "6"
+        },
+        {
+          "type": "text",
+          "text": "When **b = a \\* 3** ran, a was 2, so b got 6. Changing a later does not change b."
+        },
+        {
+          "type": "heading",
+          "text": "Swapping two variables"
+        },
+        {
+          "type": "code",
+          "code": "a = 1\nb = 2\na, b = b, a\nprint(a, b)",
+          "output": "2 1"
+        },
+        {
+          "type": "bug",
+          "wrong": "a = b\nb = a",
+          "right": "a, b = b, a",
+          "why": "After **a = b** the old value of a is gone, so **b = a** just copies b back into b. Swap with **a, b = b, a**, or save one value in a temporary variable first."
+        },
+        {
+          "type": "heading",
+          "text": "Naming rules"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Rule",
+            "Fine",
+            "Problem"
+          ],
+          "rows": [
+            [
+              "Letters, digits and underscores only",
+              "total_price",
+              "total price (a space)"
+            ],
+            [
+              "Must not start with a digit",
+              "player2",
+              "2player"
+            ],
+            [
+              "Upper and lower case are different",
+              "score",
+              "Score is a different variable"
+            ],
+            [
+              "Not a Python keyword",
+              "for_each",
+              "for, if, while, True"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "A name must have a value before you use it. Using a name that was never assigned raises a **NameError**."
+        },
+        {
+          "type": "code",
+          "code": "print(total)\ntotal = 10",
+          "output": "NameError: name 'total' is not defined"
+        },
+        {
+          "type": "tip",
+          "text": "Python runs your code from top to bottom. A line can only use names that earlier lines have already stored."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**=** stores. **==** compares (see the Conditions lesson).",
+            "The right side is worked out first, then stored.",
+            "A new assignment replaces the old value.",
+            "Swap with **a, b = b, a**."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "input-and-print",
+      "title": "input() and print()",
+      "summary": "Read what the user types, convert it to a number when needed, and print results the way you want.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "**input()** always gives you a **str**, even when the user types a number. Convert it with **int()** or **float()** before you do maths with it."
+        },
+        {
+          "type": "text",
+          "text": "**input()** pauses the program, shows its prompt, waits until the user presses Enter, and then hands you exactly what they typed, as text."
+        },
+        {
+          "type": "code",
+          "caption": "The user types 17, and this still crashes:",
+          "code": "age = input(\"Age? \")  # the user types 17\nprint(age + 1)",
+          "output": "TypeError: can only concatenate str (not \"int\") to str"
+        },
+        {
+          "type": "text",
+          "text": "The user typed 17, but **age** holds the text **\"17\"**. Text plus a number is a **TypeError**. Convert first:"
+        },
+        {
+          "type": "code",
+          "code": "age = int(input(\"Age? \"))  # the user types 17\nprint(age + 1)",
+          "output": "18"
+        },
+        {
+          "type": "table",
+          "caption": "Converting between types",
+          "headers": [
+            "Call",
+            "Gives",
+            "Note"
+          ],
+          "rows": [
+            [
+              "int(\"42\")",
+              "42",
+              "text to whole number"
+            ],
+            [
+              "float(\"3.5\")",
+              "3.5",
+              "text to decimal number"
+            ],
+            [
+              "str(42)",
+              "\"42\"",
+              "number to text"
+            ],
+            [
+              "int(3.9)",
+              "3",
+              "cuts off the decimals, does not round"
+            ],
+            [
+              "int(\"3.5\")",
+              "ValueError",
+              "int() cannot read a decimal point in text"
+            ],
+            [
+              "int(\"hello\")",
+              "ValueError",
+              "the text is not a number at all"
+            ]
+          ]
+        },
+        {
+          "type": "bug",
+          "wrong": "n = input(\"Number? \")\nprint(n * 2)",
+          "right": "n = int(input(\"Number? \"))\nprint(n * 2)",
+          "why": "With a str, \\* repeats the text, so typing 4 prints 44. Convert with **int()** to get 8."
+        },
+        {
+          "type": "heading",
+          "text": "print()"
+        },
+        {
+          "type": "text",
+          "text": "**print()** shows its values on one line. Give it several values separated by commas and it puts a space between them, then ends the line."
+        },
+        {
+          "type": "code",
+          "code": "name = \"Sam\"\nage = 20\nprint(name, \"is\", age)\nprint(name, age, sep=\"-\")\nprint(\"no newline\", end=\"\")\nprint(\"!\")",
+          "output": "Sam is 20\nSam-20\nno newline!"
+        },
+        {
+          "type": "text",
+          "text": "**sep=** changes what goes between the values (a space by default). **end=** changes what goes at the end (a new line by default)."
+        },
+        {
+          "type": "heading",
+          "text": "f-strings"
+        },
+        {
+          "type": "code",
+          "code": "name = \"Sam\"\nage = 20\nprint(f\"{name} will be {age + 1} next year\")",
+          "output": "Sam will be 21 next year"
+        },
+        {
+          "type": "text",
+          "text": "Put an **f** before the quotes and write any expression inside **{ }**. Python works it out and turns it into text for you, so you do not need **str()**."
+        },
+        {
+          "type": "bug",
+          "wrong": "print(\"Score: \" + 10)",
+          "right": "print(\"Score: \" + str(10))",
+          "why": "**+** only joins a str to a str. Convert with **str()**, or use a comma: **print(\"Score:\", 10)**, or use an f-string."
+        },
+        {
+          "type": "tip",
+          "text": "**print()** shows a value on the screen; it does not give one back. **x = print(5)** prints 5 and stores **None** in x."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**input()** gives a str. Always.",
+            "**int()** for whole numbers, **float()** for decimals.",
+            "Commas in **print()** add spaces; **+** does not.",
+            "f-strings convert values to text for you."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arithmetic",
+      "title": "Arithmetic operators",
+      "summary": "Use every arithmetic operator, predict whether a result is an int or a float, and use % and // for digits and even numbers.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "**/** always gives a float. **//** gives the whole part, rounded down. **%** gives the remainder."
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Operator",
+            "Meaning",
+            "Example",
+            "Result"
+          ],
+          "rows": [
+            [
+              "+",
+              "add",
+              "7 + 2",
+              "9"
+            ],
+            [
+              "-",
+              "subtract",
+              "7 - 2",
+              "5"
+            ],
+            [
+              "\\*",
+              "multiply",
+              "7 \\* 2",
+              "14"
+            ],
+            [
+              "/",
+              "divide (always a float)",
+              "7 / 2",
+              "3.5"
+            ],
+            [
+              "//",
+              "floor divide (round down)",
+              "7 // 2",
+              "3"
+            ],
+            [
+              "%",
+              "remainder",
+              "7 % 2",
+              "1"
+            ],
+            [
+              "\\*\\*",
+              "power",
+              "7 \\*\\* 2",
+              "49"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "code": "print(6 / 3)\nprint(7 // 2)\nprint(7 % 2)\nprint(2 ** 10)",
+          "output": "2.0\n3\n1\n1024"
+        },
+        {
+          "type": "text",
+          "text": "Even when a division comes out even, **/** gives a float: **6 / 3** is **2.0**, not **2**. Use **//** when you need an int."
+        },
+        {
+          "type": "heading",
+          "text": "Remainder tricks"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**n % 2 == 0** means n is even; **n % 2 == 1** means n is odd.",
+            "**n % 10** is the last digit of n.",
+            "**n // 10** is n with its last digit removed.",
+            "**n % k == 0** means n is divisible by k."
+          ]
+        },
+        {
+          "type": "code",
+          "code": "n = 2753\nprint(n % 10)\nprint(n // 10)",
+          "output": "3\n275"
+        },
+        {
+          "type": "heading",
+          "text": "Rounding down, also with negatives"
+        },
+        {
+          "type": "code",
+          "code": "print(7 // 2)\nprint(-7 // 2)",
+          "output": "3\n-4"
+        },
+        {
+          "type": "text",
+          "text": "**//** always rounds **down**, towards minus infinity. For a negative number that is not the same as cutting off the decimals: -3.5 rounds down to -4."
+        },
+        {
+          "type": "heading",
+          "text": "Order of operations"
+        },
+        {
+          "type": "text",
+          "text": "Power first, then multiplication and the divisions (**/**, **//** and **%**), then **+** and **-**. Use brackets whenever you are unsure."
+        },
+        {
+          "type": "code",
+          "code": "print(2 + 3 * 4)\nprint((2 + 3) * 4)",
+          "output": "14\n20"
+        },
+        {
+          "type": "bug",
+          "wrong": "average = a + b / 2",
+          "right": "average = (a + b) / 2",
+          "why": "Division happens before addition, so the first line computes a + (b / 2). Put the sum in brackets."
+        },
+        {
+          "type": "heading",
+          "text": "Shortcuts"
+        },
+        {
+          "type": "code",
+          "code": "total = 10\ntotal += 5\ntotal -= 3\ntotal *= 2\nprint(total)",
+          "output": "24"
+        },
+        {
+          "type": "text",
+          "text": "**total += 5** is short for **total = total + 5**. The same shortcut works for every operator."
+        },
+        {
+          "type": "tip",
+          "text": "An int combined with a float always gives a float: **3 + 1.0** is **4.0**."
+        }
+      ]
+    },
+    {
+      "id": "strings",
+      "title": "Strings",
+      "summary": "Index, slice and combine strings, use their methods, and know what a string will not let you do.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "A string is a sequence of characters numbered from **0**. You can read any character, but you can never change one: strings are **immutable**."
+        },
+        {
+          "type": "code",
+          "code": "word = \"python\"\nprint(word[0])\nprint(word[5])\nprint(word[-1])\nprint(len(word))",
+          "output": "p\nn\nn\n6"
+        },
+        {
+          "type": "table",
+          "caption": "Indexes of \"python\": counting from the front and from the back",
+          "headers": [
+            "p",
+            "y",
+            "t",
+            "h",
+            "o",
+            "n"
+          ],
+          "rows": [
+            [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ],
+            [
+              "-6",
+              "-5",
+              "-4",
+              "-3",
+              "-2",
+              "-1"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The last index is always **len(word) - 1**. Asking for **word[6]** is an **IndexError**. Negative indexes count from the end: **word[-1]** is the last character."
+        },
+        {
+          "type": "heading",
+          "text": "Slicing"
+        },
+        {
+          "type": "code",
+          "code": "word = \"python\"\nprint(word[0:2])\nprint(word[2:])\nprint(word[:3])\nprint(word[::-1])",
+          "output": "py\nthon\npyt\nnohtyp"
+        },
+        {
+          "type": "text",
+          "text": "**word[start:stop]** gives the characters from start up to, but **not including**, stop. Leave out start to begin at 0; leave out stop to go to the end. A third number is the step: **[::-1]** walks backwards, which reverses the string."
+        },
+        {
+          "type": "tip",
+          "text": "Slicing never raises an IndexError. **word[2:100]** simply stops at the end of the string."
+        },
+        {
+          "type": "heading",
+          "text": "Combining strings"
+        },
+        {
+          "type": "code",
+          "code": "first = \"Ada\"\nlast = \"Lovelace\"\nprint(first + \" \" + last)\nprint(\"ha\" * 3)\nprint(\"da\" in first)",
+          "output": "Ada Lovelace\nhahaha\nTrue"
+        },
+        {
+          "type": "table",
+          "caption": "What you can and cannot do with strings",
+          "headers": [
+            "Code",
+            "Result"
+          ],
+          "rows": [
+            [
+              "\"ab\" + \"cd\"",
+              "\"abcd\""
+            ],
+            [
+              "\"ab\" \\* 3",
+              "\"ababab\""
+            ],
+            [
+              "\"ab\" + 3",
+              "TypeError: use \"ab\" + str(3)"
+            ],
+            [
+              "\"ab\" \\* \"ab\"",
+              "TypeError: you can only repeat by an int"
+            ],
+            [
+              "\"b\" in \"abc\"",
+              "True"
+            ],
+            [
+              "s[0] = \"x\"",
+              "TypeError: strings are immutable"
+            ],
+            [
+              "len(\"abc\")",
+              "3"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Methods give you a new string"
+        },
+        {
+          "type": "code",
+          "code": "name = \"  Ada  \"\nclean = name.strip()\nprint(clean)\nprint(clean.upper())\nprint(clean.replace(\"A\", \"E\"))\nprint(\"a,b,c\".split(\",\"))\nprint(\"banana\".find(\"n\"))",
+          "output": "Ada\nADA\nEda\n['a', 'b', 'c']\n2"
+        },
+        {
+          "type": "text",
+          "text": "**strip()** removes spaces at both ends, **upper()** and **lower()** change case, **replace()** swaps text, **split()** cuts the string into a list, and **find()** gives the index of the first match (or -1)."
+        },
+        {
+          "type": "text",
+          "text": "Because strings are immutable, a method never changes the string you call it on. It returns a **new** string, so you have to store the result."
+        },
+        {
+          "type": "bug",
+          "wrong": "name = \"ada\"\nname.upper()\nprint(name)",
+          "right": "name = \"ada\"\nname = name.upper()\nprint(name)",
+          "why": "**name.upper()** returns \"ADA\", but nothing stores it, so the first version still prints ada."
+        },
+        {
+          "type": "bug",
+          "wrong": "word = \"cat\"\nword[0] = \"b\"",
+          "right": "word = \"cat\"\nword = \"b\" + word[1:]",
+          "why": "You cannot change a character inside a string. Build a new string from pieces and store that instead."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Indexes start at **0**; the last one is **len(s) - 1**, or **-1**.",
+            "A slice leaves out its stop index.",
+            "**+** needs two strings; \\* needs a string and an int.",
+            "Methods return a new string. Store it."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conditions",
+      "title": "Booleans and if",
+      "summary": "Write conditions with comparisons and and/or/not, and predict which branch of an if/elif/else runs.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "**if** runs its block only when the condition is **True**. In an **if / elif / else** chain, only the **first** true branch runs."
+        },
+        {
+          "type": "table",
+          "caption": "Comparisons give a bool",
+          "headers": [
+            "Operator",
+            "Means",
+            "Example",
+            "Gives"
+          ],
+          "rows": [
+            [
+              "==",
+              "equal to",
+              "3 == 3",
+              "True"
+            ],
+            [
+              "!=",
+              "not equal to",
+              "3 != 3",
+              "False"
+            ],
+            [
+              "< and >",
+              "less than, greater than",
+              "2 < 5",
+              "True"
+            ],
+            [
+              "<= and >=",
+              "at most, at least",
+              "5 >= 5",
+              "True"
+            ]
+          ]
+        },
+        {
+          "type": "bug",
+          "wrong": "if x = 5:\n    print(\"five\")",
+          "right": "if x == 5:\n    print(\"five\")",
+          "why": "One **=** stores a value; two **==** compare. Using **=** in a condition is a **SyntaxError**."
+        },
+        {
+          "type": "code",
+          "code": "temp = 25\nif temp > 30:\n    print(\"hot\")\nelif temp > 20:\n    print(\"warm\")\nelif temp > 10:\n    print(\"mild\")\nelse:\n    print(\"cold\")",
+          "output": "warm"
+        },
+        {
+          "type": "text",
+          "text": "25 > 20 is True, so Python prints warm and skips the rest of the chain, even though 25 > 10 is also True. **else** runs only when no branch above it was True."
+        },
+        {
+          "type": "bug",
+          "wrong": "if score >= 50:\n    print(\"pass\")\nelif score >= 90:\n    print(\"excellent\")",
+          "right": "if score >= 90:\n    print(\"excellent\")\nelif score >= 50:\n    print(\"pass\")",
+          "why": "A score of 95 is also at least 50, so the first version prints pass and never reaches excellent. Put the strictest test first."
+        },
+        {
+          "type": "tip",
+          "text": "Separate **if** statements are all checked, one after another. An **elif** is only checked when everything above it in the chain was False."
+        },
+        {
+          "type": "heading",
+          "text": "and, or, not"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Expression",
+            "True when"
+          ],
+          "rows": [
+            [
+              "a **and** b",
+              "both are True"
+            ],
+            [
+              "a **or** b",
+              "at least one is True"
+            ],
+            [
+              "**not** a",
+              "a is False"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "code": "age = 20\nhas_ticket = False\nprint(age >= 18 and has_ticket)\nprint(age >= 18 or has_ticket)\nprint(not has_ticket)\nprint(0 < age < 30)",
+          "output": "False\nTrue\nTrue\nTrue"
+        },
+        {
+          "type": "text",
+          "text": "Python lets you chain comparisons: **0 < age < 30** means **0 < age and age < 30**."
+        },
+        {
+          "type": "bug",
+          "wrong": "if answer == \"y\" or \"yes\":\n    print(\"ok\")",
+          "right": "if answer == \"y\" or answer == \"yes\":\n    print(\"ok\")",
+          "why": "Each side of **or** is its own condition. The text **\"yes\"** on its own counts as True, so the first version is always True."
+        },
+        {
+          "type": "heading",
+          "text": "Indentation is the block"
+        },
+        {
+          "type": "code",
+          "code": "x = 3\nif x > 5:\n    print(\"big\")\nprint(\"done\")",
+          "output": "done"
+        },
+        {
+          "type": "text",
+          "text": "The indented lines belong to the **if**. The first line that is not indented is outside it, and it always runs."
+        },
+        {
+          "type": "heading",
+          "text": "Comparing different types"
+        },
+        {
+          "type": "code",
+          "code": "print(5 == \"5\")\nprint(5 < \"6\")",
+          "output": "False\nTypeError: '<' not supported between instances of 'int' and 'str'"
+        },
+        {
+          "type": "text",
+          "text": "**==** between an int and a str is allowed and simply gives False. **<** between them is a **TypeError**. One more reason to convert **input()** first."
+        },
+        {
+          "type": "tip",
+          "text": "Every **if**, **elif** and **else** line ends with a colon, and the block under it is indented by 4 spaces."
+        }
+      ]
+    },
+    {
+      "id": "reading-errors",
+      "title": "Reading error messages",
+      "summary": "Read the last line of a traceback, name the error, and know the usual cause of each common error.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "Read a traceback from the **bottom**. The last line names the error and says what went wrong; the lines above it show where."
+        },
+        {
+          "type": "code",
+          "caption": "A crash looks like this:",
+          "code": "Traceback (most recent call last):\n  File \"main.py\", line 2, in <module>\n    print(age + 1)\n          ~~~~^~~\nTypeError: can only concatenate str (not \"int\") to str"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Last line**: the error type, then a message in plain English.",
+            "**Line above it**: the exact code that failed.",
+            "**File ... line N**: where to look in your program."
+          ]
+        },
+        {
+          "type": "table",
+          "caption": "The errors you will meet most",
+          "headers": [
+            "Error",
+            "What it means",
+            "Typical cause"
+          ],
+          "rows": [
+            [
+              "**SyntaxError**",
+              "Python cannot read the code at all",
+              "a missing colon, bracket or quote, or = where you meant =="
+            ],
+            [
+              "**IndentationError**",
+              "the indentation does not match the blocks",
+              "nothing indented after a colon, or a line indented by accident"
+            ],
+            [
+              "**NameError**",
+              "this name has no value",
+              "a typo, missing quotes around text, or using a variable before assigning it"
+            ],
+            [
+              "**TypeError**",
+              "this operation does not work on this type",
+              "\"a\" + 1, or len(5)"
+            ],
+            [
+              "**ValueError**",
+              "the type is right, but not this value",
+              "int(\"hello\") or int(\"3.5\")"
+            ],
+            [
+              "**ZeroDivisionError**",
+              "you divided by zero",
+              "x / 0, x // 0 or x % 0"
+            ],
+            [
+              "**IndexError**",
+              "that position does not exist",
+              "s[len(s)], or s[0] on an empty string"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "**SyntaxError** and **IndentationError** are found before anything runs, so not even the first line executes. The other errors happen while the program runs, at the line that fails; the lines before it have already run."
+        },
+        {
+          "type": "code",
+          "code": "print(\"start\")\nprint(10 / 0)",
+          "output": "start\nZeroDivisionError: division by zero"
+        },
+        {
+          "type": "code",
+          "caption": "A missing colon:",
+          "code": "if 3 > 2\n    print(\"yes\")",
+          "output": "SyntaxError: expected ':'"
+        },
+        {
+          "type": "code",
+          "caption": "A block that is not indented:",
+          "code": "if 3 > 2:\nprint(\"yes\")",
+          "output": "IndentationError: expected an indented block after 'if' statement on line 1"
+        },
+        {
+          "type": "bug",
+          "wrong": "print(Hello)",
+          "right": "print(\"Hello\")",
+          "why": "Without quotes **Hello** is read as a variable name, and there is no such variable, so this is a **NameError**, not a problem with print."
+        },
+        {
+          "type": "tip",
+          "text": "The error sometimes points at the line **after** the real mistake, for example when a bracket on the line above was never closed. If the reported line looks fine, check the one before it."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**TypeError**: the wrong type for this operation.",
+            "**ValueError**: the right type, but an impossible value.",
+            "**NameError**: an unknown name. Check the spelling and the quotes.",
+            "**IndexError**: a position past the end."
+          ]
+        }
+      ]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "type-of-three-point-zero",
+      "prompt": "Which type is the value 3.0?",
+      "choices": [
+        "int",
+        "str",
+        "float",
+        "bool"
+      ],
+      "answerIndex": 2,
+      "explanation": "The decimal point makes it a float, even though the number happens to be whole.",
+      "tags": [
+        "values-and-types",
+        "concept"
+      ]
+    },
+    {
+      "id": "quotes-make-a-string",
+      "prompt": "Which of these values is a str?",
+      "choices": [
+        "42",
+        "42.0",
+        "\"42\"",
+        "True"
+      ],
+      "answerIndex": 2,
+      "explanation": "Quotes make a string. \"42\" is the text made of the characters 4 and 2, not the number 42.",
+      "tags": [
+        "values-and-types",
+        "concept"
+      ]
+    },
+    {
+      "id": "which-value-is-not-an-int",
+      "prompt": "Which value is NOT an int?",
+      "choices": [
+        "0",
+        "-12",
+        "7.0",
+        "2026"
+      ],
+      "answerIndex": 2,
+      "explanation": "7.0 has a decimal point, so it is a float. Negative numbers and 0 are ints.",
+      "tags": [
+        "values-and-types",
+        "concept"
+      ]
+    },
+    {
+      "id": "type-for-yes-no",
+      "prompt": "You want to remember whether a user is logged in. Which type fits best?",
+      "choices": [
+        "bool",
+        "int",
+        "str",
+        "float"
+      ],
+      "answerIndex": 0,
+      "explanation": "A yes/no fact is exactly what a bool is for: True or False.",
+      "tags": [
+        "values-and-types",
+        "concept"
+      ]
+    },
+    {
+      "id": "type-of-quoted-number",
+      "prompt": "What does this print?",
+      "code": "print(type(\"7\"))",
+      "choices": [
+        "<class 'int'>",
+        "<class 'float'>",
+        "7",
+        "<class 'str'>"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "The quotes make \"7\" a str, whatever is inside them.",
+      "tags": [
+        "values-and-types",
+        "output"
+      ]
+    },
+    {
+      "id": "type-of-comparison",
+      "prompt": "What does this print?",
+      "code": "print(type(10 > 3))",
+      "choices": [
+        "<class 'int'>",
+        "True",
+        "<class 'str'>",
+        "<class 'bool'>"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "A comparison gives a bool. print(10 > 3) would show True, but type() reports the type of that value, which is bool.",
+      "tags": [
+        "values-and-types",
+        "output"
+      ]
+    },
+    {
+      "id": "string-plus-string-glues",
+      "prompt": "What does this print?",
+      "code": "print(\"5\" + \"5\")",
+      "choices": [
+        "10",
+        "55",
+        "5 5",
+        "TypeError"
+      ],
+      "answerIndex": 1,
+      "explanation": "Both values are strings, so + glues them together: 5 followed by 5. No maths happens.",
+      "tags": [
+        "values-and-types",
+        "output"
+      ]
+    },
+    {
+      "id": "lowercase-true-nameerror",
+      "prompt": "What happens?",
+      "code": "done = true\nprint(done)",
+      "choices": [
+        "True",
+        "NameError",
+        "true",
+        "False"
+      ],
+      "answerIndex": 1,
+      "explanation": "Python's boolean is spelled True with a capital T. Lowercase true is treated as a variable name that does not exist, so it is a NameError.",
+      "tags": [
+        "values-and-types",
+        "output"
+      ]
+    },
+    {
+      "id": "int-plus-float",
+      "prompt": "What does this print?",
+      "code": "print(5 + 5.0)",
+      "choices": [
+        "10",
+        "55.0",
+        "TypeError",
+        "10.0"
+      ],
+      "answerIndex": 3,
+      "explanation": "An int combined with a float gives a float, so the result is 10.0.",
+      "tags": [
+        "values-and-types",
+        "output"
+      ]
+    },
+    {
+      "id": "store-name-as-text",
+      "prompt": "Task: store the text Alice in the variable name and print it. Is this implementation correct?",
+      "code": "name = Alice\nprint(name)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Without quotes Alice is read as a variable name, which does not exist, so this crashes with a NameError. Write name = \"Alice\".",
+      "tags": [
+        "values-and-types",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "float-type-check",
+      "prompt": "Task: print True when the value in x is a float. Is this implementation correct?",
+      "code": "x = 3.0\nprint(type(x) == float)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "type(x) is float because 3.0 has a decimal point, so the comparison is True and True is printed.",
+      "tags": [
+        "values-and-types",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-make-it-text",
+      "prompt": "Which value in the gap makes this print 77?",
+      "code": "a = ___\nprint(a + a)",
+      "choices": [
+        "\"7\"",
+        "7",
+        "77",
+        "7.0"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "Only with the str \"7\" does + glue the text: \"7\" + \"7\" is \"77\". The numbers 7 and 7.0 are added instead.",
+      "tags": [
+        "values-and-types",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "assignment-direction",
+      "prompt": "What does the line score = 10 do?",
+      "choices": [
+        "Checks whether score is equal to 10",
+        "Stores the name score inside the number 10",
+        "Prints 10",
+        "Stores 10 under the name score"
+      ],
+      "answerIndex": 3,
+      "explanation": "One = is assignment: the value on the right is stored under the name on the left. Checking for equality needs ==.",
+      "tags": [
+        "variables",
+        "concept"
+      ]
+    },
+    {
+      "id": "valid-variable-name",
+      "prompt": "Which variable name is allowed?",
+      "choices": [
+        "first name",
+        "1st_name",
+        "first-name",
+        "first_name"
+      ],
+      "answerIndex": 3,
+      "explanation": "Names may use letters, digits and underscores but cannot start with a digit. A space splits it into two names, and - is read as minus.",
+      "tags": [
+        "variables",
+        "concept"
+      ]
+    },
+    {
+      "id": "reassign-replaces",
+      "prompt": "What does this print?",
+      "code": "x = 3\nx = 7\nprint(x)",
+      "choices": [
+        "3",
+        "3\n7",
+        "7",
+        "10"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "The second assignment replaces the 3. Only the current value, 7, is printed.",
+      "tags": [
+        "variables",
+        "output"
+      ]
+    },
+    {
+      "id": "count-plus-one-twice",
+      "prompt": "What does this print?",
+      "code": "count = 4\ncount = count + 1\ncount = count + 1\nprint(count)",
+      "choices": [
+        "5",
+        "4",
+        "6",
+        "NameError"
+      ],
+      "answerIndex": 2,
+      "explanation": "Each line takes the current value of count, adds 1 and stores the result back: 4, then 5, then 6.",
+      "tags": [
+        "variables",
+        "output"
+      ]
+    },
+    {
+      "id": "value-not-formula",
+      "prompt": "What does this print?",
+      "code": "a = 2\nb = a * 3\na = 10\nprint(b)",
+      "choices": [
+        "30",
+        "10",
+        "6",
+        "2"
+      ],
+      "answerIndex": 2,
+      "explanation": "b got the value 6 when its line ran. Changing a afterwards does not go back and update b.",
+      "tags": [
+        "variables",
+        "output"
+      ]
+    },
+    {
+      "id": "use-before-assign",
+      "prompt": "What happens?",
+      "code": "print(price)\nprice = 5",
+      "choices": [
+        "5",
+        "0",
+        "NameError",
+        "None"
+      ],
+      "answerIndex": 2,
+      "explanation": "Python runs top to bottom. On the first line price has no value yet, so it is a NameError.",
+      "tags": [
+        "variables",
+        "output"
+      ]
+    },
+    {
+      "id": "names-are-case-sensitive",
+      "prompt": "What happens?",
+      "code": "Score = 5\nprint(score)",
+      "choices": [
+        "5",
+        "NameError",
+        "Score",
+        "0"
+      ],
+      "answerIndex": 1,
+      "explanation": "Score and score are two different names. Only Score was assigned, so score is unknown.",
+      "tags": [
+        "variables",
+        "output"
+      ]
+    },
+    {
+      "id": "broken-swap",
+      "prompt": "What does this print?",
+      "code": "a = 1\nb = 2\na = b\nb = a\nprint(a, b)",
+      "choices": [
+        "2 1",
+        "2 2",
+        "1 2",
+        "1 1"
+      ],
+      "answerIndex": 1,
+      "explanation": "After a = b, both hold 2 and the 1 is lost. b = a then copies 2 into b again.",
+      "tags": [
+        "variables",
+        "output"
+      ]
+    },
+    {
+      "id": "swap-with-temp",
+      "prompt": "Task: swap the values of a and b, so the code prints 2 1. Is this implementation correct?",
+      "code": "a = 1\nb = 2\ntemp = a\na = b\nb = temp\nprint(a, b)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "temp keeps the old value of a safe before a is overwritten, so b can get it afterwards. This prints 2 1.",
+      "tags": [
+        "variables",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "add-without-storing",
+      "prompt": "Task: add 5 to total, so the code prints 15. Is this implementation correct?",
+      "code": "total = 10\ntotal + 5\nprint(total)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "total + 5 works out 15 and then throws it away, because nothing stores it. Write total = total + 5 (or total += 5).",
+      "tags": [
+        "variables",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "update-in-place",
+      "prompt": "Task: start a counter at 0, add 1 to it three times, then print it. Is this implementation correct?",
+      "code": "counter = 0\ncounter = counter + 1\ncounter = counter + 1\ncounter = counter + 1\nprint(counter)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Each line reads the current value, adds 1 and stores it back, so counter ends at 3.",
+      "tags": [
+        "variables",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-swap",
+      "prompt": "Which line in the gap swaps a and b?",
+      "code": "a = \"left\"\nb = \"right\"\n___\nprint(a, b)",
+      "choices": [
+        "a, b = b, a",
+        "a = b",
+        "a == b",
+        "b = a"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "a, b = b, a works out both values on the right first, then stores them, so nothing is lost. a == b only compares and changes nothing.",
+      "tags": [
+        "variables",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "input-returns-str",
+      "prompt": "The user types 25 at an input() prompt. What type is the value you get back?",
+      "choices": [
+        "int",
+        "float",
+        "It depends on what the user types",
+        "str"
+      ],
+      "answerIndex": 3,
+      "explanation": "input() always returns a str. The 25 is the text \"25\" until you convert it with int().",
+      "tags": [
+        "input-and-print",
+        "concept"
+      ]
+    },
+    {
+      "id": "print-returns-none",
+      "prompt": "What is stored in x after x = print(5)?",
+      "choices": [
+        "5",
+        "\"5\"",
+        "Nothing, the line is an error",
+        "None"
+      ],
+      "answerIndex": 3,
+      "explanation": "print() shows 5 on the screen but gives back None. Use return values, not print, when you need to keep a result.",
+      "tags": [
+        "input-and-print",
+        "concept"
+      ]
+    },
+    {
+      "id": "input-plus-number",
+      "prompt": "The user types 5. What happens?",
+      "code": "n = input(\"Number? \")  # the user types 5\nprint(n + 1)",
+      "choices": [
+        "TypeError",
+        "6",
+        "51",
+        "5 1"
+      ],
+      "answerIndex": 0,
+      "explanation": "n holds the text \"5\". A str plus an int is not allowed, so Python raises a TypeError. Use int(input(...)).",
+      "tags": [
+        "input-and-print",
+        "output"
+      ]
+    },
+    {
+      "id": "input-times-two",
+      "prompt": "The user types 4. What does this print?",
+      "code": "n = input(\"Number? \")  # the user types 4\nprint(n * 2)",
+      "choices": [
+        "44",
+        "8",
+        "TypeError",
+        "4 4"
+      ],
+      "answerIndex": 0,
+      "explanation": "n is the text \"4\", and a str times an int repeats the text: \"4\" twice is 44.",
+      "tags": [
+        "input-and-print",
+        "output"
+      ]
+    },
+    {
+      "id": "int-of-decimal-text",
+      "prompt": "What happens?",
+      "code": "x = int(\"3.5\")\nprint(x)",
+      "choices": [
+        "ValueError",
+        "3",
+        "4",
+        "3.5"
+      ],
+      "answerIndex": 0,
+      "explanation": "int() can turn \"3\" into 3, but it cannot read the decimal point in \"3.5\". Use float(\"3.5\") instead.",
+      "tags": [
+        "input-and-print",
+        "output"
+      ]
+    },
+    {
+      "id": "int-cuts-decimals",
+      "prompt": "What does this print?",
+      "code": "print(int(3.9))",
+      "choices": [
+        "4",
+        "3",
+        "3.9",
+        "ValueError"
+      ],
+      "answerIndex": 1,
+      "explanation": "int() on a float cuts off everything after the decimal point. It does not round.",
+      "tags": [
+        "input-and-print",
+        "output"
+      ]
+    },
+    {
+      "id": "print-commas-add-spaces",
+      "prompt": "What does this print?",
+      "code": "print(\"a\", \"b\", 3)",
+      "choices": [
+        "ab3",
+        "a, b, 3",
+        "TypeError",
+        "a b 3"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "Commas give print() separate values. It prints them with a space between, and mixing str and int is fine here.",
+      "tags": [
+        "input-and-print",
+        "output"
+      ]
+    },
+    {
+      "id": "print-sep-and-end",
+      "prompt": "What does this print?",
+      "code": "print(1, 2, 3, sep=\"-\")\nprint(\"x\", end=\"\")\nprint(\"y\")",
+      "choices": [
+        "1 2 3\nx\ny",
+        "1-2-3\nx\ny",
+        "1-2-3\nxy",
+        "1-2-3-\nxy"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "sep=\"-\" goes only between the values. end=\"\" replaces the line break after x, so y is printed right after it.",
+      "tags": [
+        "input-and-print",
+        "output"
+      ]
+    },
+    {
+      "id": "fstring-works-out-expression",
+      "prompt": "What does this print?",
+      "code": "n = 4\nprint(f\"{n} squared is {n * n}\")",
+      "choices": [
+        "4 squared is 16",
+        "n squared is n * n",
+        "{n} squared is {n * n}",
+        "4 squared is 4 * 4"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "Inside the braces of an f-string Python works out the expression, so {n} becomes 4 and the product becomes 16.",
+      "tags": [
+        "input-and-print",
+        "output"
+      ]
+    },
+    {
+      "id": "double-the-input",
+      "prompt": "Task: ask the user for a whole number and print double that number. Is this implementation correct?",
+      "code": "n = input(\"Number? \")  # the user types 6\nprint(n * 2)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "n is still the text \"6\", so n * 2 repeats it and prints 66. Convert first: n = int(input(\"Number? \")).",
+      "tags": [
+        "input-and-print",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "average-of-two-inputs",
+      "prompt": "Task: read two decimal numbers from the user and print their average. Is this implementation correct?",
+      "code": "a = float(input(\"a? \"))  # the user types 2.5\nb = float(input(\"b? \"))  # the user types 3.5\nprint((a + b) / 2)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Both inputs are converted with float() and the sum is in brackets before dividing, so 2.5 and 3.5 give 3.0.",
+      "tags": [
+        "input-and-print",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fix-score-message",
+      "prompt": "Which line in the gap prints Score: 10 without an error?",
+      "code": "score = 10\n___",
+      "choices": [
+        "print(\"Score: \" + score)",
+        "print(\"Score: \" + str(score))",
+        "print(\"Score: \" + \"score\")",
+        "print(Score: + score)"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "+ needs a str on both sides, so convert the number with str(). Putting score in quotes prints the word score, not its value.",
+      "tags": [
+        "input-and-print",
+        "fix"
+      ]
+    },
+    {
+      "id": "slash-gives-float",
+      "prompt": "What does this print?",
+      "code": "print(10 / 2)",
+      "choices": [
+        "5",
+        "5.0",
+        "5.00",
+        "2"
+      ],
+      "answerIndex": 1,
+      "explanation": "/ always gives a float, even when the division comes out even.",
+      "tags": [
+        "arithmetic",
+        "output"
+      ]
+    },
+    {
+      "id": "floor-division",
+      "prompt": "What does this print?",
+      "code": "print(17 // 5)",
+      "choices": [
+        "3.4",
+        "3",
+        "4",
+        "2"
+      ],
+      "answerIndex": 1,
+      "explanation": "17 // 5 keeps only the whole part of 3.4, which is 3, and it stays an int.",
+      "tags": [
+        "arithmetic",
+        "output"
+      ]
+    },
+    {
+      "id": "modulo-remainder",
+      "prompt": "What does this print?",
+      "code": "print(17 % 5)",
+      "choices": [
+        "3",
+        "3.4",
+        "2",
+        "0"
+      ],
+      "answerIndex": 2,
+      "explanation": "5 fits into 17 three times (15), and 2 is left over. % gives that remainder.",
+      "tags": [
+        "arithmetic",
+        "output"
+      ]
+    },
+    {
+      "id": "floor-division-negative",
+      "prompt": "What does this print?",
+      "code": "print(-7 // 2)",
+      "choices": [
+        "-4",
+        "-3",
+        "-3.5",
+        "3"
+      ],
+      "answerIndex": 0,
+      "explanation": "-7 / 2 is -3.5, and // rounds down towards minus infinity, which gives -4, not -3.",
+      "tags": [
+        "arithmetic",
+        "output"
+      ]
+    },
+    {
+      "id": "operator-precedence",
+      "prompt": "What does this print?",
+      "code": "print(2 + 3 * 4 ** 2)",
+      "choices": [
+        "80",
+        "196",
+        "400",
+        "50"
+      ],
+      "answerIndex": 3,
+      "explanation": "Power first (4 to the power 2 is 16), then multiply (3 times 16 is 48), then add 2: 50.",
+      "tags": [
+        "arithmetic",
+        "output"
+      ]
+    },
+    {
+      "id": "augmented-assignment",
+      "prompt": "What does this print?",
+      "code": "x = 3\nx += 2\nx *= 4\nprint(x)",
+      "choices": [
+        "11",
+        "14",
+        "5",
+        "20"
+      ],
+      "answerIndex": 3,
+      "explanation": "x += 2 makes x 5, then x *= 4 makes it 20. Each shortcut uses the current value.",
+      "tags": [
+        "arithmetic",
+        "output"
+      ]
+    },
+    {
+      "id": "even-condition",
+      "prompt": "Which condition is True exactly when n is even?",
+      "choices": [
+        "n / 2 == 0",
+        "n % 2 == 0",
+        "n // 2 == 0",
+        "n % 2 == 1"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "An even number leaves no remainder when divided by 2. n % 2 == 1 is the test for odd.",
+      "tags": [
+        "arithmetic",
+        "concept"
+      ]
+    },
+    {
+      "id": "last-digit-expression",
+      "prompt": "Which expression gives the last digit of a positive int n?",
+      "choices": [
+        "n % 10",
+        "n // 10",
+        "n / 10",
+        "n[-1]"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "The remainder after dividing by 10 is the last digit. n // 10 removes the last digit instead, and an int cannot be indexed like a string.",
+      "tags": [
+        "arithmetic",
+        "concept"
+      ]
+    },
+    {
+      "id": "average-without-brackets",
+      "prompt": "Task: print the average of a and b. Is this implementation correct?",
+      "code": "a = 4\nb = 8\naverage = a + b / 2\nprint(average)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Division goes first, so this is 4 + 4.0, which prints 8.0 instead of 6.0. Write (a + b) / 2.",
+      "tags": [
+        "arithmetic",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "even-check-print",
+      "prompt": "Task: read a whole number and print True if it is even and False if it is odd. Is this implementation correct?",
+      "code": "n = int(input(\"n? \"))  # the user types 14\nprint(n % 2 == 0)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "The input is converted to an int, and n % 2 == 0 is exactly the even test, so 14 prints True and an odd number prints False.",
+      "tags": [
+        "arithmetic",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "minutes-to-hours",
+      "prompt": "Task: turn a number of minutes into hours and minutes, so 135 prints 2 15. Is this implementation correct?",
+      "code": "total = 135\nhours = total // 60\nminutes = total % 60\nprint(hours, minutes)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "// 60 gives the whole hours (2) and % 60 gives the minutes left over (15).",
+      "tags": [
+        "arithmetic",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-drop-last-digit",
+      "prompt": "Which operator in the gap makes this print 47?",
+      "code": "n = 472\nprint(n ___ 10)",
+      "choices": [
+        "/",
+        "//",
+        "%",
+        "-"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "472 // 10 drops the last digit and stays an int. / would give 47.2 and % would give the last digit, 2.",
+      "tags": [
+        "arithmetic",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "index-past-the-end",
+      "prompt": "What happens?",
+      "code": "s = \"hello\"\nprint(s[5])",
+      "choices": [
+        "IndexError",
+        "o",
+        "An empty line is printed",
+        "None"
+      ],
+      "answerIndex": 0,
+      "explanation": "\"hello\" has indexes 0 to 4. Index 5 does not exist, so it is an IndexError.",
+      "tags": [
+        "strings",
+        "output"
+      ]
+    },
+    {
+      "id": "negative-index",
+      "prompt": "What does this print?",
+      "code": "s = \"hello\"\nprint(s[-2])",
+      "choices": [
+        "e",
+        "o",
+        "IndexError",
+        "l"
+      ],
+      "answerIndex": 3,
+      "explanation": "Negative indexes count from the end: -1 is o, -2 is the l before it.",
+      "tags": [
+        "strings",
+        "output"
+      ]
+    },
+    {
+      "id": "slice-stop-excluded",
+      "prompt": "What does this print?",
+      "code": "s = \"computer\"\nprint(s[1:4])",
+      "choices": [
+        "omp",
+        "ompu",
+        "comp",
+        "omput"
+      ],
+      "answerIndex": 0,
+      "explanation": "The slice starts at index 1 (o) and stops before index 4, so it takes indexes 1, 2 and 3.",
+      "tags": [
+        "strings",
+        "output"
+      ]
+    },
+    {
+      "id": "reverse-with-slice",
+      "prompt": "What does this print?",
+      "code": "print(\"stressed\"[::-1])",
+      "choices": [
+        "stressed",
+        "d",
+        "IndexError",
+        "desserts"
+      ],
+      "answerIndex": 3,
+      "explanation": "A step of -1 walks through the string backwards, which reverses it.",
+      "tags": [
+        "strings",
+        "output"
+      ]
+    },
+    {
+      "id": "string-is-immutable",
+      "prompt": "What happens?",
+      "code": "s = \"cat\"\ns[0] = \"b\"\nprint(s)",
+      "choices": [
+        "bat",
+        "cat",
+        "TypeError",
+        "bcat"
+      ],
+      "answerIndex": 2,
+      "explanation": "Strings cannot be changed in place. Build a new one instead: s = \"b\" + s[1:].",
+      "tags": [
+        "strings",
+        "output"
+      ]
+    },
+    {
+      "id": "method-result-not-stored",
+      "prompt": "What does this print?",
+      "code": "name = \"ada\"\nname.upper()\nprint(name)",
+      "choices": [
+        "ADA",
+        "Ada",
+        "None",
+        "ada"
+      ],
+      "answerIndex": 3,
+      "explanation": "upper() returns a new string, but the result is not stored, so name still holds ada.",
+      "tags": [
+        "strings",
+        "output"
+      ]
+    },
+    {
+      "id": "in-is-case-sensitive",
+      "prompt": "What does this print?",
+      "code": "print(\"ell\" in \"hello\")\nprint(\"Hell\" in \"hello\")",
+      "choices": [
+        "True\nTrue",
+        "False\nFalse",
+        "False\nTrue",
+        "True\nFalse"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "in checks for an exact piece of text. ell is in hello, but Hell with a capital H is not.",
+      "tags": [
+        "strings",
+        "output"
+      ]
+    },
+    {
+      "id": "last-index-from-length",
+      "prompt": "A string s has len(s) == 8. What is the index of its last character?",
+      "choices": [
+        "7",
+        "8",
+        "9",
+        "0"
+      ],
+      "answerIndex": 0,
+      "explanation": "Indexes start at 0, so 8 characters use indexes 0 to 7. The last index is always len(s) - 1.",
+      "tags": [
+        "strings",
+        "concept"
+      ]
+    },
+    {
+      "id": "not-allowed-with-strings",
+      "prompt": "Which of these is NOT allowed?",
+      "choices": [
+        "\"ab\" * 3",
+        "\"ab\" + \"cd\"",
+        "\"ab\" * \"ab\"",
+        "\"b\" in \"abc\""
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "You can repeat a string by an int, but multiplying a string by a string is a TypeError.",
+      "tags": [
+        "strings",
+        "concept"
+      ]
+    },
+    {
+      "id": "first-and-last-char",
+      "prompt": "Task: print the first and the last character of word, separated by a space. Is this implementation correct?",
+      "code": "word = \"python\"\nprint(word[0], word[len(word)])",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "len(word) is 6, but the last index is 5, so word[len(word)] is an IndexError. Use word[len(word) - 1] or word[-1].",
+      "tags": [
+        "strings",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "capitalise-first-letter",
+      "prompt": "Task: make only the first letter of name upper case (ada becomes Ada) and print it. Is this implementation correct?",
+      "code": "name = \"ada\"\nname = name[0].upper() + name[1:]\nprint(name)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "name[0].upper() is A, name[1:] is da, and the new string is stored back in name before printing.",
+      "tags": [
+        "strings",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-last-three",
+      "prompt": "Which slice in the gap prints the last three characters, ing?",
+      "code": "word = \"running\"\nprint(word[___])",
+      "choices": [
+        "3:",
+        "-3",
+        ":3",
+        "-3:"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "[-3:] starts three from the end and runs to the end. [3:] starts at index 3 (ning), and [:3] takes the first three.",
+      "tags": [
+        "strings",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "elif-first-true-wins",
+      "prompt": "What does this print?",
+      "code": "x = 15\nif x > 10:\n    print(\"A\")\nelif x > 5:\n    print(\"B\")\nelse:\n    print(\"C\")",
+      "choices": [
+        "A\nB",
+        "A",
+        "B",
+        "C"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "x > 10 is True, so A is printed and the rest of the chain is skipped, even though x > 5 is also True.",
+      "tags": [
+        "conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "separate-ifs-both-run",
+      "prompt": "What does this print?",
+      "code": "x = 15\nif x > 10:\n    print(\"A\")\nif x > 5:\n    print(\"B\")",
+      "choices": [
+        "A",
+        "B",
+        "A\nB",
+        "Nothing"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "These are two separate if statements, not one chain, so both are checked and both conditions are True.",
+      "tags": [
+        "conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "and-or-not-values",
+      "prompt": "What does this print?",
+      "code": "a = True\nb = False\nprint(a and b, a or b, not b)",
+      "choices": [
+        "True True False",
+        "False True True",
+        "False False True",
+        "True False True"
+      ],
+      "answerIndex": 1,
+      "explanation": "a and b needs both (False), a or b needs one (True), and not b flips False to True.",
+      "tags": [
+        "conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "int-less-than-str",
+      "prompt": "What happens?",
+      "code": "print(7 < \"8\")",
+      "choices": [
+        "True",
+        "TypeError",
+        "False",
+        "7"
+      ],
+      "answerIndex": 1,
+      "explanation": "Python will not order an int against a str, so < raises a TypeError. == would just give False.",
+      "tags": [
+        "conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "single-equals-in-if",
+      "prompt": "What happens?",
+      "code": "x = 5\nif x = 5:\n    print(\"five\")",
+      "choices": [
+        "five",
+        "Nothing is printed",
+        "NameError",
+        "SyntaxError"
+      ],
+      "answerIndex": 3,
+      "explanation": "A single = is assignment and is not allowed in an if condition. Compare with ==.",
+      "tags": [
+        "conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "indent-decides-the-block",
+      "prompt": "What does this print?",
+      "code": "x = 2\nif x > 5:\n    print(\"big\")\n    print(\"really big\")\nprint(\"end\")",
+      "choices": [
+        "big\nreally big\nend",
+        "really big\nend",
+        "Nothing",
+        "end"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "Both indented prints belong to the if, which is False. Only the unindented last line runs.",
+      "tags": [
+        "conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "or-with-bare-string",
+      "prompt": "Why is if answer == \"y\" or \"yes\": always True?",
+      "choices": [
+        "or only ever checks the first condition",
+        "\"yes\" on its own counts as True, so the or is always True",
+        "== cannot compare strings",
+        "It is not always True; it works correctly"
+      ],
+      "answerIndex": 1,
+      "explanation": "Each side of or is a separate condition. A non-empty string counts as True, so write answer == \"y\" or answer == \"yes\".",
+      "tags": [
+        "conditions",
+        "concept"
+      ]
+    },
+    {
+      "id": "between-inclusive",
+      "prompt": "Which condition means x is between 1 and 10, with 1 and 10 included?",
+      "choices": [
+        "1 <= x <= 10",
+        "1 < x < 10",
+        "x >= 1 or x <= 10",
+        "1 <= x and 10"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "<= includes the ends. With or, every number passes one of the two tests, so that condition is always True.",
+      "tags": [
+        "conditions",
+        "concept"
+      ]
+    },
+    {
+      "id": "grade-wrong-order",
+      "prompt": "Task: print excellent for a score of 90 or more, pass for 50 to 89, and fail below 50. Here the score is 95. Is this implementation correct?",
+      "code": "score = 95\nif score >= 50:\n    print(\"pass\")\nelif score >= 90:\n    print(\"excellent\")\nelse:\n    print(\"fail\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "95 >= 50 is True, so pass is printed and the elif is never checked. Test score >= 90 first.",
+      "tags": [
+        "conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "teen-range",
+      "prompt": "Task: print teen when age is from 13 to 19, both included, and print nothing otherwise. Here age is 13. Is this implementation correct?",
+      "code": "age = 13\nif 13 <= age <= 19:\n    print(\"teen\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "The chained comparison with <= includes both 13 and 19, so 13 prints teen and other ages print nothing.",
+      "tags": [
+        "conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "or-check-always-true",
+      "prompt": "Task: print ok only when answer is \"y\" or \"yes\". Here answer is \"no\". Is this implementation correct?",
+      "code": "answer = \"no\"\nif answer == \"y\" or \"yes\":\n    print(\"ok\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The right side of or is just \"yes\", which counts as True, so ok is printed even for no. Write answer == \"y\" or answer == \"yes\".",
+      "tags": [
+        "conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-odd-test",
+      "prompt": "Which condition in the gap prints odd for 7?",
+      "code": "n = 7\nif ___:\n    print(\"odd\")\nelse:\n    print(\"even\")",
+      "choices": [
+        "n % 2 == 0",
+        "n / 2 == 1",
+        "n % 2 == 1",
+        "n // 2 == 1"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "An odd number leaves a remainder of 1 when divided by 2. n % 2 == 0 is the test for even.",
+      "tags": [
+        "conditions",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "read-traceback-bottom",
+      "prompt": "Where in a traceback do you find the type of error?",
+      "choices": [
+        "On the first line",
+        "In the File ... line N part",
+        "On the last line",
+        "It is not shown"
+      ],
+      "answerIndex": 2,
+      "explanation": "The last line names the error, like TypeError, followed by a message. Start reading there.",
+      "tags": [
+        "reading-errors",
+        "concept"
+      ]
+    },
+    {
+      "id": "syntax-error-nothing-runs",
+      "prompt": "A program has a missing colon on line 8. What happens when you run it?",
+      "choices": [
+        "Lines 1 to 7 run, then it crashes",
+        "It runs everything except line 8",
+        "Nothing runs: Python reports a SyntaxError before line 1",
+        "It runs everything and warns at the end"
+      ],
+      "answerIndex": 2,
+      "explanation": "Python reads the whole file before running it. If it cannot read it, it stops with a SyntaxError and runs nothing.",
+      "tags": [
+        "reading-errors",
+        "concept"
+      ]
+    },
+    {
+      "id": "runtime-error-earlier-lines-run",
+      "prompt": "A program has 10 lines and line 6 divides by zero. Which lines run?",
+      "choices": [
+        "None of them: Python finds the problem first",
+        "All 10, then it reports the error",
+        "Lines 1 to 6, then it skips to line 7",
+        "Lines 1 to 5, then it crashes on line 6"
+      ],
+      "answerIndex": 3,
+      "explanation": "Dividing by zero is only discovered while running. Everything before line 6 has already run, and the program stops at line 6.",
+      "tags": [
+        "reading-errors",
+        "concept"
+      ]
+    },
+    {
+      "id": "why-value-error",
+      "prompt": "What kind of error does int(\"3.5\") cause, and why?",
+      "choices": [
+        "ValueError: it is a str, but not one that int() can turn into a whole number",
+        "TypeError: int() does not accept strings",
+        "SyntaxError: the dot is not allowed",
+        "No error: it gives 3"
+      ],
+      "answerIndex": 0,
+      "explanation": "int() accepts strings like \"35\", so the type is fine. It is the value \"3.5\" that it cannot read, which is a ValueError.",
+      "tags": [
+        "reading-errors",
+        "concept"
+      ]
+    },
+    {
+      "id": "error-len-of-int",
+      "prompt": "What happens?",
+      "code": "print(len(12345))",
+      "choices": [
+        "5",
+        "ValueError",
+        "TypeError",
+        "IndexError"
+      ],
+      "answerIndex": 2,
+      "explanation": "len() works on strings and lists, not on numbers. Using it on an int is a TypeError. len(str(12345)) would give 5.",
+      "tags": [
+        "reading-errors",
+        "output"
+      ]
+    },
+    {
+      "id": "error-missing-colon",
+      "prompt": "What happens?",
+      "code": "x = 4\nif x > 3\n    print(\"big\")",
+      "choices": [
+        "big",
+        "SyntaxError",
+        "IndentationError",
+        "NameError"
+      ],
+      "answerIndex": 1,
+      "explanation": "The if line needs a colon at the end. Without it Python cannot read the code, so it is a SyntaxError.",
+      "tags": [
+        "reading-errors",
+        "output"
+      ]
+    },
+    {
+      "id": "error-block-not-indented",
+      "prompt": "What happens?",
+      "code": "x = 4\nif x > 3:\nprint(\"big\")",
+      "choices": [
+        "big",
+        "NameError",
+        "Nothing is printed",
+        "IndentationError"
+      ],
+      "answerIndex": 3,
+      "explanation": "After a colon Python expects an indented block. The print is not indented, so it is an IndentationError.",
+      "tags": [
+        "reading-errors",
+        "output"
+      ]
+    },
+    {
+      "id": "error-divide-by-zero",
+      "prompt": "What happens?",
+      "code": "count = 0\nprint(10 / count)",
+      "choices": [
+        "0",
+        "inf",
+        "ValueError",
+        "ZeroDivisionError"
+      ],
+      "answerIndex": 3,
+      "explanation": "count is 0, and dividing by zero is not allowed in Python. It does not give infinity.",
+      "tags": [
+        "reading-errors",
+        "output"
+      ]
+    },
+    {
+      "id": "error-index-empty-string",
+      "prompt": "What happens?",
+      "code": "s = \"\"\nprint(s[0])",
+      "choices": [
+        "An empty line is printed",
+        "IndexError",
+        "None",
+        "ValueError"
+      ],
+      "answerIndex": 1,
+      "explanation": "An empty string has no characters at all, so even index 0 does not exist.",
+      "tags": [
+        "reading-errors",
+        "output"
+      ]
+    },
+    {
+      "id": "safe-division",
+      "prompt": "Task: print a / b, or print cannot divide when b is 0. Here b is 0. Is this implementation correct?",
+      "code": "a = 10\nb = 0\nif b != 0:\n    print(a / b)\nelse:\n    print(\"cannot divide\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "The division only happens when b is not 0, so this prints cannot divide instead of crashing.",
+      "tags": [
+        "reading-errors",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "plus-one-with-str",
+      "prompt": "Task: read a whole number and print that number plus 1. Is this implementation correct?",
+      "code": "n = input(\"n? \")  # the user types 9\nn = int(n)\nprint(n + \"1\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "n is converted correctly, but \"1\" in quotes is a str, so n + \"1\" is a TypeError. Write n + 1.",
+      "tags": [
+        "reading-errors",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fix-which-version-runs",
+      "prompt": "Which version prints 5 without an error?",
+      "choices": [
+        "total = 5\nprint(Total)",
+        "total = 5\nprint(total)",
+        "print(total)\ntotal = 5",
+        "total = 5\nprint(\"total\")"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "The name must be assigned before it is used and spelled with the same case. In quotes, total is just the word total.",
+      "tags": [
+        "reading-errors",
+        "fix"
+      ]
+    }
+  ]
+}
