@@ -82,6 +82,12 @@
           "why": "Without quotes, Python thinks **Alice** is the name of a variable. Text always needs quotes."
         },
         {
+          "type": "bug",
+          "wrong": "x = 7\nprint(type(x) == \"int\")",
+          "right": "x = 7\nprint(type(x) == int)",
+          "why": "**type()** gives back the type itself, not its name as text. Compared with the str **\"int\"** it is never equal, so the first version prints False. Compare with **int** without quotes."
+        },
+        {
           "type": "tip",
           "text": "A number inside quotes is text, not a number. **\"7\" + 1** is an error. You will see this again with **input()**, which always gives you text."
         },
@@ -141,6 +147,36 @@
         {
           "type": "text",
           "text": "When **b = a \\* 3** ran, a was 2, so b got 6. Changing a later does not change b."
+        },
+        {
+          "type": "table",
+          "caption": "Tracing it line by line: the value of each variable after each line",
+          "headers": [
+            "Line",
+            "a",
+            "b"
+          ],
+          "rows": [
+            [
+              "a = 2",
+              "2",
+              "(not made yet)"
+            ],
+            [
+              "b = a \\* 3",
+              "2",
+              "6"
+            ],
+            [
+              "a = 10",
+              "10",
+              "6"
+            ]
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "When code confuses you, trace it like this on paper: one row per line, one column per variable. It is the single most useful habit in this course."
         },
         {
           "type": "heading",
@@ -291,6 +327,12 @@
           "why": "With a str, \\* repeats the text, so typing 4 prints 44. Convert with **int()** to get 8."
         },
         {
+          "type": "bug",
+          "wrong": "age = input(\"Age? \")\nif age >= 18:\n    print(\"adult\")",
+          "right": "age = int(input(\"Age? \"))\nif age >= 18:\n    print(\"adult\")",
+          "why": "Comparing the str **\"20\"** with the int **18** using **>=** is a **TypeError**. Convert the input as soon as you read it."
+        },
+        {
           "type": "heading",
           "text": "print()"
         },
@@ -319,6 +361,12 @@
         {
           "type": "text",
           "text": "Put an **f** before the quotes and write any expression inside **{ }**. Python works it out and turns it into text for you, so you do not need **str()**."
+        },
+        {
+          "type": "code",
+          "caption": "Add **:.2f** inside the braces to show exactly 2 decimals:",
+          "code": "price = 3.14159\nprint(f\"{price:.2f}\")\nprint(f\"Total: {price * 2:.1f}\")",
+          "output": "3.14\nTotal: 6.3"
         },
         {
           "type": "bug",
@@ -445,6 +493,41 @@
         },
         {
           "type": "heading",
+          "text": "Worked example: the digits of a number"
+        },
+        {
+          "type": "code",
+          "code": "n = 472\nhundreds = n // 100\ntens = n // 10 % 10\nones = n % 10\nprint(hundreds, tens, ones)\nprint(hundreds + tens + ones)",
+          "output": "4 7 2\n13"
+        },
+        {
+          "type": "table",
+          "caption": "Each digit with // and %",
+          "headers": [
+            "Expression",
+            "Worked out",
+            "Value"
+          ],
+          "rows": [
+            [
+              "n // 100",
+              "472 // 100",
+              "4"
+            ],
+            [
+              "n // 10 % 10",
+              "47 % 10",
+              "7"
+            ],
+            [
+              "n % 10",
+              "472 % 10",
+              "2"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
           "text": "Order of operations"
         },
         {
@@ -463,6 +546,12 @@
           "why": "Division happens before addition, so the first line computes a + (b / 2). Put the sum in brackets."
         },
         {
+          "type": "bug",
+          "wrong": "area = side ^ 2",
+          "right": "area = side ** 2",
+          "why": "**^** is not the power operator in Python. It is a different operator you will not need here, and **5 ^ 2** gives 7, without any error. Power is two stars."
+        },
+        {
           "type": "heading",
           "text": "Shortcuts"
         },
@@ -478,6 +567,194 @@
         {
           "type": "tip",
           "text": "An int combined with a float always gives a float: **3 + 1.0** is **4.0**."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**/** always gives a float; **//** gives a whole number, rounded down.",
+            "**%** is the remainder: **n % 2 == 0** means even, **n % 10** is the last digit.",
+            "Power is two stars (\\*\\*), never **^**.",
+            "Power, then \\* / // %, then + and -. Brackets when in doubt."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "builtin-functions",
+      "title": "Built-in functions you use every day",
+      "summary": "Call len, abs, round, min, max and the type functions, use what they give back, and avoid the classic calling mistakes.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "A **function call** is a name followed by brackets: **len(\"hello\")**. The values inside the brackets are the **arguments**. The function does its job and gives a value back, which you can print, store or use in a bigger calculation."
+        },
+        {
+          "type": "text",
+          "text": "You have been calling functions since your first program: **print()**, **input()**, **int()** and **type()** are all built-in functions. Python has a small set of them that you will use in almost every program."
+        },
+        {
+          "type": "table",
+          "caption": "Anatomy of a function call",
+          "headers": [
+            "Part",
+            "In len(\"hello\")"
+          ],
+          "rows": [
+            [
+              "the function's name",
+              "**len**"
+            ],
+            [
+              "the brackets",
+              "**( )**: they are what makes it a call"
+            ],
+            [
+              "the argument",
+              "**\"hello\"**"
+            ],
+            [
+              "the value it gives back",
+              "**5**"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "caption": "The built-ins you will use most:",
+          "code": "print(len(\"hello\"))\nprint(abs(-7))\nprint(min(4, 9, 2))\nprint(max(4, 9, 2))\nprint(round(3.14159, 2))",
+          "output": "5\n7\n2\n9\n3.14"
+        },
+        {
+          "type": "table",
+          "caption": "Built-in functions cheat sheet",
+          "headers": [
+            "Function",
+            "What it gives back",
+            "Example",
+            "Gives"
+          ],
+          "rows": [
+            [
+              "**len(x)**",
+              "the number of characters (later: items)",
+              "len(\"cat\")",
+              "3"
+            ],
+            [
+              "**abs(x)**",
+              "the distance from 0, never negative",
+              "abs(-4)",
+              "4"
+            ],
+            [
+              "**min(a, b, ...)**",
+              "the smallest argument",
+              "min(3, 1, 2)",
+              "1"
+            ],
+            [
+              "**max(a, b, ...)**",
+              "the largest argument",
+              "max(3, 1, 2)",
+              "3"
+            ],
+            [
+              "**round(x)**",
+              "x rounded to a whole number (an int)",
+              "round(2.7)",
+              "3"
+            ],
+            [
+              "**round(x, n)**",
+              "x rounded to n decimals",
+              "round(2.567, 1)",
+              "2.6"
+            ],
+            [
+              "**type(x)**",
+              "the type of x",
+              "type(2.0)",
+              "<class 'float'>"
+            ],
+            [
+              "**int(x)**, **float(x)**, **str(x)**",
+              "x converted to that type",
+              "int(\"7\")",
+              "7"
+            ],
+            [
+              "**print(x)**",
+              "nothing useful: **None**",
+              "print(\"hi\")",
+              "None (hi appears on screen)"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "round() and the halves"
+        },
+        {
+          "type": "code",
+          "code": "print(round(2.5))\nprint(round(3.5))\nprint(round(2.6))",
+          "output": "2\n4\n3"
+        },
+        {
+          "type": "text",
+          "text": "A value exactly halfway between two whole numbers rounds to the **even** one: **round(2.5)** is 2 and **round(3.5)** is 4. Everything else rounds the way you expect. It surprises almost everyone, so remember it."
+        },
+        {
+          "type": "heading",
+          "text": "Using what a function gives back"
+        },
+        {
+          "type": "code",
+          "code": "word = \"banana\"\nn = len(word)\nprint(n * 2)\nprint(max(3, 8) + 1)\nprint(len(str(12345)))",
+          "output": "12\n9\n5"
+        },
+        {
+          "type": "text",
+          "text": "A call can go anywhere a value can go: in a calculation, in an assignment, or inside another call. Nested calls are worked out **from the inside out**: **str(12345)** gives **\"12345\"**, then **len()** counts its 5 characters."
+        },
+        {
+          "type": "heading",
+          "text": "What goes wrong"
+        },
+        {
+          "type": "code",
+          "caption": "An argument of the wrong type is a **TypeError**:",
+          "code": "print(len(2026))",
+          "output": "TypeError: object of type 'int' has no len()"
+        },
+        {
+          "type": "text",
+          "text": "**len()** counts characters, and a number has no characters. Turn it into text first: **len(str(2026))** is 4."
+        },
+        {
+          "type": "bug",
+          "wrong": "name = input\nprint(name)",
+          "right": "name = input(\"Name? \")\nprint(name)",
+          "why": "Without brackets nothing is called. **name = input** only gives the function a second name, so print shows something like **<built-in function input>** instead of what the user typed."
+        },
+        {
+          "type": "bug",
+          "wrong": "len = 3\nprint(len(\"abc\"))",
+          "right": "size = 3\nprint(len(\"abc\"))",
+          "why": "**len = 3** replaces the built-in **len** with the number 3, so **len(\"abc\")** turns into **3(\"abc\")**: **TypeError: 'int' object is not callable**. Never name a variable **len**, **max**, **min**, **sum**, **str**, **int**, **list** or **input**."
+        },
+        {
+          "type": "tip",
+          "text": "**print()** shows a value; it does not give one back. If you want to use a result later, store what the function returns: **n = len(word)**, not **n = print(len(word))**."
+        },
+        {
+          "type": "list",
+          "items": [
+            "A call is a name plus brackets; the brackets are not optional.",
+            "**len**, **abs**, **min**, **max**, **round** each give a value back. Use it, store it or print it.",
+            "Nested calls run from the inside out.",
+            "**round(2.5)** is 2: halves go to the even number.",
+            "Do not use built-in names as variable names."
+          ]
         }
       ]
     },
@@ -623,6 +900,19 @@
           "why": "You cannot change a character inside a string. Build a new string from pieces and store that instead."
         },
         {
+          "type": "heading",
+          "text": "Comparing strings"
+        },
+        {
+          "type": "code",
+          "code": "print(\"apple\" < \"banana\")\nprint(\"Zebra\" < \"apple\")\nprint(\"10\" < \"9\")",
+          "output": "True\nTrue\nTrue"
+        },
+        {
+          "type": "text",
+          "text": "Strings compare character by character, like a dictionary, but **every capital letter comes before every small letter**. Digits in a string are characters too: **\"10\" < \"9\"** is True because **\"1\"** comes before **\"9\"**. Compare numbers as numbers: convert first."
+        },
+        {
           "type": "list",
           "items": [
             "Indexes start at **0**; the last one is **len(s) - 1**, or **-1**.",
@@ -704,6 +994,12 @@
           "text": "Separate **if** statements are all checked, one after another. An **elif** is only checked when everything above it in the chain was False."
         },
         {
+          "type": "bug",
+          "wrong": "if x > 10:\n    print(\"big\")\nelse if x > 5:\n    print(\"medium\")",
+          "right": "if x > 10:\n    print(\"big\")\nelif x > 5:\n    print(\"medium\")",
+          "why": "Python spells it **elif**, one word. **else if** on one line is a **SyntaxError** (other languages allow it, Python does not)."
+        },
+        {
           "type": "heading",
           "text": "and, or, not"
         },
@@ -744,6 +1040,10 @@
           "why": "Each side of **or** is its own condition. The text **\"yes\"** on its own counts as True, so the first version is always True."
         },
         {
+          "type": "tip",
+          "text": "The lesson **Combining conditions** goes deeper into **and**, **or** and **not**: truth tables, ranges, and why the order of the two sides can matter."
+        },
+        {
           "type": "heading",
           "text": "Indentation is the block"
         },
@@ -772,6 +1072,207 @@
         {
           "type": "tip",
           "text": "Every **if**, **elif** and **else** line ends with a colon, and the block under it is indented by 4 spaces."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**=** stores, **==** compares.",
+            "In an **if / elif / else** chain only the first True branch runs, so put the strictest test first.",
+            "**else** has no condition; it runs when nothing above it was True.",
+            "Indentation decides what is inside the **if**."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "combining-conditions",
+      "title": "Combining conditions: and, or, not",
+      "summary": "Combine conditions with and, or and not, write ranges correctly, and use short-circuiting to keep a check safe.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "**and** is True only when **both** sides are True. **or** is True when **at least one** side is True. **not** turns True into False and False into True."
+        },
+        {
+          "type": "text",
+          "text": "A single comparison answers one question, like **age >= 18**. Real decisions often need two: old enough **and** has a ticket; weekend **or** holiday. **and**, **or** and **not** combine conditions into one."
+        },
+        {
+          "type": "table",
+          "caption": "The truth table: every combination",
+          "headers": [
+            "a",
+            "b",
+            "a and b",
+            "a or b"
+          ],
+          "rows": [
+            [
+              "True",
+              "True",
+              "True",
+              "True"
+            ],
+            [
+              "True",
+              "False",
+              "False",
+              "True"
+            ],
+            [
+              "False",
+              "True",
+              "False",
+              "True"
+            ],
+            [
+              "False",
+              "False",
+              "False",
+              "False"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Read the table by columns: **and** has only one True row (both True); **or** has only one False row (both False). And **not True** is False, **not False** is True."
+        },
+        {
+          "type": "code",
+          "code": "age = 20\nhas_ticket = False\nprint(age >= 18 and has_ticket)\nprint(age >= 18 or has_ticket)\nprint(not has_ticket)",
+          "output": "False\nTrue\nTrue"
+        },
+        {
+          "type": "heading",
+          "text": "Each side must be a complete condition"
+        },
+        {
+          "type": "code",
+          "caption": "This prints even though x is 7:",
+          "code": "x = 7\nif x == 1 or 2:\n    print(\"one or two\")",
+          "output": "one or two"
+        },
+        {
+          "type": "text",
+          "text": "Python reads this as **(x == 1) or (2)**. The left side is False, but the right side is just the number **2**, and every number except 0 counts as True. So the whole condition is always True."
+        },
+        {
+          "type": "bug",
+          "wrong": "if x == 1 or 2:\n    print(\"one or two\")",
+          "right": "if x == 1 or x == 2:\n    print(\"one or two\")",
+          "why": "Repeat the variable on both sides of **or**. Each side must be a full comparison."
+        },
+        {
+          "type": "code",
+          "caption": "Or list the allowed values and use **in**:",
+          "code": "x = 7\nprint(x == 1 or x == 2)\nprint(x in (1, 2))",
+          "output": "False\nFalse"
+        },
+        {
+          "type": "text",
+          "text": "**x in (1, 2)** is True when x equals one of the values in the brackets. It is a short way to write a long chain of **or**."
+        },
+        {
+          "type": "heading",
+          "text": "Ranges"
+        },
+        {
+          "type": "code",
+          "code": "x = 15\nprint(x >= 10 and x <= 20)\nprint(10 <= x <= 20)",
+          "output": "True\nTrue"
+        },
+        {
+          "type": "text",
+          "text": "Both lines mean \"x is from 10 to 20\". Python lets you chain the comparisons the way you would write them in maths."
+        },
+        {
+          "type": "bug",
+          "wrong": "if x >= 10 or x <= 20:\n    print(\"in range\")",
+          "right": "if x >= 10 and x <= 20:\n    print(\"in range\")",
+          "why": "Every number is at least 10 **or** at most 20, so the first version is True for every x, even 500. A range needs **and**."
+        },
+        {
+          "type": "tip",
+          "text": "Outside a range is the opposite: **x < 10 or x > 20**. That one needs **or**, because no number is below 10 and above 20 at the same time."
+        },
+        {
+          "type": "heading",
+          "text": "Short-circuit: Python stops as soon as it knows"
+        },
+        {
+          "type": "code",
+          "code": "count = 0\ntotal = 10\nprint(count != 0 and total / count > 2)",
+          "output": "False"
+        },
+        {
+          "type": "text",
+          "text": "With **and**, if the left side is False the whole thing is False, so Python does not even look at the right side: the division by zero never happens. With **or**, if the left side is True, Python skips the right side."
+        },
+        {
+          "type": "code",
+          "caption": "Swap the two sides and it crashes:",
+          "code": "count = 0\ntotal = 10\nprint(total / count > 2 and count != 0)",
+          "output": "ZeroDivisionError: division by zero"
+        },
+        {
+          "type": "tip",
+          "text": "Put the safety check first: **count != 0 and ...**, or **i < len(s) and s[i] == \"x\"**. The order of the two sides matters."
+        },
+        {
+          "type": "heading",
+          "text": "Flipping a combined condition"
+        },
+        {
+          "type": "table",
+          "caption": "When you flip, and becomes or, and or becomes and",
+          "headers": [
+            "Instead of",
+            "You can write",
+            "In words"
+          ],
+          "rows": [
+            [
+              "not (a and b)",
+              "(not a) or (not b)",
+              "not both: at least one is False"
+            ],
+            [
+              "not (a or b)",
+              "(not a) and (not b)",
+              "neither of them"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "code": "raining = False\ncold = True\nprint(not (raining or cold))\nprint(not raining and not cold)",
+          "output": "False\nFalse"
+        },
+        {
+          "type": "text",
+          "text": "\"Not (raining or cold)\" describes a day that is neither raining nor cold. Both lines say exactly that."
+        },
+        {
+          "type": "heading",
+          "text": "Nested if, or and?"
+        },
+        {
+          "type": "code",
+          "code": "age = 20\nmember = True\nif age >= 18:\n    if member:\n        print(\"discount\")\nif age >= 18 and member:\n    print(\"discount\")",
+          "output": "discount\ndiscount"
+        },
+        {
+          "type": "text",
+          "text": "Both versions do the same. Use **and** when you only care about the case where both are True. Use a nested **if** when the inner check needs its own **else**, for example to print a different message for adults who are not members."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**and**: both. **or**: at least one. **not**: the opposite.",
+            "Each side of **and** and **or** is a full comparison: **x == 1 or x == 2**.",
+            "A range is **and** (or **10 <= x <= 20**); outside a range is **or**.",
+            "Python skips the right side once the answer is known, so put safety checks first."
+          ]
         }
       ]
     },
@@ -840,6 +1341,11 @@
               "**IndexError**",
               "that position does not exist",
               "s[len(s)], or s[0] on an empty string"
+            ],
+            [
+              "**AttributeError**",
+              "this type has no method with that name",
+              "\"hi\".append(\"!\"), or a typo like s.uper()"
             ]
           ]
         },
@@ -865,6 +1371,16 @@
           "output": "IndentationError: expected an indented block after 'if' statement on line 1"
         },
         {
+          "type": "code",
+          "caption": "A method this type does not have:",
+          "code": "word = \"hi\"\nword.append(\"!\")",
+          "output": "AttributeError: 'str' object has no attribute 'append'"
+        },
+        {
+          "type": "text",
+          "text": "Read the message literally: **'str' object has no attribute 'append'** means strings have no **append()** method. That one belongs to lists. Use **word + \"!\"** to build a longer string."
+        },
+        {
           "type": "bug",
           "wrong": "print(Hello)",
           "right": "print(\"Hello\")",
@@ -880,7 +1396,8 @@
             "**TypeError**: the wrong type for this operation.",
             "**ValueError**: the right type, but an impossible value.",
             "**NameError**: an unknown name. Check the spelling and the quotes.",
-            "**IndexError**: a position past the end."
+            "**IndexError**: a position past the end.",
+            "**AttributeError**: a method this type does not have, or a typo in its name."
           ]
         }
       ]
@@ -1087,6 +1604,73 @@
       ]
     },
     {
+      "id": "type-of-empty-string",
+      "prompt": "What does this print?",
+      "code": "print(type(\"\"))",
+      "choices": [
+        "<class 'str'>",
+        "<class 'NoneType'>",
+        "Nothing: an empty string has no type",
+        "<class 'int'>"
+      ],
+      "answerIndex": 0,
+      "explanation": "Two quotes with nothing between them are still a str: the empty string. It has length 0, but its type is str.",
+      "tags": [
+        "values-and-types",
+        "output"
+      ]
+    },
+    {
+      "id": "true-plus-true",
+      "prompt": "What does this print?",
+      "code": "print(True + True)",
+      "choices": [
+        "TrueTrue",
+        "2",
+        "True",
+        "TypeError"
+      ],
+      "answerIndex": 1,
+      "explanation": "In arithmetic, True counts as 1 and False as 0, so True + True is 2. This is handy later for counting how many things are True.",
+      "tags": [
+        "values-and-types",
+        "output"
+      ]
+    },
+    {
+      "id": "type-compare-with-string",
+      "prompt": "Task: print True when the value in x is an int. Here x is 7. Is this implementation correct?",
+      "code": "x = 7\nprint(type(x) == \"int\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "type(x) gives back the type int itself, not the text \"int\". A type is never equal to a str, so this prints False. Compare with int, without quotes.",
+      "tags": [
+        "values-and-types",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-float-type",
+      "prompt": "Which value in the gap makes this print <class 'float'>?",
+      "code": "print(type(___))",
+      "choices": [
+        "7",
+        "\"7.0\"",
+        "7.0",
+        "float"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "The decimal point makes 7.0 a float. 7 is an int and \"7.0\" is a str. type(float) asks for the type of the type itself, which is not what you want.",
+      "tags": [
+        "values-and-types",
+        "fill-in"
+      ]
+    },
+    {
       "id": "assignment-direction",
       "prompt": "What does the line score = 10 do?",
       "choices": [
@@ -1279,6 +1863,74 @@
       "codeChoices": true,
       "answerIndex": 0,
       "explanation": "a, b = b, a works out both values on the right first, then stores them, so nothing is lost. a == b only compares and changes nothing.",
+      "tags": [
+        "variables",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "copy-then-change",
+      "prompt": "What does this print?",
+      "code": "x = 5\ny = x\nx = x + 1\nprint(x, y)",
+      "choices": [
+        "6 6",
+        "6 5",
+        "5 5",
+        "5 6"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "y = x stores the value 5 in y. Changing x afterwards gives x a new value but leaves y alone.",
+      "tags": [
+        "variables",
+        "output"
+      ]
+    },
+    {
+      "id": "number-on-the-left",
+      "prompt": "Which line is NOT allowed in Python?",
+      "choices": [
+        "x = 5",
+        "x = x * 5",
+        "x5 = 5",
+        "5 = x"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "The left side of = must be a name to store the value under. A number cannot be a name, so 5 = x is a SyntaxError. x5 is a fine name: digits are allowed, just not first.",
+      "tags": [
+        "variables",
+        "concept"
+      ]
+    },
+    {
+      "id": "double-three-times",
+      "prompt": "Task: start x at 1, double it three times, then print it. The result must be 8. Is this implementation correct?",
+      "code": "x = 1\nx = x * 2\nx = x * 2\nx = x * 2\nprint(x)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Each line takes the current x, doubles it and stores it back: 1, 2, 4, 8. Writing the same line three times is exactly right here.",
+      "tags": [
+        "variables",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-increment",
+      "prompt": "Which line in the gap makes this print 8?",
+      "code": "count = 7\n___\nprint(count)",
+      "choices": [
+        "count = count + 1",
+        "count + 1",
+        "count == count + 1",
+        "count = + 1"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "count + 1 works out 8 but stores it nowhere, and == only compares. count = + 1 stores plus one, so count becomes 1. Only count = count + 1 updates count.",
       "tags": [
         "variables",
         "fill-in"
@@ -1487,6 +2139,74 @@
       ]
     },
     {
+      "id": "fstring-two-decimals",
+      "prompt": "What does this print?",
+      "code": "price = 2.5\nprint(f\"{price:.2f}\")",
+      "choices": [
+        "2.5",
+        "2.5:.2f",
+        "2",
+        "2.50"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": ":.2f inside the braces shows the number with exactly 2 decimals, adding a 0 when needed.",
+      "tags": [
+        "input-and-print",
+        "output"
+      ]
+    },
+    {
+      "id": "input-compare-typeerror",
+      "prompt": "The user types 20. What happens?",
+      "code": "age = input(\"Age? \")  # the user types 20\nprint(age >= 18)",
+      "choices": [
+        "True",
+        "False",
+        "TypeError",
+        "20"
+      ],
+      "answerIndex": 2,
+      "explanation": "age holds the text \"20\". Comparing a str with an int using >= is not allowed, so Python raises a TypeError. Convert with int() first.",
+      "tags": [
+        "input-and-print",
+        "output"
+      ]
+    },
+    {
+      "id": "hello-name-extra-space",
+      "prompt": "Task: ask for a name and print Hello, then the name, then an exclamation mark straight after it. For Sam that is Hello, Sam! Is this implementation correct?",
+      "code": "name = input(\"Name? \")  # the user types Sam\nprint(\"Hello,\", name, \"!\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Commas in print() put a space between every value, so this prints Hello, Sam ! with a space before the !. Use an f-string: print(f\"Hello, {name}!\").",
+      "tags": [
+        "input-and-print",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-convert-input",
+      "prompt": "The user types 7. Which function in the gap makes this print 8?",
+      "code": "n = ___(input(\"n? \"))  # the user types 7\nprint(n + 1)",
+      "choices": [
+        "float",
+        "str",
+        "print",
+        "int"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "int() turns the text \"7\" into the whole number 7, and 7 + 1 is 8. float() would print 8.0, and str() keeps it text, so + 1 crashes.",
+      "tags": [
+        "input-and-print",
+        "fill-in"
+      ]
+    },
+    {
       "id": "slash-gives-float",
       "prompt": "What does this print?",
       "code": "print(10 / 2)",
@@ -1683,6 +2403,338 @@
       "tags": [
         "arithmetic",
         "fill-in"
+      ]
+    },
+    {
+      "id": "caret-is-not-power",
+      "prompt": "What does this print?",
+      "code": "print(5 ^ 2)",
+      "choices": [
+        "25",
+        "10",
+        "7",
+        "SyntaxError"
+      ],
+      "answerIndex": 2,
+      "explanation": "^ is not power in Python. It is a different operator you will not need, and 5 ^ 2 happens to give 7, with no error to warn you. Power is two stars.",
+      "tags": [
+        "arithmetic",
+        "output"
+      ]
+    },
+    {
+      "id": "which-gives-an-int",
+      "prompt": "Which of these gives an int?",
+      "choices": [
+        "8 / 2",
+        "8.0 // 2",
+        "8 // 2",
+        "8 / 2.0"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "/ always gives a float. // gives a whole number, but as soon as one side is a float the result is a float too: 8.0 // 2 is 4.0.",
+      "tags": [
+        "arithmetic",
+        "concept"
+      ]
+    },
+    {
+      "id": "digit-sum-unusual-middle",
+      "prompt": "Task: print the sum of the digits of the 3-digit number n. For 905 that is 9 + 0 + 5 = 14. Is this implementation correct?",
+      "code": "n = 905\nfirst = n // 100\nlast = n % 10\nmiddle = (n - first * 100) // 10\nprint(first + middle + last)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "The middle digit is found in an unusual way, but it works: 905 - 900 is 5, and 5 // 10 is 0. So it prints 9 + 0 + 5 = 14.",
+      "tags": [
+        "arithmetic",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-power",
+      "prompt": "Which operator in the gap makes this print 25?",
+      "code": "side = 5\narea = side ___ 2\nprint(area)",
+      "choices": [
+        "^",
+        "*",
+        "//",
+        "**"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "5 to the power 2 is 25, and power is two stars. One star multiplies (10), and ^ is not power at all (7).",
+      "tags": [
+        "arithmetic",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "which-builtin-counts",
+      "prompt": "Which built-in function gives the number of characters in a string?",
+      "choices": [
+        "count",
+        "len",
+        "size",
+        "length"
+      ],
+      "answerIndex": 1,
+      "explanation": "len() gives the length: len(\"cat\") is 3. Python has no built-in size() or length() function.",
+      "tags": [
+        "builtin-functions",
+        "concept"
+      ]
+    },
+    {
+      "id": "call-needs-brackets",
+      "prompt": "What turns len into a function call?",
+      "choices": [
+        "Brackets after the name, with the argument inside: len(word)",
+        "A colon after the name: len:",
+        "Quotes around the name: \"len\"",
+        "Nothing: writing len on its own calls it"
+      ],
+      "answerIndex": 0,
+      "explanation": "The brackets make the call. Without them, len is just the name of the function, and nothing happens.",
+      "tags": [
+        "builtin-functions",
+        "concept"
+      ]
+    },
+    {
+      "id": "dont-name-variable-len",
+      "prompt": "Why should you never name a variable len?",
+      "choices": [
+        "Variable names cannot have 3 letters",
+        "It is always a SyntaxError",
+        "It replaces the built-in len, so len(...) stops working",
+        "Python quietly renames it to len_ for you"
+      ],
+      "answerIndex": 2,
+      "explanation": "len = 5 is allowed, but from then on the name len means 5, not the function. The next len(word) is a TypeError: 'int' object is not callable.",
+      "tags": [
+        "builtin-functions",
+        "concept"
+      ]
+    },
+    {
+      "id": "round-half-to-even",
+      "prompt": "What does this print?",
+      "code": "print(round(2.5), round(3.5))",
+      "choices": [
+        "3 4",
+        "2 3",
+        "2 4",
+        "2.5 3.5"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "A value exactly halfway rounds to the even whole number: 2.5 goes down to 2 and 3.5 goes up to 4.",
+      "tags": [
+        "builtin-functions",
+        "output"
+      ]
+    },
+    {
+      "id": "round-to-two-decimals",
+      "prompt": "What does this print?",
+      "code": "print(round(3.14159, 2))",
+      "choices": [
+        "3",
+        "3.14",
+        "3.15",
+        "3.14159"
+      ],
+      "answerIndex": 1,
+      "explanation": "The second argument is the number of decimals to keep. 3.14159 rounded to 2 decimals is 3.14, because the next digit (1) is less than 5.",
+      "tags": [
+        "builtin-functions",
+        "output"
+      ]
+    },
+    {
+      "id": "nested-len-of-str",
+      "prompt": "What does this print?",
+      "code": "print(len(str(12345)))",
+      "choices": [
+        "12345",
+        "1",
+        "TypeError",
+        "5"
+      ],
+      "answerIndex": 3,
+      "explanation": "Inside out: str(12345) gives the text \"12345\", and len() counts its 5 characters.",
+      "tags": [
+        "builtin-functions",
+        "output"
+      ]
+    },
+    {
+      "id": "abs-adds-distances",
+      "prompt": "What does this print?",
+      "code": "print(abs(-7) + abs(3))",
+      "choices": [
+        "10",
+        "-4",
+        "4",
+        "-10"
+      ],
+      "answerIndex": 0,
+      "explanation": "abs() gives the distance from 0, which is never negative: abs(-7) is 7 and abs(3) is 3, so the sum is 10.",
+      "tags": [
+        "builtin-functions",
+        "output"
+      ]
+    },
+    {
+      "id": "max-and-min",
+      "prompt": "What does this print?",
+      "code": "print(max(3, 9, 4), min(3, 9, 4))",
+      "choices": [
+        "3 9",
+        "9 3",
+        "4 4",
+        "9 4"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "max() gives the largest argument (9) and min() the smallest (3). The order you pass them in does not matter.",
+      "tags": [
+        "builtin-functions",
+        "output"
+      ]
+    },
+    {
+      "id": "shadowed-len",
+      "prompt": "What happens?",
+      "code": "len = 4\nprint(len(\"abc\"))",
+      "choices": [
+        "3",
+        "4",
+        "TypeError",
+        "abc"
+      ],
+      "answerIndex": 2,
+      "explanation": "After len = 4, the name len means the number 4. 4(\"abc\") makes no sense, so Python raises TypeError: 'int' object is not callable.",
+      "tags": [
+        "builtin-functions",
+        "output"
+      ]
+    },
+    {
+      "id": "int-of-float-text",
+      "prompt": "What does this print?",
+      "code": "print(int(float(\"3.7\")))",
+      "choices": [
+        "4",
+        "3.7",
+        "ValueError",
+        "3"
+      ],
+      "answerIndex": 3,
+      "explanation": "int(\"3.7\") alone would be a ValueError, but here float() reads \"3.7\" first. int(3.7) then cuts off the decimals, giving 3; it does not round.",
+      "tags": [
+        "builtin-functions",
+        "output"
+      ]
+    },
+    {
+      "id": "rounded-average",
+      "prompt": "Task: print the average of a, b and c rounded to 2 decimals. For 3, 4 and 4 that is 3.67. Is this implementation correct?",
+      "code": "a = 3\nb = 4\nc = 4\nprint(round((a + b + c) / 3, 2))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "The brackets add first, giving 11 / 3 = 3.666..., and round(..., 2) keeps 2 decimals: 3.67.",
+      "tags": [
+        "builtin-functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "digits-with-len-of-int",
+      "prompt": "Task: print how many digits the whole number n has. For 2026 that is 4. Is this implementation correct?",
+      "code": "n = 2026\nprint(len(n))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "len() only counts characters, and an int has none: len(2026) is a TypeError. Turn the number into text first: len(str(n)).",
+      "tags": [
+        "builtin-functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "largest-of-three-inputs",
+      "prompt": "Task: read three whole numbers and print the largest. Here the user types 4, 9 and 2. Is this implementation correct?",
+      "code": "a = int(input(\"a? \"))  # the user types 4\nb = int(input(\"b? \"))  # the user types 9\nc = int(input(\"c? \"))  # the user types 2\nprint(max(a, b, c))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Each input is converted with int(), so max() compares numbers and gives 9. No if statements are needed.",
+      "tags": [
+        "builtin-functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "distance-with-abs",
+      "prompt": "Task: print the distance between a and b, which is never negative. For 3 and 8 that is 5. Is this implementation correct?",
+      "code": "a = 3\nb = 8\nprint(abs(a) - abs(b))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "abs() is applied to each number separately, so this is 3 - 8 = -5. The distance is abs(a - b): subtract first, then take abs.",
+      "tags": [
+        "builtin-functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-count-chars",
+      "prompt": "Which function in the gap makes this print 6?",
+      "code": "word = \"banana\"\nprint(___(word))",
+      "choices": [
+        "max",
+        "abs",
+        "len",
+        "round"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "len() counts the 6 characters of banana. max(\"banana\") gives the letter that comes last in the alphabet (n), and abs() and round() do not accept text.",
+      "tags": [
+        "builtin-functions",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "fix-round-two-decimals",
+      "prompt": "Which line in the gap prints 3.67?",
+      "code": "x = 3.6666\n___",
+      "choices": [
+        "print(round(x))",
+        "print(int(x * 100) / 100)",
+        "print(round(x, 3))",
+        "print(round(x, 2))"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "round(x, 2) rounds to 2 decimals: 3.67. round(x) gives 4, round(x, 3) gives 3.667, and int(x * 100) / 100 cuts off instead of rounding: 3.66.",
+      "tags": [
+        "builtin-functions",
+        "fix"
       ]
     },
     {
@@ -1887,6 +2939,71 @@
       ]
     },
     {
+      "id": "find-returns-minus-one",
+      "prompt": "What does this print?",
+      "code": "s = \"banana\"\nprint(s.find(\"n\"), s.find(\"z\"))",
+      "choices": [
+        "2 None",
+        "2 -1",
+        "3 0",
+        "ValueError"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "find() gives the index of the first match: the first n in banana is at index 2. When there is no match at all, find() gives -1 instead of crashing.",
+      "tags": [
+        "strings",
+        "output"
+      ]
+    },
+    {
+      "id": "string-compare-digits",
+      "prompt": "What does this print?",
+      "code": "print(\"10\" < \"9\")",
+      "choices": [
+        "False",
+        "TypeError",
+        "ValueError",
+        "True"
+      ],
+      "answerIndex": 3,
+      "explanation": "These are two strings, so they are compared character by character. \"1\" comes before \"9\", so \"10\" < \"9\" is True. Compare numbers as numbers: convert them first.",
+      "tags": [
+        "strings",
+        "output"
+      ]
+    },
+    {
+      "id": "strip-not-stored-length",
+      "prompt": "Task: print how many characters name has once the spaces at both ends are removed. For \"  Ada  \" that is 3. Is this implementation correct?",
+      "code": "name = \"  Ada  \"\nname.strip()\nprint(len(name))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "strip() returns a new string, but nothing stores it, so name still has its spaces and len(name) is 7. Write name = name.strip() first.",
+      "tags": [
+        "strings",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "slice-drop-first-last",
+      "prompt": "Task: print word without its first and its last character. For \"python\" that is ytho. Is this implementation correct?",
+      "code": "word = \"python\"\nprint(word[1:-1])",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "The slice starts at index 1, skipping the first character, and stops before index -1, which is the last character. So it prints ytho.",
+      "tags": [
+        "strings",
+        "correct-or-wrong"
+      ]
+    },
+    {
       "id": "elif-first-true-wins",
       "prompt": "What does this print?",
       "code": "x = 15\nif x > 10:\n    print(\"A\")\nelif x > 5:\n    print(\"B\")\nelse:\n    print(\"C\")",
@@ -2088,6 +3205,334 @@
       ]
     },
     {
+      "id": "else-if-syntax-error",
+      "prompt": "What happens?",
+      "code": "x = 3\nif x > 5:\n    print(\"big\")\nelse if x > 1:\n    print(\"medium\")",
+      "choices": [
+        "medium",
+        "SyntaxError",
+        "big",
+        "Nothing is printed"
+      ],
+      "answerIndex": 1,
+      "explanation": "Python spells it elif. else if on one line is not valid Python, so nothing runs at all: it is a SyntaxError.",
+      "tags": [
+        "conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "nested-if-trace",
+      "prompt": "What does this print?",
+      "code": "x = 7\nif x > 5:\n    if x > 10:\n        print(\"A\")\n    else:\n        print(\"B\")\nelse:\n    print(\"C\")",
+      "choices": [
+        "A",
+        "B",
+        "C",
+        "B\nC"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "7 > 5 is True, so Python enters the outer block. Inside it, 7 > 10 is False, so the inner else prints B. The outer else is skipped.",
+      "tags": [
+        "conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "when-else-runs",
+      "prompt": "When does the else block of an if / elif / else chain run?",
+      "choices": [
+        "Only when the if and every elif above it were False",
+        "Always, right after the if block",
+        "When the last elif was False, even if an earlier branch was True",
+        "Never, when the chain has an elif"
+      ],
+      "answerIndex": 0,
+      "explanation": "else has no condition of its own. It is the catch-all: it runs only when no branch above it was True.",
+      "tags": [
+        "conditions",
+        "concept"
+      ]
+    },
+    {
+      "id": "sign-of-zero",
+      "prompt": "Task: print positive for a number above 0, negative for a number below 0 and zero for 0. Here x is 0. Is this implementation correct?",
+      "code": "x = 0\nif x >= 0:\n    print(\"positive\")\nelif x < 0:\n    print(\"negative\")\nelse:\n    print(\"zero\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "x >= 0 is already True for 0, so it prints positive and the else can never run. The first test must be x > 0.",
+      "tags": [
+        "conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "and-needs-both",
+      "prompt": "When is a and b True?",
+      "choices": [
+        "When at least one of them is True",
+        "When exactly one of them is True",
+        "When both are False",
+        "Only when a and b are both True"
+      ],
+      "answerIndex": 3,
+      "explanation": "and is strict: it is True in one case only, when both sides are True.",
+      "tags": [
+        "combining-conditions",
+        "concept"
+      ]
+    },
+    {
+      "id": "when-or-is-false",
+      "prompt": "When is a or b False?",
+      "choices": [
+        "When at least one of them is False",
+        "When exactly one of them is False",
+        "Never: or is always True",
+        "Only when a and b are both False"
+      ],
+      "answerIndex": 3,
+      "explanation": "or needs only one True side. So the only way to get False is when neither side is True.",
+      "tags": [
+        "combining-conditions",
+        "concept"
+      ]
+    },
+    {
+      "id": "flip-not-and",
+      "prompt": "Which condition means the same as not (a and b)?",
+      "choices": [
+        "(not a) and (not b)",
+        "not a and b",
+        "(not a) or (not b)",
+        "a or b"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "not (a and b) means \"not both\", so at least one of them is False: (not a) or (not b). When you flip it, and becomes or.",
+      "tags": [
+        "combining-conditions",
+        "concept"
+      ]
+    },
+    {
+      "id": "why-short-circuit-is-safe",
+      "prompt": "Why does count != 0 and total / count > 2 never crash, even when count is 0?",
+      "choices": [
+        "Python ignores errors inside a condition",
+        "When count != 0 is False, Python skips the right side, because the and is already False",
+        "Dividing by 0 gives 0 inside a condition",
+        "and always checks the right side first"
+      ],
+      "answerIndex": 1,
+      "explanation": "and stops as soon as it knows the answer. A False left side makes the whole and False, so the division is never worked out.",
+      "tags": [
+        "combining-conditions",
+        "concept"
+      ]
+    },
+    {
+      "id": "truth-values-mix",
+      "prompt": "What does this print?",
+      "code": "a = True\nb = False\nprint(a and not b, not a or b)",
+      "choices": [
+        "False True",
+        "True False",
+        "True True",
+        "False False"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "a and not b is True and True, so True. not a or b is False or False, so False.",
+      "tags": [
+        "combining-conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "or-two-always-true",
+      "prompt": "What does this print?",
+      "code": "x = 7\nif x == 1 or 2:\n    print(\"yes\")\nelse:\n    print(\"no\")",
+      "choices": [
+        "no",
+        "yes",
+        "SyntaxError",
+        "Nothing is printed"
+      ],
+      "answerIndex": 1,
+      "explanation": "This is (x == 1) or (2). The left side is False, but 2 on its own counts as True, so the condition is True for every x and it prints yes.",
+      "tags": [
+        "combining-conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "range-and-vs-or",
+      "prompt": "What does this print?",
+      "code": "x = -5\nprint(x >= 0 and x <= 10, x >= 0 or x <= 10)",
+      "choices": [
+        "False True",
+        "True False",
+        "False False",
+        "True True"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "-5 >= 0 is False, so the and is False. -5 <= 10 is True, so the or is True. That is why a range must use and.",
+      "tags": [
+        "combining-conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "short-circuit-no-crash",
+      "prompt": "What does this print?",
+      "code": "count = 0\nprint(count != 0 and 10 / count > 1)",
+      "choices": [
+        "ZeroDivisionError",
+        "True",
+        "False",
+        "0"
+      ],
+      "answerIndex": 2,
+      "explanation": "count != 0 is False, so Python never works out the right side. The whole and is False, with no division by zero.",
+      "tags": [
+        "combining-conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "short-circuit-wrong-order",
+      "prompt": "What happens?",
+      "code": "count = 0\nprint(10 / count > 1 and count != 0)",
+      "choices": [
+        "False",
+        "ZeroDivisionError",
+        "True",
+        "0"
+      ],
+      "answerIndex": 1,
+      "explanation": "Now the division is on the left, so Python works it out first, and 10 / 0 crashes before count != 0 is ever checked.",
+      "tags": [
+        "combining-conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "nested-if-member",
+      "prompt": "What does this print?",
+      "code": "age = 20\nmember = False\nif age >= 18:\n    if member:\n        print(\"discount\")\n    else:\n        print(\"full price\")\nelse:\n    print(\"too young\")",
+      "choices": [
+        "discount",
+        "too young",
+        "Nothing is printed",
+        "full price"
+      ],
+      "answerIndex": 3,
+      "explanation": "20 >= 18 is True, so Python enters the outer block. member is False, so the inner else prints full price.",
+      "tags": [
+        "combining-conditions",
+        "output"
+      ]
+    },
+    {
+      "id": "weekend-or-bug",
+      "prompt": "Task: print weekend only when day is \"sat\" or \"sun\". Here day is \"mon\", so nothing should be printed. Is this implementation correct?",
+      "code": "day = \"mon\"\nif day == \"sat\" or \"sun\":\n    print(\"weekend\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The right side of or is just the text \"sun\", which counts as True, so this prints weekend for every day. It needs day == \"sat\" or day == \"sun\".",
+      "tags": [
+        "combining-conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "percentage-range",
+      "prompt": "Task: print valid when p is from 0 to 100, both included, and invalid otherwise. Here p is 100. Is this implementation correct?",
+      "code": "p = 100\nif 0 <= p <= 100:\n    print(\"valid\")\nelse:\n    print(\"invalid\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "0 <= p <= 100 means p >= 0 and p <= 100. With <= on both ends, 0 and 100 are included, so 100 prints valid.",
+      "tags": [
+        "combining-conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "outside-range-and-bug",
+      "prompt": "Task: print outside when t is below 10 or above 30. Here t is 35. Is this implementation correct?",
+      "code": "t = 35\nif t < 10 and t > 30:\n    print(\"outside\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "No number is below 10 and above 30 at the same time, so the condition is always False and nothing is printed. Outside a range needs or.",
+      "tags": [
+        "combining-conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "safe-ratio-check",
+      "prompt": "Task: print big when count is not 0 and total / count is more than 5, and print not big otherwise. Here count is 0. Is this implementation correct?",
+      "code": "total = 10\ncount = 0\nif count != 0 and total / count > 5:\n    print(\"big\")\nelse:\n    print(\"not big\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "count != 0 is False, so Python skips the division and goes to else. The safety check comes first, so nothing crashes and it prints not big.",
+      "tags": [
+        "combining-conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "not-both-de-morgan",
+      "prompt": "Task: print warning unless a and b are both True. Here a is True and b is False. Is this implementation correct?",
+      "code": "a = True\nb = False\nif not a or not b:\n    print(\"warning\")",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "\"Unless both\" is not (a and b), which is the same as not a or not b. b is False, so not b is True and it prints warning.",
+      "tags": [
+        "combining-conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "fill-in-and-for-range",
+      "prompt": "The range is 11 to 19. Which word in the gap makes this print out of range for 25?",
+      "code": "x = 25\nif x > 10 ___ x < 20:\n    print(\"in range\")\nelse:\n    print(\"out of range\")",
+      "choices": [
+        "or",
+        "and not",
+        ",",
+        "and"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "A range needs both conditions: x > 10 and x < 20. With or, 25 > 10 alone makes it True. and not flips the second test, and a comma is not allowed in an if.",
+      "tags": [
+        "combining-conditions",
+        "fill-in"
+      ]
+    },
+    {
       "id": "read-traceback-bottom",
       "prompt": "Where in a traceback do you find the type of error?",
       "choices": [
@@ -2281,6 +3726,1890 @@
       "tags": [
         "reading-errors",
         "fix"
+      ]
+    },
+    {
+      "id": "attribute-error-typo",
+      "prompt": "What happens?",
+      "code": "name = \"ada\"\nprint(name.uppercase())",
+      "choices": [
+        "AttributeError",
+        "ADA",
+        "NameError",
+        "SyntaxError"
+      ],
+      "answerIndex": 0,
+      "explanation": "Strings have an upper() method, but no uppercase() method. Asking for a method that does not exist is an AttributeError.",
+      "tags": [
+        "reading-errors",
+        "output"
+      ]
+    },
+    {
+      "id": "value-error-word",
+      "prompt": "What happens?",
+      "code": "print(int(\"twelve\"))",
+      "choices": [
+        "12",
+        "TypeError",
+        "ValueError",
+        "NameError"
+      ],
+      "answerIndex": 2,
+      "explanation": "int() does accept a str, so the type is fine. But it can only read digits, and twelve is a word, so this is a ValueError.",
+      "tags": [
+        "reading-errors",
+        "output"
+      ]
+    },
+    {
+      "id": "fix-concat-age",
+      "prompt": "This crashed with TypeError: can only concatenate str (not \"int\") to str. Which line in the gap prints Age: 17?",
+      "code": "age = 17\n___",
+      "choices": [
+        "print(\"Age: \" + int(age))",
+        "print(\"Age: \" + \"age\")",
+        "print(\"Age: \" + str(age))",
+        "print(\"Age: \" * age)"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "The error says + got a str and an int. Turn the int into text with str(age). int(age) is still an int, and \"age\" in quotes is just the word age.",
+      "tags": [
+        "reading-errors",
+        "fix"
+      ]
+    },
+    {
+      "id": "age-next-year-fixed",
+      "prompt": "Task: age_text holds the text \"17\". Print the age next year as a number, 18. Is this implementation correct?",
+      "code": "age_text = \"17\"\nprint(int(age_text) + 1)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "int(age_text) turns \"17\" into the number 17 before adding, so there is no TypeError and it prints 18.",
+      "tags": [
+        "reading-errors",
+        "correct-or-wrong"
+      ]
+    }
+  ],
+  "labs": [
+    {
+      "id": "type-detective",
+      "lesson": "values-and-types",
+      "title": "Type detective",
+      "summary": "Ask Python what type a value is, then convert values from one type to another.",
+      "steps": [
+        {
+          "id": "ask-for-the-type",
+          "mode": "guided",
+          "title": "Ask Python for the type",
+          "instructions": "Type this program, then press **Run** and **Check**. **type(x)** tells you what kind of value **x** is, and **print()** shows the answer.",
+          "guide": [
+            {
+              "code": "print(type(42))",
+              "explain": "**42** is a whole number, so this prints **<class 'int'>**. Note the two closing brackets: one for **type(**, one for **print(**."
+            },
+            {
+              "code": "print(type(3.5))",
+              "explain": "A number with a decimal point is a **float**."
+            },
+            {
+              "code": "print(type(\"42\"))",
+              "explain": "Quotes make it text: **\"42\"** is a **str**, even though it looks like a number."
+            },
+            {
+              "code": "print(type(True))",
+              "explain": "**True** (capital T, no quotes) is a **bool**."
+            }
+          ],
+          "solution": "print(type(42))\nprint(type(3.5))\nprint(type(\"42\"))\nprint(type(True))",
+          "tests": [
+            {
+              "name": "prints the four types",
+              "code": "assert LINES == [\"<class 'int'>\", \"<class 'float'>\", \"<class 'str'>\", \"<class 'bool'>\"]",
+              "fail": "Expected four lines: the types of 42, 3.5, \"42\" and True, in that order."
+            },
+            {
+              "name": "asks type() each time",
+              "code": "assert SOURCE.count('type(') >= 4",
+              "fail": "Use type() for each value instead of typing the answer yourself."
+            }
+          ]
+        },
+        {
+          "id": "two-more",
+          "mode": "change",
+          "title": "Two tricky values",
+          "instructions": "Add two lines at the end: print the type of **42.0** and the type of **\"True\"** (with quotes). Predict the answers before you press Run.",
+          "carryOver": true,
+          "hints": [
+            "**42.0** is a float because of the decimal point, even though it is a whole number.",
+            "Anything in quotes is a **str**."
+          ],
+          "solution": "print(type(42))\nprint(type(3.5))\nprint(type(\"42\"))\nprint(type(True))\nprint(type(42.0))\nprint(type(\"True\"))",
+          "tests": [
+            {
+              "name": "six types",
+              "code": "assert LINES == [\"<class 'int'>\", \"<class 'float'>\", \"<class 'str'>\", \"<class 'bool'>\", \"<class 'float'>\", \"<class 'str'>\"]",
+              "fail": "Expected six lines. 42.0 has a decimal point, so it is a float; \"True\" has quotes, so it is a str."
+            },
+            {
+              "name": "asks type() each time",
+              "code": "assert SOURCE.count('type(') >= 6",
+              "fail": "Use type() for the two new values too."
+            }
+          ]
+        },
+        {
+          "id": "convert",
+          "mode": "change",
+          "title": "Convert between types",
+          "instructions": "Add two more lines at the end. First print **int(\"42\") + 1**: **int()** turns the text into a number, so you can add. Then print **str(42) + \"1\"**: **str()** turns the number into text, so **+** joins.",
+          "carryOver": true,
+          "hints": [
+            "**int(\"42\")** is the number 42, so adding 1 gives 43.",
+            "**str(42)** is the text \"42\", and text plus text sticks them together: \"421\"."
+          ],
+          "solution": "print(type(42))\nprint(type(3.5))\nprint(type(\"42\"))\nprint(type(True))\nprint(type(42.0))\nprint(type(\"True\"))\nprint(int(\"42\") + 1)\nprint(str(42) + \"1\")",
+          "tests": [
+            {
+              "name": "adds and joins",
+              "code": "assert LINES[-2:] == ['43', '421']",
+              "fail": "The last two lines should be 43 (number plus number) and 421 (text joined to text)."
+            },
+            {
+              "name": "uses int() and str()",
+              "code": "assert calls('int') and calls('str')",
+              "fail": "Use int() and str() to convert, not numbers you worked out yourself."
+            }
+          ]
+        },
+        {
+          "id": "ten-three-ways",
+          "mode": "write",
+          "title": "Ten, three ways",
+          "instructions": "On your own, in an empty program: print **10** as an int, then **10.0** made with **float(10)**, then **\"10\"** made with **str(10)**, one per line. Then print the type of each of the three, in the same order. Six lines in total.",
+          "hints": [
+            "**print(float(10))** shows **10.0**.",
+            "**str(10)** prints as **10** without quotes: print never shows the quotes. That is why you need **type()** to tell the difference.",
+            "**print(type(str(10)))** works: the innermost brackets are worked out first."
+          ],
+          "solution": "print(10)\nprint(float(10))\nprint(str(10))\nprint(type(10))\nprint(type(float(10)))\nprint(type(str(10)))",
+          "tests": [
+            {
+              "name": "values and types",
+              "code": "assert LINES == ['10', '10.0', '10', \"<class 'int'>\", \"<class 'float'>\", \"<class 'str'>\"]",
+              "fail": "Expected 10, 10.0, 10, then <class 'int'>, <class 'float'> and <class 'str'>."
+            },
+            {
+              "name": "converts with float() and str()",
+              "code": "assert calls('float') and calls('str') and calls('type')",
+              "fail": "Make the float with float(10) and the text with str(10), and ask type() for the types."
+            }
+          ]
+        },
+        {
+          "id": "predict-then-check",
+          "mode": "challenge",
+          "title": "Predict, then check",
+          "instructions": "Experiment: write down what you expect first, then check with Python. Print, one per line: **int(3.99)**, **float(7)**, **str(3.5) + \"0\"**, and **type(int(\"8\") + 0.5)**.",
+          "hints": [
+            "**int(3.99)** cuts off everything after the decimal point: 3, not 4.",
+            "**str(3.5) + \"0\"** joins two pieces of text.",
+            "An int plus a float gives a float."
+          ],
+          "solution": "print(int(3.99))\nprint(float(7))\nprint(str(3.5) + \"0\")\nprint(type(int(\"8\") + 0.5))",
+          "tests": [
+            {
+              "name": "four results",
+              "code": "assert LINES == ['3', '7.0', '3.50', \"<class 'float'>\"]",
+              "fail": "Expected 3, 7.0, 3.50 and <class 'float'>. int() cuts off the decimals, it does not round."
+            },
+            {
+              "name": "lets Python work it out",
+              "code": "assert calls('int') and calls('float') and calls('str') and calls('type')",
+              "fail": "Print the expressions themselves so Python works them out, not the answers."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "score-keeper",
+      "lesson": "variables",
+      "title": "Score keeper",
+      "summary": "Keep a score in a variable, update it, and swap values between variables.",
+      "steps": [
+        {
+          "id": "keep-score",
+          "mode": "guided",
+          "title": "Keep a score",
+          "instructions": "Type this program. A variable is a name for a value; **=** stores the value on the right in the name on the left. Then **Run** and **Check**.",
+          "guide": [
+            {
+              "code": "score = 0\nprint(score)",
+              "explain": "Make the variable **score** and store **0** in it, then show it."
+            },
+            {
+              "code": "score = score + 10\nprint(score)",
+              "explain": "The right side is worked out first: **score + 10** is 10, and that is stored back in **score**."
+            },
+            {
+              "code": "score += 5\nprint(score)",
+              "explain": "**+=** is a shortcut for **score = score + 5**."
+            }
+          ],
+          "solution": "score = 0\nprint(score)\nscore = score + 10\nprint(score)\nscore += 5\nprint(score)",
+          "tests": [
+            {
+              "name": "shows the score each time",
+              "code": "assert LINES == ['0', '10', '15']",
+              "fail": "Expected 0, then 10, then 15, each on its own line."
+            },
+            {
+              "name": "uses +=",
+              "code": "assert '+=' in SOURCE",
+              "fail": "Use += for the last update."
+            }
+          ]
+        },
+        {
+          "id": "lose-points",
+          "mode": "change",
+          "title": "Lose some points",
+          "instructions": "The player loses 3 points. At the end of your program, take 3 away with **-=** and print the score again.",
+          "carryOver": true,
+          "hints": [
+            "**score -= 3** means **score = score - 3**.",
+            "Don't forget to print the score after the change."
+          ],
+          "solution": "score = 0\nprint(score)\nscore = score + 10\nprint(score)\nscore += 5\nprint(score)\nscore -= 3\nprint(score)",
+          "tests": [
+            {
+              "name": "four scores",
+              "code": "assert LINES == ['0', '10', '15', '12']",
+              "fail": "Expected 0, 10, 15 and then 12."
+            },
+            {
+              "name": "uses -=",
+              "code": "assert '-=' in SOURCE",
+              "fail": "Take the 3 points away with -=."
+            }
+          ]
+        },
+        {
+          "id": "double-it",
+          "mode": "change",
+          "title": "Double the score",
+          "instructions": "A bonus round doubles the score. At the end, use **score \\*= 2** and print the score once more.",
+          "carryOver": true,
+          "hints": [
+            "**score \\*= 2** means **score = score \\* 2**."
+          ],
+          "solution": "score = 0\nprint(score)\nscore = score + 10\nprint(score)\nscore += 5\nprint(score)\nscore -= 3\nprint(score)\nscore *= 2\nprint(score)",
+          "tests": [
+            {
+              "name": "five scores",
+              "code": "assert LINES == ['0', '10', '15', '12', '24']",
+              "fail": "Expected 0, 10, 15, 12 and then 24."
+            },
+            {
+              "name": "uses the multiply shortcut",
+              "code": "assert '*=' in SOURCE",
+              "fail": "Double the score with the multiply shortcut."
+            }
+          ]
+        },
+        {
+          "id": "swap",
+          "mode": "write",
+          "title": "Swap two variables",
+          "instructions": "Swap the values of **a** and **b**, so the last line prints **right left**. Keep the first two lines exactly as they are and add your lines where the comment is.",
+          "starter": "a = \"left\"\nb = \"right\"\n# swap a and b here\n\nprint(a, b)\n",
+          "hints": [
+            "If you write **a = b** first, the old value of **a** is gone. Save it first.",
+            "Use a third variable: **temp = a**, then **a = b**, then **b = temp**."
+          ],
+          "solution": "a = \"left\"\nb = \"right\"\ntemp = a\na = b\nb = temp\nprint(a, b)",
+          "tests": [
+            {
+              "name": "prints right left",
+              "code": "assert LINES == ['right left']",
+              "fail": "After the swap, print(a, b) should show right left."
+            },
+            {
+              "name": "keeps the first two lines",
+              "code": "assert 'a = \"left\"' in SOURCE and 'b = \"right\"' in SOURCE",
+              "fail": "Keep a = \"left\" and b = \"right\" as they are, and swap with extra lines below them."
+            },
+            {
+              "name": "swaps any values",
+              "code": "changed = SOURCE.replace('a = \"left\"', 'a = \"x\"', 1).replace('b = \"right\"', 'b = \"y\"', 1)\nassert run_source(changed).strip() == \"y x\"",
+              "fail": "The swap should work for any values, not just these two words."
+            }
+          ]
+        },
+        {
+          "id": "rotate-three",
+          "mode": "challenge",
+          "title": "Rotate three variables",
+          "instructions": "Experiment: rotate three values so **x** gets **y**'s value, **y** gets **z**'s, and **z** gets **x**'s. The last line should print **2 3 1**. Keep the first three lines as they are. When it works, try Python's one-line way: **x, y, z = y, z, x**.",
+          "starter": "x = 1\ny = 2\nz = 3\n# rotate here\n\nprint(x, y, z)\n",
+          "hints": [
+            "Save the value that would be lost first: **temp = x**.",
+            "Then **x = y**, **y = z**, and finally **z = temp**.",
+            "In **x, y, z = y, z, x**, the right side is worked out completely before anything is stored, so nothing is lost."
+          ],
+          "solution": "x = 1\ny = 2\nz = 3\ntemp = x\nx = y\ny = z\nz = temp\nprint(x, y, z)",
+          "tests": [
+            {
+              "name": "prints 2 3 1",
+              "code": "assert LINES == ['2 3 1']",
+              "fail": "After rotating, print(x, y, z) should show 2 3 1."
+            },
+            {
+              "name": "keeps the first three lines",
+              "code": "assert 'x = 1' in SOURCE and 'y = 2' in SOURCE and 'z = 3' in SOURCE",
+              "fail": "Keep x = 1, y = 2 and z = 3 as they are and rotate with lines below them."
+            },
+            {
+              "name": "rotates any values",
+              "code": "changed = SOURCE.replace(\"x = 1\", \"x = 7\", 1).replace(\"y = 2\", \"y = 8\", 1).replace(\"z = 3\", \"z = 9\", 1)\nassert run_source(changed).strip() == \"8 9 7\"",
+              "fail": "The rotation should work for any three values: with 7, 8, 9 it should print 8 9 7."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "greeting-card",
+      "lesson": "input-and-print",
+      "title": "Greeting card",
+      "summary": "Ask the user questions with input(), convert the answers, and print a message with an f-string.",
+      "steps": [
+        {
+          "id": "say-hello",
+          "mode": "guided",
+          "title": "Say hello",
+          "instructions": "Type this program. When you press **Run**, the typed input box gives **input()** its answer, so you can try other names there. Then press **Check**.",
+          "guide": [
+            {
+              "code": "name = input(\"What is your name? \")",
+              "explain": "**input()** shows the question, waits for the answer and gives it back as a **str**. Store it in **name**."
+            },
+            {
+              "code": "print(\"Hello,\", name)",
+              "explain": "Two values with a comma between them: **print()** puts a space between them for you."
+            }
+          ],
+          "inputs": [
+            "Sam"
+          ],
+          "solution": "name = input(\"What is your name? \")\nprint(\"Hello,\", name)",
+          "tests": [
+            {
+              "name": "greets Sam",
+              "code": "assert LINES == ['Hello, Sam']",
+              "fail": "With the input Sam it should print Hello, Sam."
+            },
+            {
+              "name": "greets anyone",
+              "code": "assert LINES == ['Hello, Ana']",
+              "fail": "With the input Ana it should print Hello, Ana. Use the name the user typed.",
+              "inputs": [
+                "Ana"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ask-age",
+          "mode": "change",
+          "title": "Ask for the age",
+          "instructions": "Ask a second question, **How old are you?**, and store the answer in **age**. Then add a second line with an f-string, so Sam aged 17 gets **Sam is 17 years old**.",
+          "carryOver": true,
+          "inputs": [
+            "Sam",
+            "17"
+          ],
+          "hints": [
+            "Put an **f** before the quotes and the variables in curly brackets: **f\"{name} is {age} years old\"**."
+          ],
+          "solution": "name = input(\"What is your name? \")\nprint(\"Hello,\", name)\nage = input(\"How old are you? \")\nprint(f\"{name} is {age} years old\")",
+          "tests": [
+            {
+              "name": "Sam, 17",
+              "code": "assert LINES == ['Hello, Sam', 'Sam is 17 years old']",
+              "fail": "With the inputs Sam and 17 it should print Hello, Sam and then Sam is 17 years old."
+            },
+            {
+              "name": "Ana, 9",
+              "code": "assert LINES == ['Hello, Ana', 'Ana is 9 years old']",
+              "fail": "With the inputs Ana and 9 it should print Hello, Ana and then Ana is 9 years old.",
+              "inputs": [
+                "Ana",
+                "9"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "next-year",
+          "mode": "change",
+          "title": "Next year",
+          "instructions": "Add a third line: **Next year you will be 18** (for an age of 17). Remember: **input()** always gives a **str**, so convert the age with **int()** before you add 1.",
+          "carryOver": true,
+          "inputs": [
+            "Sam",
+            "17"
+          ],
+          "hints": [
+            "**\"17\" + 1** is a **TypeError**: text plus a number.",
+            "Write **age = int(input(\"How old are you? \"))**, then **{age + 1}** inside the f-string."
+          ],
+          "solution": "name = input(\"What is your name? \")\nprint(\"Hello,\", name)\nage = int(input(\"How old are you? \"))\nprint(f\"{name} is {age} years old\")\nprint(f\"Next year you will be {age + 1}\")",
+          "tests": [
+            {
+              "name": "Sam, 17",
+              "code": "assert LINES == ['Hello, Sam', 'Sam is 17 years old', 'Next year you will be 18']",
+              "fail": "With Sam and 17 the third line should be Next year you will be 18."
+            },
+            {
+              "name": "Ana, 9",
+              "code": "assert LINES == ['Hello, Ana', 'Ana is 9 years old', 'Next year you will be 10']",
+              "fail": "With Ana and 9 the third line should be Next year you will be 10. Work it out from the age.",
+              "inputs": [
+                "Ana",
+                "9"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "receipt",
+          "mode": "write",
+          "title": "A receipt line",
+          "instructions": "On your own: ask for an item, its price and how many, in that order. Then print exactly one line like **3 x apple = 7.5**. The price can have decimals, so use **float()** for it and **int()** for the count.",
+          "inputs": [
+            "apple",
+            "2.5",
+            "3"
+          ],
+          "hints": [
+            "Three **input()** calls, in the order item, price, count.",
+            "**float(input(\"Price? \"))** for the price, **int(input(\"How many? \"))** for the count.",
+            "In an f-string you can calculate: **{price \\* count}**."
+          ],
+          "solution": "item = input(\"Item? \")\nprice = float(input(\"Price? \"))\ncount = int(input(\"How many? \"))\nprint(f\"{count} x {item} = {price * count}\")",
+          "tests": [
+            {
+              "name": "3 apples at 2.5",
+              "code": "assert LINES == ['3 x apple = 7.5']",
+              "fail": "With apple, 2.5 and 3 it should print 3 x apple = 7.5."
+            },
+            {
+              "name": "4 pens at 1.25",
+              "code": "assert LINES == ['4 x pen = 5.0']",
+              "fail": "With pen, 1.25 and 4 it should print 4 x pen = 5.0. Use float() for the price.",
+              "inputs": [
+                "pen",
+                "1.25",
+                "4"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tip",
+          "mode": "challenge",
+          "title": "Tip calculator",
+          "instructions": "Experiment: ask for the bill (it may have decimals) and the tip percentage (a whole number). Print exactly two lines: **Tip: 3.0** and **Total: 23.0** for a bill of 20 and a tip of 15 percent. Then try other numbers in the typed input box.",
+          "inputs": [
+            "20",
+            "15"
+          ],
+          "hints": [
+            "15 percent of the bill is **bill \\* 15 / 100**.",
+            "Store the tip in a variable, then the total is **bill + tip**.",
+            "**print(\"Tip:\", tip)** puts the space in for you."
+          ],
+          "solution": "bill = float(input(\"Bill? \"))\npercent = int(input(\"Tip percentage? \"))\ntip = bill * percent / 100\nprint(\"Tip:\", tip)\nprint(\"Total:\", bill + tip)",
+          "tests": [
+            {
+              "name": "20 with 15 percent",
+              "code": "assert len(LINES) == 2, \"two lines\"\nassert LINES[0].startswith(\"Tip: \") and LINES[1].startswith(\"Total: \")\nassert abs(float(LINES[0][5:]) - 3.0) < 1e-6\nassert abs(float(LINES[1][7:]) - 23.0) < 1e-6",
+              "fail": "With a bill of 20 and 15 percent: Tip: 3.0 and Total: 23.0."
+            },
+            {
+              "name": "50 with 10 percent",
+              "code": "assert len(LINES) == 2, \"two lines\"\nassert LINES[0].startswith(\"Tip: \") and LINES[1].startswith(\"Total: \")\nassert abs(float(LINES[0][5:]) - 5.0) < 1e-6\nassert abs(float(LINES[1][7:]) - 55.0) < 1e-6",
+              "fail": "With a bill of 50 and 10 percent: Tip: 5.0 and Total: 55.0.",
+              "inputs": [
+                "50",
+                "10"
+              ]
+            },
+            {
+              "name": "12.5 with 20 percent",
+              "code": "assert len(LINES) == 2, \"two lines\"\nassert LINES[0].startswith(\"Tip: \") and LINES[1].startswith(\"Total: \")\nassert abs(float(LINES[0][5:]) - 2.5) < 1e-6\nassert abs(float(LINES[1][7:]) - 15.0) < 1e-6",
+              "fail": "With a bill of 12.5 and 20 percent: Tip: 2.5 and Total: 15.0. Use float() for the bill.",
+              "inputs": [
+                "12.5",
+                "20"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "time-converter",
+      "lesson": "arithmetic",
+      "title": "Time converter",
+      "summary": "Turn minutes into hours and minutes with // and %, then use the same trick on slices of pizza and digits.",
+      "steps": [
+        {
+          "id": "hours-and-minutes",
+          "mode": "guided",
+          "title": "Minutes to hours",
+          "instructions": "Type this program. **//** divides and drops the remainder; **%** gives only the remainder. Together they split 135 minutes into 2 hours and 15 minutes.",
+          "guide": [
+            {
+              "code": "minutes = int(input(\"Minutes? \"))",
+              "explain": "Ask for the minutes and convert them to an **int** straight away."
+            },
+            {
+              "code": "hours = minutes // 60",
+              "explain": "How many whole hours fit in: **135 // 60** is 2."
+            },
+            {
+              "code": "rest = minutes % 60",
+              "explain": "What is left over: **135 % 60** is 15."
+            },
+            {
+              "code": "print(hours, \"h\", rest, \"min\")",
+              "explain": "Print the pieces with spaces between them: **2 h 15 min**."
+            }
+          ],
+          "inputs": [
+            "135"
+          ],
+          "solution": "minutes = int(input(\"Minutes? \"))\nhours = minutes // 60\nrest = minutes % 60\nprint(hours, \"h\", rest, \"min\")",
+          "tests": [
+            {
+              "name": "135 minutes",
+              "code": "assert LINES == ['2 h 15 min']",
+              "fail": "With 135 it should print 2 h 15 min."
+            },
+            {
+              "name": "59 minutes",
+              "code": "assert LINES == ['0 h 59 min']",
+              "fail": "With 59 it should print 0 h 59 min.",
+              "inputs": [
+                "59"
+              ]
+            },
+            {
+              "name": "60 minutes",
+              "code": "assert LINES == ['1 h 0 min']",
+              "fail": "With 60 it should print 1 h 0 min.",
+              "inputs": [
+                "60"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "decimal-hours",
+          "mode": "change",
+          "title": "Hours as a decimal",
+          "instructions": "Add a second line that prints the time in hours as a decimal number, using **/**. For 135 minutes that is **2.25**.",
+          "carryOver": true,
+          "inputs": [
+            "135"
+          ],
+          "hints": [
+            "**/** always gives a float: **135 / 60** is 2.25."
+          ],
+          "solution": "minutes = int(input(\"Minutes? \"))\nhours = minutes // 60\nrest = minutes % 60\nprint(hours, \"h\", rest, \"min\")\nprint(minutes / 60)",
+          "tests": [
+            {
+              "name": "135 minutes",
+              "code": "assert LINES == ['2 h 15 min', '2.25']",
+              "fail": "With 135 the second line should be 2.25."
+            },
+            {
+              "name": "90 minutes",
+              "code": "assert LINES == ['1 h 30 min', '1.5']",
+              "fail": "With 90 the second line should be 1.5.",
+              "inputs": [
+                "90"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "seconds",
+          "mode": "change",
+          "title": "And in seconds",
+          "instructions": "Add a third line with the total number of seconds, like **8100 seconds** for 135 minutes.",
+          "carryOver": true,
+          "inputs": [
+            "135"
+          ],
+          "hints": [
+            "One minute is 60 seconds: **minutes \\* 60**.",
+            "**print(minutes \\* 60, \"seconds\")** adds the space for you."
+          ],
+          "solution": "minutes = int(input(\"Minutes? \"))\nhours = minutes // 60\nrest = minutes % 60\nprint(hours, \"h\", rest, \"min\")\nprint(minutes / 60)\nprint(minutes * 60, \"seconds\")",
+          "tests": [
+            {
+              "name": "135 minutes",
+              "code": "assert LINES == ['2 h 15 min', '2.25', '8100 seconds']",
+              "fail": "With 135 the third line should be 8100 seconds."
+            },
+            {
+              "name": "90 minutes",
+              "code": "assert LINES == ['1 h 30 min', '1.5', '5400 seconds']",
+              "fail": "With 90 the third line should be 5400 seconds.",
+              "inputs": [
+                "90"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "pizza",
+          "mode": "write",
+          "title": "Pizza splitter",
+          "instructions": "On your own: ask for the number of slices and then the number of people. Print exactly one line like **Each person gets 2 slices, 2 left over** (for 8 slices and 3 people).",
+          "inputs": [
+            "8",
+            "3"
+          ],
+          "hints": [
+            "The same two operators as the time converter.",
+            "**slices // people** is how many each gets; **slices % people** is what is left.",
+            "An f-string: **f\"Each person gets {each} slices, {left} left over\"**."
+          ],
+          "solution": "slices = int(input(\"Slices? \"))\npeople = int(input(\"People? \"))\neach = slices // people\nleft = slices % people\nprint(f\"Each person gets {each} slices, {left} left over\")",
+          "tests": [
+            {
+              "name": "8 slices, 3 people",
+              "code": "assert LINES == ['Each person gets 2 slices, 2 left over']",
+              "fail": "With 8 slices and 3 people: Each person gets 2 slices, 2 left over."
+            },
+            {
+              "name": "12 slices, 4 people",
+              "code": "assert LINES == ['Each person gets 3 slices, 0 left over']",
+              "fail": "With 12 slices and 4 people: Each person gets 3 slices, 0 left over.",
+              "inputs": [
+                "12",
+                "4"
+              ]
+            },
+            {
+              "name": "5 slices, 6 people",
+              "code": "assert LINES == ['Each person gets 0 slices, 5 left over']",
+              "fail": "With 5 slices and 6 people: Each person gets 0 slices, 5 left over.",
+              "inputs": [
+                "5",
+                "6"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "digits",
+          "mode": "challenge",
+          "title": "Split a number into digits",
+          "instructions": "Experiment: ask for a three-digit number like **472** and print its digits with spaces: **4 7 2**. Use only **//** and **%**, no strings and no indexing.",
+          "inputs": [
+            "472"
+          ],
+          "hints": [
+            "The last digit is **n % 10**.",
+            "The first digit is **n // 100**.",
+            "For the middle one, drop the last digit first (**n // 10**), then take the last digit of that."
+          ],
+          "solution": "n = int(input(\"A three-digit number? \"))\nhundreds = n // 100\ntens = n // 10 % 10\nones = n % 10\nprint(hundreds, tens, ones)",
+          "tests": [
+            {
+              "name": "472",
+              "code": "assert LINES == ['4 7 2']",
+              "fail": "With 472 it should print 4 7 2."
+            },
+            {
+              "name": "905",
+              "code": "assert LINES == ['9 0 5']",
+              "fail": "With 905 it should print 9 0 5.",
+              "inputs": [
+                "905"
+              ]
+            },
+            {
+              "name": "100",
+              "code": "assert LINES == ['1 0 0']",
+              "fail": "With 100 it should print 1 0 0.",
+              "inputs": [
+                "100"
+              ]
+            },
+            {
+              "name": "uses arithmetic only",
+              "code": "assert '[' not in SOURCE and 'str(' not in SOURCE",
+              "fail": "Find the digits with // and % only, without str() or indexing."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "number-stats",
+      "lesson": "builtin-functions",
+      "title": "Number stats",
+      "summary": "Use min, max, round, abs and len to describe the numbers and words the user types.",
+      "steps": [
+        {
+          "id": "smallest-and-largest",
+          "mode": "guided",
+          "title": "Smallest and largest",
+          "instructions": "Type this program. **min()** and **max()** take any number of values and give back the smallest or the largest.",
+          "guide": [
+            {
+              "code": "a = int(input(\"First number: \"))\nb = int(input(\"Second number: \"))\nc = int(input(\"Third number: \"))",
+              "explain": "Ask for three whole numbers, converting each with **int()**."
+            },
+            {
+              "code": "print(\"Smallest:\", min(a, b, c))",
+              "explain": "**min(a, b, c)** gives back the smallest of the three; **print()** shows it."
+            },
+            {
+              "code": "print(\"Largest:\", max(a, b, c))",
+              "explain": "**max()** works the same way for the largest."
+            }
+          ],
+          "inputs": [
+            "4",
+            "9",
+            "2"
+          ],
+          "solution": "a = int(input(\"First number: \"))\nb = int(input(\"Second number: \"))\nc = int(input(\"Third number: \"))\nprint(\"Smallest:\", min(a, b, c))\nprint(\"Largest:\", max(a, b, c))",
+          "tests": [
+            {
+              "name": "4, 9, 2",
+              "code": "assert LINES == ['Smallest: 2', 'Largest: 9']",
+              "fail": "With 4, 9 and 2: Smallest: 2 and Largest: 9."
+            },
+            {
+              "name": "negative numbers",
+              "code": "assert LINES == ['Smallest: -5', 'Largest: 0']",
+              "fail": "With -1, -5 and 0: Smallest: -5 and Largest: 0.",
+              "inputs": [
+                "-1",
+                "-5",
+                "0"
+              ]
+            },
+            {
+              "name": "uses min and max",
+              "code": "assert calls('min') and calls('max')",
+              "fail": "Use min() and max()."
+            }
+          ]
+        },
+        {
+          "id": "average",
+          "mode": "change",
+          "title": "Add the average",
+          "instructions": "Add a third line with the average of the three numbers, rounded to 1 decimal with **round(..., 1)**: **Average: 5.0** for 4, 9 and 2.",
+          "carryOver": true,
+          "inputs": [
+            "4",
+            "9",
+            "2"
+          ],
+          "hints": [
+            "The average is the sum divided by 3. Put the sum in brackets: **(a + b + c) / 3**.",
+            "**round(x, 1)** keeps 1 decimal."
+          ],
+          "solution": "a = int(input(\"First number: \"))\nb = int(input(\"Second number: \"))\nc = int(input(\"Third number: \"))\nprint(\"Smallest:\", min(a, b, c))\nprint(\"Largest:\", max(a, b, c))\nprint(\"Average:\", round((a + b + c) / 3, 1))",
+          "tests": [
+            {
+              "name": "4, 9, 2",
+              "code": "assert LINES == ['Smallest: 2', 'Largest: 9', 'Average: 5.0']",
+              "fail": "With 4, 9 and 2 the third line should be Average: 5.0."
+            },
+            {
+              "name": "1, 2, 2",
+              "code": "assert LINES == ['Smallest: 1', 'Largest: 2', 'Average: 1.7']",
+              "fail": "With 1, 2 and 2 the average 1.666... should be rounded to Average: 1.7.",
+              "inputs": [
+                "1",
+                "2",
+                "2"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "distance",
+          "mode": "change",
+          "title": "Distance between first and last",
+          "instructions": "Add a fourth line with the distance between the first and the third number, which is never negative: **Distance: 2** for 4 and 2, and also for 2 and 4. Use **abs()**.",
+          "carryOver": true,
+          "inputs": [
+            "4",
+            "9",
+            "2"
+          ],
+          "hints": [
+            "**a - c** can be negative; **abs()** removes the minus sign."
+          ],
+          "solution": "a = int(input(\"First number: \"))\nb = int(input(\"Second number: \"))\nc = int(input(\"Third number: \"))\nprint(\"Smallest:\", min(a, b, c))\nprint(\"Largest:\", max(a, b, c))\nprint(\"Average:\", round((a + b + c) / 3, 1))\nprint(\"Distance:\", abs(a - c))",
+          "tests": [
+            {
+              "name": "4, 9, 2",
+              "code": "assert LINES[3:] == ['Distance: 2']",
+              "fail": "With 4, 9 and 2 the fourth line should be Distance: 2."
+            },
+            {
+              "name": "2, 5, 10",
+              "code": "assert LINES[3:] == ['Distance: 8']",
+              "fail": "With 2, 5 and 10 the fourth line should be Distance: 8, not -8.",
+              "inputs": [
+                "2",
+                "5",
+                "10"
+              ]
+            },
+            {
+              "name": "uses abs",
+              "code": "assert calls('abs')",
+              "fail": "Use abs() so the distance is never negative."
+            }
+          ]
+        },
+        {
+          "id": "name-lengths",
+          "mode": "write",
+          "title": "Longest name",
+          "instructions": "On your own: ask for two names. Print the length of each like **Sam: 3**, then **Longest: 4**: the larger of the two lengths, found with **max()**.",
+          "inputs": [
+            "Sam",
+            "Alex"
+          ],
+          "hints": [
+            "**len(first)** gives the number of letters in **first**.",
+            "An f-string can hold a call: **f\"{first}: {len(first)}\"**.",
+            "**max(len(first), len(second))** for the last line."
+          ],
+          "solution": "first = input(\"First name? \")\nsecond = input(\"Second name? \")\nprint(f\"{first}: {len(first)}\")\nprint(f\"{second}: {len(second)}\")\nprint(\"Longest:\", max(len(first), len(second)))",
+          "tests": [
+            {
+              "name": "Sam and Alex",
+              "code": "assert LINES == ['Sam: 3', 'Alex: 4', 'Longest: 4']",
+              "fail": "With Sam and Alex: Sam: 3, Alex: 4, Longest: 4."
+            },
+            {
+              "name": "Charlotte and Bo",
+              "code": "assert LINES == ['Charlotte: 9', 'Bo: 2', 'Longest: 9']",
+              "fail": "With Charlotte and Bo: Charlotte: 9, Bo: 2, Longest: 9.",
+              "inputs": [
+                "Charlotte",
+                "Bo"
+              ]
+            },
+            {
+              "name": "uses len and max",
+              "code": "assert calls('len') and calls('max')",
+              "fail": "Count with len() and pick the larger length with max()."
+            }
+          ]
+        },
+        {
+          "id": "count-digits",
+          "mode": "challenge",
+          "title": "Count the digits",
+          "instructions": "Experiment with nested calls: ask for a whole number (it may be negative) and print **Digits: 3** for **-405**, **Digits: 5** for **12345**. Turn the number into text with **str()** and count with **len()**, but don't count the minus sign.",
+          "inputs": [
+            "12345"
+          ],
+          "hints": [
+            "**len(str(12345))** is 5: **str()** makes it text, **len()** counts the characters.",
+            "For -405 that counts the minus sign too. Remove it first with **abs()**.",
+            "Calls work from the inside out: **len(str(abs(n)))**."
+          ],
+          "solution": "n = int(input(\"A whole number? \"))\nprint(\"Digits:\", len(str(abs(n))))",
+          "tests": [
+            {
+              "name": "12345",
+              "code": "assert LINES == ['Digits: 5']",
+              "fail": "With 12345 it should print Digits: 5."
+            },
+            {
+              "name": "-405",
+              "code": "assert LINES == ['Digits: 3']",
+              "fail": "With -405 it should print Digits: 3: the minus sign is not a digit.",
+              "inputs": [
+                "-405"
+              ]
+            },
+            {
+              "name": "0",
+              "code": "assert LINES == ['Digits: 1']",
+              "fail": "With 0 it should print Digits: 1.",
+              "inputs": [
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "username-maker",
+      "lesson": "strings",
+      "title": "Username maker",
+      "summary": "Build usernames and word facts with indexing, slicing, len and string methods.",
+      "steps": [
+        {
+          "id": "first-username",
+          "mode": "guided",
+          "title": "Your first username",
+          "instructions": "Type this program. It makes a username from the first letter of the first name and the whole last name, in lower case.",
+          "guide": [
+            {
+              "code": "first = input(\"First name: \")\nlast = input(\"Last name: \")",
+              "explain": "Ask for both names. Both are **str** values."
+            },
+            {
+              "code": "username = first[0] + last",
+              "explain": "**first[0]** is the first letter (counting starts at 0). **+** joins two strings."
+            },
+            {
+              "code": "print(username.lower())",
+              "explain": "**.lower()** gives back a new string in lower case; it does not change **username** itself."
+            }
+          ],
+          "inputs": [
+            "Ada",
+            "Lovelace"
+          ],
+          "solution": "first = input(\"First name: \")\nlast = input(\"Last name: \")\nusername = first[0] + last\nprint(username.lower())",
+          "tests": [
+            {
+              "name": "Ada Lovelace",
+              "code": "assert LINES == ['alovelace']",
+              "fail": "With Ada and Lovelace it should print alovelace."
+            },
+            {
+              "name": "Grace Hopper",
+              "code": "assert LINES == ['ghopper']",
+              "fail": "With Grace and Hopper it should print ghopper.",
+              "inputs": [
+                "Grace",
+                "Hopper"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "short-last-name",
+          "mode": "change",
+          "title": "Keep it short",
+          "instructions": "Use only the first 5 letters of the last name, with the slice **last[:5]**. Ada Lovelace becomes **alovel**. A short last name like **Wu** stays whole.",
+          "carryOver": true,
+          "inputs": [
+            "Ada",
+            "Lovelace"
+          ],
+          "hints": [
+            "**last[:5]** means: from the start up to, but not including, index 5."
+          ],
+          "solution": "first = input(\"First name: \")\nlast = input(\"Last name: \")\nusername = first[0] + last[:5]\nprint(username.lower())",
+          "tests": [
+            {
+              "name": "Ada Lovelace",
+              "code": "assert LINES == ['alovel']",
+              "fail": "With Ada and Lovelace it should print alovel."
+            },
+            {
+              "name": "Grace Hopper",
+              "code": "assert LINES == ['ghoppe']",
+              "fail": "With Grace and Hopper it should print ghoppe.",
+              "inputs": [
+                "Grace",
+                "Hopper"
+              ]
+            },
+            {
+              "name": "Al Wu",
+              "code": "assert LINES == ['awu']",
+              "fail": "With Al and Wu it should print awu: a slice past the end is fine.",
+              "inputs": [
+                "Al",
+                "Wu"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "add-length",
+          "mode": "change",
+          "title": "Add a number",
+          "instructions": "Add the total number of letters in both names to the end of the username: **alovel11** for Ada Lovelace (3 + 8 letters). A number cannot be joined to a string with **+**, so convert it with **str()**.",
+          "carryOver": true,
+          "inputs": [
+            "Ada",
+            "Lovelace"
+          ],
+          "hints": [
+            "**len(first) + len(last)** is the number of letters.",
+            "**\"alovel\" + 11** is a **TypeError**; **\"alovel\" + str(11)** works."
+          ],
+          "solution": "first = input(\"First name: \")\nlast = input(\"Last name: \")\nusername = first[0] + last[:5] + str(len(first) + len(last))\nprint(username.lower())",
+          "tests": [
+            {
+              "name": "Ada Lovelace",
+              "code": "assert LINES == ['alovel11']",
+              "fail": "With Ada and Lovelace it should print alovel11."
+            },
+            {
+              "name": "Al Wu",
+              "code": "assert LINES == ['awu4']",
+              "fail": "With Al and Wu it should print awu4.",
+              "inputs": [
+                "Al",
+                "Wu"
+              ]
+            },
+            {
+              "name": "Grace Hopper",
+              "code": "assert LINES == ['ghoppe11']",
+              "fail": "With Grace and Hopper it should print ghoppe11.",
+              "inputs": [
+                "Grace",
+                "Hopper"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "initials",
+          "mode": "write",
+          "title": "Name and initials",
+          "instructions": "On your own: ask for a full name in one answer, like **ada lovelace** (one space). Print it with each word capitalised, **Ada Lovelace**, and then the initials in capitals, **AL**.",
+          "inputs": [
+            "ada lovelace"
+          ],
+          "hints": [
+            "**name.title()** capitalises the first letter of every word.",
+            "**name.find(\" \")** gives the index of the space; the last name starts one index later.",
+            "**name[0] + name[space + 1]** are the two initials; **.upper()** makes them capitals."
+          ],
+          "solution": "name = input(\"Full name? \")\nspace = name.find(\" \")\nprint(name.title())\nprint((name[0] + name[space + 1]).upper())",
+          "tests": [
+            {
+              "name": "ada lovelace",
+              "code": "assert LINES == ['Ada Lovelace', 'AL']",
+              "fail": "With ada lovelace it should print Ada Lovelace and then AL."
+            },
+            {
+              "name": "grace hopper",
+              "code": "assert LINES == ['Grace Hopper', 'GH']",
+              "fail": "With grace hopper it should print Grace Hopper and then GH.",
+              "inputs": [
+                "grace hopper"
+              ]
+            },
+            {
+              "name": "alan turing",
+              "code": "assert LINES == ['Alan Turing', 'AT']",
+              "fail": "With alan turing it should print Alan Turing and then AT.",
+              "inputs": [
+                "alan turing"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "word-facts",
+          "mode": "challenge",
+          "title": "Word facts",
+          "instructions": "Experiment: ask for a word and print three lines: the word backwards (**[::-1]**), its middle letter (index **len(word) // 2**), and how many times the letter **a** appears (**.count(\"a\")**). Try **banana**, **kayak** and your own name.",
+          "inputs": [
+            "banana"
+          ],
+          "hints": [
+            "**word[::-1]** is a slice with step -1: the whole word, backwards.",
+            "For a 6-letter word, **6 // 2** is 3, so the middle letter is **word[3]**.",
+            "**word.count(\"a\")** gives a number; print it as it is."
+          ],
+          "solution": "word = input(\"A word? \")\nprint(word[::-1])\nprint(word[len(word) // 2])\nprint(word.count(\"a\"))",
+          "tests": [
+            {
+              "name": "banana",
+              "code": "assert LINES == ['ananab', 'a', '3']",
+              "fail": "With banana: ananab, then a (index 3), then 3."
+            },
+            {
+              "name": "kayak",
+              "code": "assert LINES == ['kayak', 'y', '2']",
+              "fail": "With kayak: kayak, then y (index 2), then 2.",
+              "inputs": [
+                "kayak"
+              ]
+            },
+            {
+              "name": "racecar",
+              "code": "assert LINES == ['racecar', 'e', '2']",
+              "fail": "With racecar: racecar, then e (index 3), then 2.",
+              "inputs": [
+                "racecar"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ticket-price",
+      "lesson": "conditions",
+      "title": "Ticket price",
+      "summary": "Pick a ticket price with if, elif and else, and learn why the order of the checks matters.",
+      "steps": [
+        {
+          "id": "child-or-adult",
+          "mode": "guided",
+          "title": "Child or adult",
+          "instructions": "Type this program. Only one branch runs: the **if** block when the condition is **True**, otherwise the **else** block.",
+          "guide": [
+            {
+              "code": "age = int(input(\"Age? \"))",
+              "explain": "Ask for the age as a whole number."
+            },
+            {
+              "code": "if age < 12:",
+              "explain": "The condition ends with a colon. **age < 12** is either **True** or **False**."
+            },
+            {
+              "code": "    print(\"Child ticket: 5 euros\")",
+              "explain": "Indented by 4 spaces: this line runs only when the condition is **True**."
+            },
+            {
+              "code": "else:\n    print(\"Adult ticket: 10 euros\")",
+              "explain": "**else** has no condition: it runs when the **if** condition was **False**."
+            }
+          ],
+          "inputs": [
+            "15"
+          ],
+          "solution": "age = int(input(\"Age? \"))\nif age < 12:\n    print(\"Child ticket: 5 euros\")\nelse:\n    print(\"Adult ticket: 10 euros\")",
+          "tests": [
+            {
+              "name": "15 is an adult",
+              "code": "assert LINES == ['Adult ticket: 10 euros']",
+              "fail": "With 15 it should print Adult ticket: 10 euros."
+            },
+            {
+              "name": "8 is a child",
+              "code": "assert LINES == ['Child ticket: 5 euros']",
+              "fail": "With 8 it should print Child ticket: 5 euros.",
+              "inputs": [
+                "8"
+              ]
+            },
+            {
+              "name": "12 is an adult",
+              "code": "assert LINES == ['Adult ticket: 10 euros']",
+              "fail": "With 12 it should print Adult ticket: 10 euros: 12 is not less than 12.",
+              "inputs": [
+                "12"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "senior",
+          "mode": "change",
+          "title": "Add a senior price",
+          "instructions": "People aged 65 or older pay less: **Senior ticket: 6 euros**. Add an **elif** between the **if** and the **else**.",
+          "carryOver": true,
+          "inputs": [
+            "70"
+          ],
+          "hints": [
+            "**elif age >= 65:** goes after the **if** block and before **else**.",
+            "**>=** means at least, so 65 itself counts."
+          ],
+          "solution": "age = int(input(\"Age? \"))\nif age < 12:\n    print(\"Child ticket: 5 euros\")\nelif age >= 65:\n    print(\"Senior ticket: 6 euros\")\nelse:\n    print(\"Adult ticket: 10 euros\")",
+          "tests": [
+            {
+              "name": "70 is a senior",
+              "code": "assert LINES == ['Senior ticket: 6 euros']",
+              "fail": "With 70 it should print Senior ticket: 6 euros.",
+              "inputs": [
+                "70"
+              ]
+            },
+            {
+              "name": "65 is a senior",
+              "code": "assert LINES == ['Senior ticket: 6 euros']",
+              "fail": "With 65 it should print Senior ticket: 6 euros: use >=.",
+              "inputs": [
+                "65"
+              ]
+            },
+            {
+              "name": "64 is an adult",
+              "code": "assert LINES == ['Adult ticket: 10 euros']",
+              "fail": "With 64 it should print Adult ticket: 10 euros.",
+              "inputs": [
+                "64"
+              ]
+            },
+            {
+              "name": "5 is a child",
+              "code": "assert LINES == ['Child ticket: 5 euros']",
+              "fail": "With 5 it should still print Child ticket: 5 euros.",
+              "inputs": [
+                "5"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "free-for-babies",
+          "mode": "change",
+          "title": "Babies go free",
+          "instructions": "Children under 2 get in for free: **Free ticket**. Make sure an age of 1 gives **Free ticket**, not the child price. The order of the checks matters: only the first true branch runs.",
+          "carryOver": true,
+          "inputs": [
+            "1"
+          ],
+          "hints": [
+            "If **age < 12** comes first, a 1-year-old matches it and never reaches your new check.",
+            "Put **if age < 2:** first, and turn the old **if age < 12:** into an **elif**."
+          ],
+          "solution": "age = int(input(\"Age? \"))\nif age < 2:\n    print(\"Free ticket\")\nelif age < 12:\n    print(\"Child ticket: 5 euros\")\nelif age >= 65:\n    print(\"Senior ticket: 6 euros\")\nelse:\n    print(\"Adult ticket: 10 euros\")",
+          "tests": [
+            {
+              "name": "1 is free",
+              "code": "assert LINES == ['Free ticket']",
+              "fail": "With 1 it should print Free ticket.",
+              "inputs": [
+                "1"
+              ]
+            },
+            {
+              "name": "0 is free",
+              "code": "assert LINES == ['Free ticket']",
+              "fail": "With 0 it should print Free ticket.",
+              "inputs": [
+                "0"
+              ]
+            },
+            {
+              "name": "2 is a child",
+              "code": "assert LINES == ['Child ticket: 5 euros']",
+              "fail": "With 2 it should print Child ticket: 5 euros.",
+              "inputs": [
+                "2"
+              ]
+            },
+            {
+              "name": "70 is still a senior",
+              "code": "assert LINES == ['Senior ticket: 6 euros']",
+              "fail": "With 70 it should still print Senior ticket: 6 euros.",
+              "inputs": [
+                "70"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sign-and-parity",
+          "mode": "write",
+          "title": "Positive, negative, even, odd",
+          "instructions": "On your own: ask for a whole number. Print **positive**, **negative** or **zero** on the first line, then **even** or **odd** on the second line.",
+          "inputs": [
+            "7"
+          ],
+          "hints": [
+            "Two separate decisions, so two separate **if** statements.",
+            "A number is even when **n % 2 == 0**.",
+            "Use **==** to compare; a single **=** is a SyntaxError inside an if."
+          ],
+          "solution": "n = int(input(\"A whole number? \"))\nif n > 0:\n    print(\"positive\")\nelif n < 0:\n    print(\"negative\")\nelse:\n    print(\"zero\")\nif n % 2 == 0:\n    print(\"even\")\nelse:\n    print(\"odd\")",
+          "tests": [
+            {
+              "name": "7",
+              "code": "assert LINES == ['positive', 'odd']",
+              "fail": "With 7: positive, then odd."
+            },
+            {
+              "name": "-4",
+              "code": "assert LINES == ['negative', 'even']",
+              "fail": "With -4: negative, then even.",
+              "inputs": [
+                "-4"
+              ]
+            },
+            {
+              "name": "0",
+              "code": "assert LINES == ['zero', 'even']",
+              "fail": "With 0: zero, then even.",
+              "inputs": [
+                "0"
+              ]
+            },
+            {
+              "name": "-3",
+              "code": "assert LINES == ['negative', 'odd']",
+              "fail": "With -3: negative, then odd.",
+              "inputs": [
+                "-3"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "grades",
+          "mode": "challenge",
+          "title": "Grade calculator",
+          "instructions": "Experiment: ask for a score. Print **A** for 90 or more, **B** for 80 or more, **C** for 70 or more, **D** for 60 or more, and **F** below that. A score above 100 or below 0 prints **Invalid score** instead.",
+          "inputs": [
+            "95"
+          ],
+          "hints": [
+            "Check the invalid scores first, so 101 never gets an A.",
+            "Then go from the highest grade down: **elif score >= 90**, **elif score >= 80**, and so on.",
+            "Going from high to low means you never need an upper limit like **score < 90**."
+          ],
+          "solution": "score = int(input(\"Score? \"))\nif score > 100:\n    print(\"Invalid score\")\nelif score < 0:\n    print(\"Invalid score\")\nelif score >= 90:\n    print(\"A\")\nelif score >= 80:\n    print(\"B\")\nelif score >= 70:\n    print(\"C\")\nelif score >= 60:\n    print(\"D\")\nelse:\n    print(\"F\")",
+          "tests": [
+            {
+              "name": "top grades",
+              "code": "for typed, grade in [(\"95\", \"A\"), (\"90\", \"A\"), (\"89\", \"B\"), (\"80\", \"B\")]:\n    assert run_source(SOURCE, [typed]).strip() == grade, typed",
+              "fail": "95 and 90 should give A; 89 and 80 should give B."
+            },
+            {
+              "name": "lower grades",
+              "code": "for typed, grade in [(\"70\", \"C\"), (\"69\", \"D\"), (\"60\", \"D\"), (\"59\", \"F\"), (\"0\", \"F\")]:\n    assert run_source(SOURCE, [typed]).strip() == grade, typed",
+              "fail": "70 should give C, 69 and 60 D, 59 and 0 F."
+            },
+            {
+              "name": "invalid scores",
+              "code": "for typed in [\"101\", \"-1\", \"250\"]:\n    assert run_source(SOURCE, [typed]).strip() == \"Invalid score\", typed",
+              "fail": "Scores above 100 or below 0 should print Invalid score and nothing else."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rollercoaster",
+      "lesson": "combining-conditions",
+      "title": "Can you ride?",
+      "summary": "Combine conditions with and, or and not, fix the classic or bug, and write a leap year check.",
+      "steps": [
+        {
+          "id": "height-and-age",
+          "mode": "guided",
+          "title": "Tall enough and old enough",
+          "instructions": "Type this program. **and** is **True** only when both sides are **True**.",
+          "guide": [
+            {
+              "code": "height = int(input(\"Height in cm? \"))\nage = int(input(\"Age? \"))",
+              "explain": "Ask for the height and the age, both whole numbers."
+            },
+            {
+              "code": "if height >= 140 and age >= 10:",
+              "explain": "Both conditions must hold. Each side is a full comparison."
+            },
+            {
+              "code": "    print(\"You can ride!\")\nelse:\n    print(\"Sorry, not this time.\")",
+              "explain": "One message for yes, one for no."
+            }
+          ],
+          "inputs": [
+            "150",
+            "12"
+          ],
+          "solution": "height = int(input(\"Height in cm? \"))\nage = int(input(\"Age? \"))\nif height >= 140 and age >= 10:\n    print(\"You can ride!\")\nelse:\n    print(\"Sorry, not this time.\")",
+          "tests": [
+            {
+              "name": "150 cm, 12",
+              "code": "assert LINES == ['You can ride!']",
+              "fail": "With 150 and 12: You can ride!"
+            },
+            {
+              "name": "150 cm, 8",
+              "code": "assert LINES == ['Sorry, not this time.']",
+              "fail": "With 150 and 8: too young, so Sorry, not this time.",
+              "inputs": [
+                "150",
+                "8"
+              ]
+            },
+            {
+              "name": "130 cm, 12",
+              "code": "assert LINES == ['Sorry, not this time.']",
+              "fail": "With 130 and 12: too short, so Sorry, not this time.",
+              "inputs": [
+                "130",
+                "12"
+              ]
+            },
+            {
+              "name": "140 cm, 10",
+              "code": "assert LINES == ['You can ride!']",
+              "fail": "With exactly 140 and 10: You can ride!",
+              "inputs": [
+                "140",
+                "10"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "with-an-adult",
+          "mode": "change",
+          "title": "With an adult",
+          "instructions": "New rule: a child of at least **120** cm may also ride when an adult comes along. Ask a third question, **With an adult? (yes/no)**, and let them ride if (height at least 140 **and** age at least 10) **or** (height at least 120 **and** the answer is **\"yes\"**).",
+          "carryOver": true,
+          "inputs": [
+            "130",
+            "8",
+            "yes"
+          ],
+          "hints": [
+            "Brackets make the two rules clear: **(rule one) or (rule two)**.",
+            "Compare the answer with **adult == \"yes\"**."
+          ],
+          "solution": "height = int(input(\"Height in cm? \"))\nage = int(input(\"Age? \"))\nadult = input(\"With an adult? (yes/no) \")\nif (height >= 140 and age >= 10) or (height >= 120 and adult == \"yes\"):\n    print(\"You can ride!\")\nelse:\n    print(\"Sorry, not this time.\")",
+          "tests": [
+            {
+              "name": "130 cm, 8, yes",
+              "code": "assert LINES == ['You can ride!']",
+              "fail": "With 130, 8 and yes: You can ride!"
+            },
+            {
+              "name": "130 cm, 8, no",
+              "code": "assert LINES == ['Sorry, not this time.']",
+              "fail": "With 130, 8 and no: Sorry, not this time.",
+              "inputs": [
+                "130",
+                "8",
+                "no"
+              ]
+            },
+            {
+              "name": "110 cm, 8, yes",
+              "code": "assert LINES == ['Sorry, not this time.']",
+              "fail": "With 110, 8 and yes: still too short, Sorry, not this time.",
+              "inputs": [
+                "110",
+                "8",
+                "yes"
+              ]
+            },
+            {
+              "name": "150 cm, 12, no",
+              "code": "assert LINES == ['You can ride!']",
+              "fail": "With 150, 12 and no: You can ride! (the first rule still holds)",
+              "inputs": [
+                "150",
+                "12",
+                "no"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fix-fries",
+          "mode": "change",
+          "title": "Fix the fries bug",
+          "instructions": "This program should add fries only when the answer is **yes** or **y**, and print **No fries.** for anything else. Run it with **no**: it still adds fries. Find the bug and fix it.",
+          "starter": "answer = input(\"Do you want fries? \")\nif answer == \"yes\" or \"y\":\n    print(\"Fries added.\")\nelse:\n    print(\"No fries.\")\n",
+          "inputs": [
+            "no"
+          ],
+          "hints": [
+            "**or \"y\"** on its own is not a comparison: a non-empty string counts as **True**, so the condition is always **True**.",
+            "Each side of **or** needs its own comparison: **answer == \"yes\" or answer == \"y\"**."
+          ],
+          "solution": "answer = input(\"Do you want fries? \")\nif answer == \"yes\" or answer == \"y\":\n    print(\"Fries added.\")\nelse:\n    print(\"No fries.\")",
+          "tests": [
+            {
+              "name": "yes",
+              "code": "assert LINES == ['Fries added.']",
+              "fail": "With yes: Fries added.",
+              "inputs": [
+                "yes"
+              ]
+            },
+            {
+              "name": "y",
+              "code": "assert LINES == ['Fries added.']",
+              "fail": "With y: Fries added.",
+              "inputs": [
+                "y"
+              ]
+            },
+            {
+              "name": "no",
+              "code": "assert LINES == ['No fries.']",
+              "fail": "With no: No fries.",
+              "inputs": [
+                "no"
+              ]
+            },
+            {
+              "name": "n",
+              "code": "assert LINES == ['No fries.']",
+              "fail": "With n: No fries.",
+              "inputs": [
+                "n"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "leap-year",
+          "mode": "write",
+          "title": "Leap year",
+          "instructions": "On your own: ask for a year and print **Leap year** or **Not a leap year**. The rule: a year is a leap year when it is divisible by 4 and not by 100, or when it is divisible by 400.",
+          "inputs": [
+            "2024"
+          ],
+          "hints": [
+            "Divisible by 4 means **year % 4 == 0**; not divisible by 100 means **year % 100 != 0**.",
+            "Put the first rule in brackets: **(year % 4 == 0 and year % 100 != 0) or year % 400 == 0**.",
+            "Test 1900 and 2000: they are the tricky ones."
+          ],
+          "solution": "year = int(input(\"Year? \"))\nif (year % 4 == 0 and year % 100 != 0) or year % 400 == 0:\n    print(\"Leap year\")\nelse:\n    print(\"Not a leap year\")",
+          "tests": [
+            {
+              "name": "2024",
+              "code": "assert LINES == ['Leap year']",
+              "fail": "2024 is divisible by 4 and not by 100: Leap year.",
+              "inputs": [
+                "2024"
+              ]
+            },
+            {
+              "name": "2023",
+              "code": "assert LINES == ['Not a leap year']",
+              "fail": "2023 is not divisible by 4: Not a leap year.",
+              "inputs": [
+                "2023"
+              ]
+            },
+            {
+              "name": "1900",
+              "code": "assert LINES == ['Not a leap year']",
+              "fail": "1900 is divisible by 100 but not by 400: Not a leap year.",
+              "inputs": [
+                "1900"
+              ]
+            },
+            {
+              "name": "2000",
+              "code": "assert LINES == ['Leap year']",
+              "fail": "2000 is divisible by 400: Leap year.",
+              "inputs": [
+                "2000"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "safe-division",
+          "mode": "challenge",
+          "title": "Divide safely",
+          "instructions": "Experiment with short-circuiting: ask for two whole numbers **a** and **b**. Print **Big** when **b** is not 0 and **a / b** is more than 10, otherwise **Small**. Use one **if** with **and**, so that **b = 0** never crashes.",
+          "inputs": [
+            "100",
+            "5"
+          ],
+          "hints": [
+            "**and** stops as soon as the left side is **False**, so the right side is never worked out.",
+            "Put the safety check first: **b != 0 and a / b > 10**.",
+            "Swap the two sides and try **5** and **0**: you get a ZeroDivisionError."
+          ],
+          "solution": "a = int(input(\"a? \"))\nb = int(input(\"b? \"))\nif b != 0 and a / b > 10:\n    print(\"Big\")\nelse:\n    print(\"Small\")",
+          "tests": [
+            {
+              "name": "100 and 5",
+              "code": "assert LINES == ['Big']",
+              "fail": "100 / 5 is 20, more than 10: Big.",
+              "inputs": [
+                "100",
+                "5"
+              ]
+            },
+            {
+              "name": "100 and 20",
+              "code": "assert LINES == ['Small']",
+              "fail": "100 / 20 is 5: Small.",
+              "inputs": [
+                "100",
+                "20"
+              ]
+            },
+            {
+              "name": "5 and 0",
+              "code": "assert LINES == ['Small']",
+              "fail": "With b = 0 it should print Small without crashing.",
+              "inputs": [
+                "5",
+                "0"
+              ]
+            },
+            {
+              "name": "uses and",
+              "code": "assert uses('BoolOp')",
+              "fail": "Combine the two checks with and in one condition."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fix-the-programs",
+      "lesson": "reading-errors",
+      "title": "Fix the broken programs",
+      "summary": "Read each error message, find the line it points at, and fix one bug at a time.",
+      "steps": [
+        {
+          "id": "a-working-program",
+          "mode": "guided",
+          "title": "A program that works",
+          "instructions": "Type this program carefully, then **Run** and **Check**. Each explanation says which error you would get if you got that line wrong, so you know what to look for in the next steps.",
+          "guide": [
+            {
+              "code": "price = float(input(\"Price? \"))",
+              "explain": "**float()** turns the typed text into a number. Leave it out and line 3 gives a **TypeError**; use **int()** and typing 2.5 gives a **ValueError**."
+            },
+            {
+              "code": "count = int(input(\"How many? \"))",
+              "explain": "Forget a closing bracket here and Python reports a **SyntaxError**."
+            },
+            {
+              "code": "total = price * count",
+              "explain": "Misspell **price** as **prise** and you get a **NameError**: Python has never seen that name."
+            },
+            {
+              "code": "print(\"Total:\", total)",
+              "explain": "Put spaces in front of this line and you get an **IndentationError**."
+            }
+          ],
+          "inputs": [
+            "2.5",
+            "4"
+          ],
+          "solution": "price = float(input(\"Price? \"))\ncount = int(input(\"How many? \"))\ntotal = price * count\nprint(\"Total:\", total)",
+          "tests": [
+            {
+              "name": "2.5 times 4",
+              "code": "assert LINES == ['Total: 10.0']",
+              "fail": "With 2.5 and 4 it should print Total: 10.0."
+            },
+            {
+              "name": "1.5 times 2",
+              "code": "assert LINES == ['Total: 3.0']",
+              "fail": "With 1.5 and 2 it should print Total: 3.0.",
+              "inputs": [
+                "1.5",
+                "2"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fix-syntax",
+          "mode": "change",
+          "title": "Fix the SyntaxError",
+          "instructions": "This program should greet Sam with **Hi Sam!** and everyone else with **Hello, stranger.** Run it, read the error and its line number, and fix it.",
+          "starter": "name = input(\"Name? \")\nif name == \"Sam\"\n    print(\"Hi Sam!\")\nelse:\n    print(\"Hello, stranger.\")\n",
+          "inputs": [
+            "Sam"
+          ],
+          "hints": [
+            "The error points at line 2. What does every **if** line end with?"
+          ],
+          "solution": "name = input(\"Name? \")\nif name == \"Sam\":\n    print(\"Hi Sam!\")\nelse:\n    print(\"Hello, stranger.\")",
+          "tests": [
+            {
+              "name": "Sam",
+              "code": "assert LINES == ['Hi Sam!']",
+              "fail": "With Sam it should print Hi Sam!",
+              "inputs": [
+                "Sam"
+              ]
+            },
+            {
+              "name": "Ana",
+              "code": "assert LINES == ['Hello, stranger.']",
+              "fail": "With Ana it should print Hello, stranger.",
+              "inputs": [
+                "Ana"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fix-indentation",
+          "mode": "change",
+          "title": "Fix the IndentationError",
+          "instructions": "This program should print **You can vote.** for 18 or older and **Not yet.** otherwise. Run it and fix the error.",
+          "starter": "age = int(input(\"Age? \"))\nif age >= 18:\nprint(\"You can vote.\")\nelse:\n    print(\"Not yet.\")\n",
+          "inputs": [
+            "20"
+          ],
+          "hints": [
+            "The line after a colon must be indented: 4 spaces."
+          ],
+          "solution": "age = int(input(\"Age? \"))\nif age >= 18:\n    print(\"You can vote.\")\nelse:\n    print(\"Not yet.\")",
+          "tests": [
+            {
+              "name": "20",
+              "code": "assert LINES == ['You can vote.']",
+              "fail": "With 20 it should print You can vote.",
+              "inputs": [
+                "20"
+              ]
+            },
+            {
+              "name": "16",
+              "code": "assert LINES == ['Not yet.']",
+              "fail": "With 16 it should print Not yet.",
+              "inputs": [
+                "16"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fix-type",
+          "mode": "change",
+          "title": "Fix the TypeError",
+          "instructions": "This program should print **Next year you will be 18** for an age of 17. Run it, read the TypeError, and fix it.",
+          "starter": "age = input(\"Age? \")\nprint(\"Next year you will be \" + age + 1)\n",
+          "inputs": [
+            "17"
+          ],
+          "hints": [
+            "**input()** gives a **str**, so **age + 1** is text plus a number.",
+            "Convert the age with **int()** first. Then joining text and a number needs **str()**, a comma, or an f-string."
+          ],
+          "solution": "age = int(input(\"Age? \"))\nprint(\"Next year you will be \" + str(age + 1))",
+          "tests": [
+            {
+              "name": "17",
+              "code": "assert LINES == ['Next year you will be 18']",
+              "fail": "With 17 it should print Next year you will be 18.",
+              "inputs": [
+                "17"
+              ]
+            },
+            {
+              "name": "9",
+              "code": "assert LINES == ['Next year you will be 10']",
+              "fail": "With 9 it should print Next year you will be 10.",
+              "inputs": [
+                "9"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fix-name",
+          "mode": "change",
+          "title": "Fix the NameError",
+          "instructions": "This program should print the area of a rectangle: **Area: 12** for a width of 3 and a height of 4. Run it, read the NameError, and fix it.",
+          "starter": "width = int(input(\"Width? \"))\nheight = int(input(\"Height? \"))\narea = width * heigth\nprint(\"Area:\", area)\n",
+          "inputs": [
+            "3",
+            "4"
+          ],
+          "hints": [
+            "The error message names the name Python does not know. Compare it letter by letter with the variable you made."
+          ],
+          "solution": "width = int(input(\"Width? \"))\nheight = int(input(\"Height? \"))\narea = width * height\nprint(\"Area:\", area)",
+          "tests": [
+            {
+              "name": "3 by 4",
+              "code": "assert LINES == ['Area: 12']",
+              "fail": "With 3 and 4 it should print Area: 12.",
+              "inputs": [
+                "3",
+                "4"
+              ]
+            },
+            {
+              "name": "5 by 5",
+              "code": "assert LINES == ['Area: 25']",
+              "fail": "With 5 and 5 it should print Area: 25.",
+              "inputs": [
+                "5",
+                "5"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "two-bugs",
+          "mode": "challenge",
+          "title": "Two bugs at once",
+          "instructions": "Experiment: this program has two bugs. It should print **Total: 5.0** for a price of **2.50** and a count of **2**. Fix the first error, run again, and fix the next one. Python stops at the first error, so you only see one at a time.",
+          "starter": "price = int(input(\"Price in euros? \"))\ncount = int(input(\"How many? \"))\nprint(\"Total: \" + price * count)\n",
+          "inputs": [
+            "2.50",
+            "2"
+          ],
+          "hints": [
+            "The first error is a **ValueError**: **int(\"2.50\")** cannot read a decimal point. Which function can?",
+            "The second error is a **TypeError**: text plus a number. Use a comma in **print()**, or **str()**.",
+            "Read the last line of the error first: it names the kind of error and the line."
+          ],
+          "solution": "price = float(input(\"Price in euros? \"))\ncount = int(input(\"How many? \"))\nprint(\"Total:\", price * count)",
+          "tests": [
+            {
+              "name": "2.50 times 2",
+              "code": "assert LINES == ['Total: 5.0']",
+              "fail": "With 2.50 and 2 it should print Total: 5.0.",
+              "inputs": [
+                "2.50",
+                "2"
+              ]
+            },
+            {
+              "name": "3 times 3",
+              "code": "assert LINES == ['Total: 9.0']",
+              "fail": "With 3 and 3 it should print Total: 9.0.",
+              "inputs": [
+                "3",
+                "3"
+              ]
+            },
+            {
+              "name": "1.25 times 4",
+              "code": "assert LINES == ['Total: 5.0']",
+              "fail": "With 1.25 and 4 it should print Total: 5.0.",
+              "inputs": [
+                "1.25",
+                "4"
+              ]
+            }
+          ]
+        }
       ]
     }
   ]

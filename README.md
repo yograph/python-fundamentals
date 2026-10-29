@@ -11,16 +11,34 @@ combinations.
 
 | Set | Lessons |
 | --- | --- |
-| **Python 1: Basics** | values and types, variables, `input()` and `print()`, arithmetic, strings, conditions, reading error messages |
-| **Python 2: Loops & lists** | while loops, for loops, `range()`, lists, loop patterns, nested loops and grids, what works with what |
-| **Python 3: Functions & recursion** | functions, scope and lists, recursion basics, recursion on strings and lists, tracing recursion, mazes, combinations |
-| **Correct or wrong?** | 48 implementations to judge, across every topic |
+| **Python 1: Basics** | values and types, variables, `input()` and `print()`, arithmetic, built-in functions, strings, conditions, combining conditions, reading error messages |
+| **Python 2: Loops & lists** | while loops, for loops, `range()`, strings and loops, lists, loop patterns, nested loops and grids, tuples and dictionaries, what works with what |
+| **Python 3: Functions & recursion** | functions, scope and lists, recursion basics, recursion on strings and lists, tracing recursion, designing recursion, divide and conquer, mazes, combinations, backtracking |
+| **Correct or wrong?** | 76 implementations to judge, across every topic |
 
 Each lesson starts with the one rule to memorise, shows runnable examples with
 their output, and puts each common mistake next to its fix. Its exercises mix
 "what is this for?", "what does this print?", "is this implementation
 correct?" and fill-in-the-gap questions. Progress is saved in the browser, and
 questions answered wrong come back first next round.
+
+## Coding labs: write real Python
+
+Every lesson ends with a **coding lab**: one small program the student types
+and runs, with Python running in the browser. A lab grows over about five
+steps while the help fades:
+
+1. **Follow along**: the whole program, piece by piece, with exactly what to
+   type and why. The editor starts empty; typing it is the point.
+2. **Change it**: the student's own code from the step before, and one change
+   to make.
+3. **On your own**: a task in the same spirit, with hints on request.
+4. **Experiment**: a stretch that combines ideas or handles an edge case.
+
+**Check** runs automatic tests on the student's code and says what is still
+wrong; passing unlocks the next step. Errors are shown with their line number
+and one plain sentence about what that error usually means. A program that
+never stops is stopped after a few seconds. The code is saved as they type.
 
 ## Every answer key is run, not trusted
 
@@ -34,6 +52,10 @@ Python and fails if an answer key disagrees:
 - **Fill-in and fix questions**: the right choice must pass its test and every
   other choice must fail it, so no question has two right answers.
 - **Lesson examples** with an `output` are run and compared too.
+- **Coding labs** (`check_labs.py`): every step's solution must pass its own
+  tests, through the same harness the browser runs; a guided step's pieces
+  must add up to its solution; and no step may already be solved when it
+  opens.
 
 ```bash
 pnpm course:check

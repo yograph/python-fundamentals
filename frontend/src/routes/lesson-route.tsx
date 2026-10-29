@@ -14,6 +14,7 @@ import {
   isLessonDone,
   lessonStandings,
 } from "@/features/grammar/lesson-progress";
+import { LabList } from "@/features/labs/lab-list";
 import { useExerciseSet, useManifest } from "@/lib/data/queries";
 import { usePracticeProgress } from "@/lib/progress/practice-queries";
 
@@ -77,6 +78,10 @@ export function LessonPage() {
     [grammar, lesson, progress.data],
   );
 
+  const labs = useMemo(
+    () => grammar?.labs.filter((lab) => lab.lesson === lessonId) ?? [],
+    [grammar, lessonId],
+  );
   const previous = grammar && index > 0 ? grammar.lessons[index - 1] : null;
   const next =
     grammar && index !== -1 && index < grammar.lessons.length - 1
@@ -153,6 +158,21 @@ export function LessonPage() {
                     : "Start exercises"}
                 </Link>
               </Button>
+            </section>
+          ) : null}
+
+          {labs.length > 0 ? (
+            <section className="flex flex-col gap-2" aria-label="Coding lab">
+              <div>
+                <h2 className="font-heading text-lg font-semibold">
+                  Code it yourself
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Write and run real Python: first exactly as shown, then
+                  changing it step by step, then on your own.
+                </p>
+              </div>
+              <LabList setId={setId} color={color} labs={labs} />
             </section>
           ) : null}
 

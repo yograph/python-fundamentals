@@ -10,9 +10,10 @@
       "course": "Python fundamentals",
       "color": "#3776AB",
       "icon": "code",
-      "exerciseCount": 84,
-      "lessonCount": 7,
-      "revision": "a5f880d14598"
+      "exerciseCount": 144,
+      "lessonCount": 9,
+      "labCount": 9,
+      "revision": "7f170e43a06d"
     },
     {
       "id": "python-2",
@@ -22,9 +23,10 @@
       "course": "Python fundamentals",
       "color": "#0F766E",
       "icon": "code",
-      "exerciseCount": 84,
-      "lessonCount": 7,
-      "revision": "e5e3bbfb8c2e"
+      "exerciseCount": 142,
+      "lessonCount": 9,
+      "labCount": 9,
+      "revision": "a179b8900552"
     },
     {
       "id": "python-3",
@@ -34,9 +36,10 @@
       "course": "Python fundamentals",
       "color": "#6D28D9",
       "icon": "code",
-      "exerciseCount": 87,
-      "lessonCount": 7,
-      "revision": "f66cb99813e3"
+      "exerciseCount": 163,
+      "lessonCount": 10,
+      "labCount": 10,
+      "revision": "f3034941f4cb"
     },
     {
       "id": "python-correct-or-wrong",
@@ -45,8 +48,8 @@
       "course": "Python fundamentals",
       "color": "#A16207",
       "icon": "bug",
-      "exerciseCount": 48,
-      "revision": "e60c7b898389"
+      "exerciseCount": 76,
+      "revision": "712f08419157"
     }
   ]
 }

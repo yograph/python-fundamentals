@@ -562,6 +562,133 @@ function checkLessons(where, lessons, exercises) {
   }
 }
 
+// --- coding labs (invariant 10) --------------------------------------------
+
+const LAB_MODES = ["guided", "change", "write", "challenge"];
+const isStringArray = (value) =>
+  Array.isArray(value) && value.every((item) => typeof item === "string");
+
+/**
+ * A set's coding labs, structurally. Whether each solution really passes its
+ * tests is proven by tools/course-check/check_labs.py, which runs them; this
+ * only guarantees the app can render every step.
+ */
+function checkLabs(where, labs, lessons) {
+  const lessonIds = new Set(
+    (Array.isArray(lessons) ? lessons : []).map((lesson) => lesson?.id),
+  );
+  const labIds = new Set();
+  labs.forEach((lab, index) => {
+    const at = `${where}: labs[${index}]${lab?.id ? ` (${lab.id})` : ""}`;
+    if (!nonEmptyString(lab?.id) || !SLUG.test(lab.id)) {
+      fail(10, `${at}: id must be a lowercase slug`);
+    } else if (labIds.has(lab.id)) {
+      fail(10, `${at}: duplicate lab id`);
+    } else {
+      labIds.add(lab.id);
+    }
+    if (!lessonIds.has(lab?.lesson)) {
+      fail(
+        10,
+        `${at}: lesson ${JSON.stringify(lab?.lesson)} is not a lesson of this set`,
+      );
+    }
+    for (const field of ["title", "summary"]) {
+      if (!nonEmptyString(lab?.[field])) {
+        fail(10, `${at}: ${field} must be a non-empty string`);
+      }
+    }
+    if (!Array.isArray(lab?.steps) || lab.steps.length === 0) {
+      fail(10, `${at}: steps must be a non-empty array`);
+      return;
+    }
+    const stepIds = new Set();
+    lab.steps.forEach((step, stepIndex) => {
+      const stepAt = `${at} steps[${stepIndex}]${step?.id ? ` (${step.id})` : ""}`;
+      if (!nonEmptyString(step?.id) || !SLUG.test(step.id)) {
+        fail(10, `${stepAt}: id must be a lowercase slug`);
+      } else if (stepIds.has(step.id)) {
+        fail(10, `${stepAt}: duplicate step id within the lab`);
+      } else {
+        stepIds.add(step.id);
+      }
+      if (!LAB_MODES.includes(step?.mode)) {
+        fail(10, `${stepAt}: mode must be one of ${LAB_MODES.join(", ")}`);
+      }
+      for (const field of ["title", "instructions", "solution"]) {
+        if (!nonEmptyString(step?.[field])) {
+          fail(10, `${stepAt}: ${field} must be a non-empty string`);
+        }
+      }
+      if (nonEmptyString(step?.instructions)) {
+        warnOnBadMarkup(stepAt, step.instructions);
+      }
+      if ("guide" in (step ?? {})) {
+        if (
+          !Array.isArray(step.guide) ||
+          step.guide.length === 0 ||
+          !step.guide.every(
+            (piece) =>
+              nonEmptyString(piece?.code) && nonEmptyString(piece?.explain),
+          )
+        ) {
+          fail(
+            10,
+            `${stepAt}: guide must be a non-empty array of {code, explain}`,
+          );
+        } else if (
+          step.guide.map((piece) => piece.code).join("\n") !== step.solution
+        ) {
+          fail(
+            10,
+            `${stepAt}: guide pieces joined with newlines must equal the solution`,
+          );
+        }
+      }
+      if ("starter" in (step ?? {}) && typeof step.starter !== "string") {
+        fail(10, `${stepAt}: starter must be a string`);
+      }
+      if ("carryOver" in (step ?? {})) {
+        if (typeof step.carryOver !== "boolean") {
+          fail(10, `${stepAt}: carryOver must be a boolean`);
+        } else if (step.carryOver && (stepIndex === 0 || "starter" in step)) {
+          fail(10, `${stepAt}: carryOver needs a previous step and no starter`);
+        }
+      }
+      for (const field of ["inputs", "hints"]) {
+        if (field in (step ?? {}) && !isStringArray(step[field])) {
+          fail(10, `${stepAt}: ${field} must be an array of strings`);
+        }
+      }
+      for (const hint of isStringArray(step?.hints) ? step.hints : []) {
+        warnOnBadMarkup(stepAt, hint);
+      }
+      if (!Array.isArray(step?.tests) || step.tests.length === 0) {
+        fail(10, `${stepAt}: tests must be a non-empty array`);
+      } else {
+        step.tests.forEach((test, testIndex) => {
+          if (
+            !["name", "code", "fail"].every((key) =>
+              nonEmptyString(test?.[key]),
+            )
+          ) {
+            fail(
+              10,
+              `${stepAt} tests[${testIndex}]: needs name, code and fail`,
+            );
+          }
+          if ("inputs" in (test ?? {}) && !isStringArray(test.inputs)) {
+            fail(
+              10,
+              `${stepAt} tests[${testIndex}]: inputs must be an array of strings`,
+            );
+          }
+        });
+      }
+    });
+  });
+}
+
 /** Exercise set ids claimed by the library, for the orphan sweep. */
 const claimedExerciseFiles = new Set();
 /** Loaded sets for the summary line. */
@@ -702,6 +829,16 @@ if (library && "exerciseSets" in library) {
           checkLessons(where, loaded.json.lessons, loaded.json.exercises);
         }
       }
+
+      if (loaded.json && "labs" in loaded.json) {
+        if (set.kind !== "grammar" || !Array.isArray(loaded.json.lessons)) {
+          fail(10, `${where}: only grammar sets with lessons may carry labs`);
+        } else if (!Array.isArray(loaded.json.labs)) {
+          fail(10, `${where}: labs must be an array when present`);
+        } else {
+          checkLabs(where, loaded.json.labs, loaded.json.lessons);
+        }
+      }
     });
   }
 }
@@ -801,7 +938,12 @@ if (committedManifest !== null) {
           fail(6, `${manifestWhere}: exercise set "${set.id}" is missing`);
           continue;
         }
-        for (const key of ["exerciseCount", "lessonCount", "revision"]) {
+        for (const key of [
+          "exerciseCount",
+          "lessonCount",
+          "labCount",
+          "revision",
+        ]) {
           if (JSON.stringify(found[key]) !== JSON.stringify(set[key])) {
             fail(
               6,
@@ -960,6 +1102,7 @@ const INVARIANT_TITLES = {
   7: "7. audio/index.json clips exist, locales known, keys stripped",
   8: "8. Every exercise set has a valid file at exercises/<id>.json, and no file is unclaimed",
   9: "9. Grammar lessons are well-formed, and every exercise drills exactly one lesson",
+  10: "10. Coding labs are well-formed and belong to a lesson of their set",
 };
 
 if (warnings.length > 0) {
@@ -1024,4 +1167,4 @@ for (const [id, set] of loadedExerciseSets) {
       `${entry ? ` — ${entry.kind}${entry.level ? ` ${entry.level}` : ""}` : ""}`,
   );
 }
-console.log("  all 9 contract invariants satisfied");
+console.log("  all 10 contract invariants satisfied");

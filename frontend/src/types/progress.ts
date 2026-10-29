@@ -31,3 +31,14 @@ export interface PracticeProgress {
   updatedAt: string;
   exercises: Record<string, ExerciseProgress>;
 }
+
+/**
+ * Coding-lab progress for one set: the steps whose tests have passed, keyed
+ * `${labId}/${stepId}`. Kept apart from practice progress so lab steps never
+ * count toward a level's exercise score.
+ */
+export interface LabProgress {
+  setId: string;
+  updatedAt: string;
+  steps: Record<string, { passedAt: string }>;
+}

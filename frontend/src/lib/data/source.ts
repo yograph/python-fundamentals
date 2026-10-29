@@ -159,13 +159,17 @@ function checkExerciseIds(url: string, exercises: { id: string }[]): void {
   });
 }
 
-function checkLessonIds(url: string, lessons: { id: string }[]): void {
+function checkUniqueIds(
+  url: string,
+  items: { id: string }[],
+  what: "lesson" | "lab",
+): void {
   const seen = new Set<string>();
-  for (const lesson of lessons) {
-    if (seen.has(lesson.id)) {
-      throw new DataValidationError(url, `duplicate lesson id "${lesson.id}"`);
+  for (const item of items) {
+    if (seen.has(item.id)) {
+      throw new DataValidationError(url, `duplicate ${what} id "${item.id}"`);
     }
-    seen.add(lesson.id);
+    seen.add(item.id);
   }
 }
 
@@ -195,13 +199,16 @@ export async function fetchExerciseSet(
       checkExerciseIds(url, file.exercises);
       // Lesson ids are route params and the link between a lesson and its
       // exercises, so they need the same uniqueness as exercise ids.
-      checkLessonIds(url, file.lessons);
+      checkUniqueIds(url, file.lessons, "lesson");
+      // Lab ids are route params too.
+      checkUniqueIds(url, file.labs, "lab");
       return {
         schemaVersion: file.schemaVersion,
         ...base,
         kind: "grammar",
         lessons: file.lessons,
         exercises: file.exercises,
+        labs: file.labs,
       };
     }
     case "translation": {

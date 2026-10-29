@@ -13,6 +13,7 @@ import {
   isLessonDone,
   lessonStandings,
 } from "@/features/grammar/lesson-progress";
+import { LabList } from "@/features/labs/lab-list";
 import { useExerciseSet, useManifest } from "@/lib/data/queries";
 import { usePracticeProgress } from "@/lib/progress/practice-queries";
 import {
@@ -125,6 +126,7 @@ export function CoursePage() {
           level={summary.level}
           lessonCount={summary.lessonCount ?? grammar?.lessons.length ?? 0}
           exerciseCount={summary.exerciseCount}
+          labCount={summary.labCount ?? grammar?.labs.length ?? 0}
           correct={correct}
         />
       ) : (
@@ -172,6 +174,27 @@ export function CoursePage() {
               standings={standings}
             />
           </section>
+
+          {grammar.labs.length > 0 ? (
+            <section className="flex flex-col gap-2" aria-label="Coding labs">
+              <h2 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                Coding labs
+              </h2>
+              <LabList
+                setId={setId}
+                color={summary.color}
+                labs={grammar.labs}
+                caption={(lab) => {
+                  const at = grammar.lessons.findIndex(
+                    (lesson) => lesson.id === lab.lesson,
+                  );
+                  return at === -1
+                    ? undefined
+                    : `Lesson ${at + 1}: ${grammar.lessons[at].title}`;
+                }}
+              />
+            </section>
+          ) : null}
         </>
       ) : (
         <LessonListSkeleton />

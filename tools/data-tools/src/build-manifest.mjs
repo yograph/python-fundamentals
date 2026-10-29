@@ -102,6 +102,10 @@ export function buildManifest() {
       ...(Array.isArray(loaded.json?.lessons) && loaded.json.lessons.length > 0
         ? { lessonCount: loaded.json.lessons.length }
         : {}),
+      // Same for coding labs: absent unless the file carries some.
+      ...(Array.isArray(loaded.json?.labs) && loaded.json.labs.length > 0
+        ? { labCount: loaded.json.labs.length }
+        : {}),
       revision: loaded.revision,
     };
   });

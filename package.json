@@ -16,7 +16,7 @@
     "data:validate": "pnpm --filter @flashcards/data-tools validate",
     "data:manifest": "pnpm --filter @flashcards/data-tools manifest",
     "data:audio": "pnpm --filter @flashcards/audio-gen generate",
-    "course:check": "for f in tools/course-check/checks/*.json; do python3 tools/course-check/check_course.py data/exercises/$(basename $f) $f || exit 1; done",
+    "course:check": "for f in tools/course-check/checks/*.json; do python3 tools/course-check/check_course.py data/exercises/$(basename $f) $f || exit 1; done && python3 tools/course-check/check_labs.py data/exercises/*.json",
     "prepare": "husky"
   },
   "devDependencies": {

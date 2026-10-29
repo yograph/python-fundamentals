@@ -77,6 +77,64 @@ export interface GrammarLesson {
   blocks: LessonBlock[];
 }
 
+/**
+ * Coding labs: one small program the learner types and runs, growing over a
+ * few steps while the support fades — the whole program handed over first,
+ * then one change at a time, then on their own, then experiments. Python runs
+ * in the browser (`lib/python`), and each step's tests decide when it is done.
+ * A lab belongs to the lesson named by `lesson`.
+ */
+export type LabMode = "guided" | "change" | "write" | "challenge";
+
+/** One piece of a guided step's program, and exactly what to type and why. */
+export interface GuidePiece {
+  code: string;
+  /** Rich text. */
+  explain: string;
+}
+
+/**
+ * Runs after the learner's program, in its namespace, and passes when it
+ * raises nothing. `lib/python/harness.py` documents what is in scope.
+ */
+export interface LabTest {
+  name: string;
+  code: string;
+  /** Shown when the test fails. Plain text. */
+  fail: string;
+  /** Typed input for this test's run; defaults to the step's `inputs`. */
+  inputs?: string[];
+}
+
+export interface LabStep {
+  id: string;
+  mode: LabMode;
+  title: string;
+  /** Rich text. */
+  instructions: string;
+  /** Guided steps only: the pieces, joined with newlines, are `solution`. */
+  guide?: GuidePiece[];
+  /** Code in the editor when the step opens. Exclusive with `carryOver`. */
+  starter?: string;
+  /** The editor opens with the learner's code from the previous step. */
+  carryOver?: boolean;
+  /** Typed input, one string per `input()` call: for Run, and tests' default. */
+  inputs?: string[];
+  /** Rich text, revealed one at a time. */
+  hints?: string[];
+  solution: string;
+  tests: LabTest[];
+}
+
+export interface CodingLab {
+  id: string;
+  /** The id of the lesson this lab practises, in the same set. */
+  lesson: string;
+  title: string;
+  summary: string;
+  steps: LabStep[];
+}
+
 /** A sentence to translate; the learner self-checks against `reference`. */
 export interface TranslationExercise {
   id: string;
@@ -120,6 +178,8 @@ export interface ExerciseSetSummary {
    * quiz.
    */
   lessonCount?: number;
+  /** Grammar sets only, and only when the set file carries coding labs. */
+  labCount?: number;
   icon?: string;
 }
 
@@ -137,6 +197,8 @@ export interface GrammarSet extends ExerciseSetBase {
   /** Empty when the set file has none: the set is then a plain quiz. */
   lessons: GrammarLesson[];
   exercises: GrammarExercise[];
+  /** Empty when the set file has none. */
+  labs: CodingLab[];
 }
 
 export interface TranslationSet extends ExerciseSetBase {

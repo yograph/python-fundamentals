@@ -47,6 +47,51 @@
       ]
     },
     {
+      "id": "builtin-digits-abs",
+      "prompt": "Task: return how many digits the whole number n has. n may be negative: digits(-305) is 3 and digits(7) is 1. Is this implementation correct?",
+      "code": "def digits(n):\n    return len(str(abs(n)))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "abs(n) drops the minus sign first, so str(abs(-305)) is \"305\" and len gives 3; without abs the minus sign would be counted as a digit. str(0) is \"0\", so 0 correctly has 1 digit.",
+      "tags": [
+        "builtin-functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "builtin-int-not-round",
+      "prompt": "Task: return price rounded to the nearest whole number. For example nearest(3.7) is 4 and nearest(3.2) is 3. Is this implementation correct?",
+      "code": "def nearest(price):\n    return int(price)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "int() cuts the decimals off instead of rounding, so nearest(3.7) gives 3, not 4. Use round(price) to round to the nearest whole number.",
+      "tags": [
+        "builtin-functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "builtin-distance-max-min",
+      "prompt": "Task: return how far apart the numbers a and b are, never negative. For example distance(3, 10) and distance(10, 3) are both 7. Is this implementation correct?",
+      "code": "def distance(a, b):\n    return max(a, b) - min(a, b)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "max(a, b) is the bigger number and min(a, b) the smaller one, so their difference is never negative, whichever order they come in. abs(a - b) would work just as well.",
+      "tags": [
+        "builtin-functions",
+        "correct-or-wrong"
+      ]
+    },
+    {
       "id": "strings-reverse-prepend",
       "prompt": "Task: return the string s reversed. reverse(\"\") must return \"\". Is this implementation correct?",
       "code": "def reverse(s):\n    result = \"\"\n    for ch in s:\n        result = ch + result\n    return result",
@@ -133,6 +178,66 @@
       "explanation": "A single = means \"store this value\", it is not a comparison, so if n = 0: is a SyntaxError and nothing runs at all. Comparing needs ==.",
       "tags": [
         "conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "combining-or-two-values",
+      "prompt": "Task: return \"weekend\" if day is \"sat\" or \"sun\", and \"weekday\" for any other day. Is this implementation correct?",
+      "code": "def kind(day):\n    if day == \"sat\" or \"sun\":\n        return \"weekend\"\n    return \"weekday\"",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Python reads the condition as (day == \"sat\") or (\"sun\"), and a non-empty string like \"sun\" counts as True, so kind(\"mon\") returns \"weekend\". Write day == \"sat\" or day == \"sun\".",
+      "tags": [
+        "combining-conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "combining-safe-division",
+      "prompt": "Task: return True if b is not 0 and a divided by b is greater than 1, else False. It must never crash, not even when b is 0. Is this implementation correct?",
+      "code": "def big_ratio(a, b):\n    return b != 0 and a / b > 1",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "and stops as soon as its left side is False: when b is 0, b != 0 is False and a / b is never worked out, so nothing crashes. The order matters: a / b > 1 and b != 0 would crash for b = 0.",
+      "tags": [
+        "combining-conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "combining-range-or",
+      "prompt": "Task: return True if score is between 0 and 100, including both 0 and 100, else False. Is this implementation correct?",
+      "code": "def valid(score):\n    return score >= 0 or score <= 100",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "With or one true side is enough, and every number is at least 0 or at most 100, so valid(150) and valid(-5) both return True. Both conditions must hold, so it needs and, or the chain 0 <= score <= 100.",
+      "tags": [
+        "combining-conditions",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "combining-not-or",
+      "prompt": "Task: return True if someone may enter: they must be at least 18 and must not be banned (banned is True or False). Is this implementation correct?",
+      "code": "def may_enter(age, banned):\n    return not (age < 18 or banned)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "not (age < 18 or banned) is True only when age < 18 and banned are both False, which means at least 18 and not banned. It is the same as age >= 18 and not banned.",
+      "tags": [
+        "combining-conditions",
         "correct-or-wrong"
       ]
     },
@@ -283,6 +388,66 @@
       "explanation": "The step of 2 makes i jump 0, 2, 4, and it stops before len(lst), so lst[i] never goes past the end, even for odd lengths. An empty list gives [].",
       "tags": [
         "range",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strings-loops-reverse-accumulator",
+      "prompt": "Task: return the string s reversed. For example rev(\"abc\") is \"cba\" and rev(\"\") is \"\". Is this implementation correct?",
+      "code": "def rev(s):\n    result = \"\"\n    for ch in s:\n        result = ch + result\n    return result",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "result = ch + result puts each new character in front of what is already there, so \"abc\" builds \"a\", then \"ba\", then \"cba\". For \"\" the loop never runs and the empty string comes back.",
+      "tags": [
+        "strings-and-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strings-loops-count-vowels",
+      "prompt": "Task: return how many vowels (a, e, i, o or u, in lower or upper case) the word contains. Is this implementation correct?",
+      "code": "def vowels(word):\n    count = 0\n    for ch in word:\n        if ch in \"aeiou\":\n            count += 1\n    return count",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "ch in \"aeiou\" only matches lower-case vowels, so vowels(\"Apple\") returns 1 instead of 2: the capital A is missed. Test ch.lower() in \"aeiou\" instead.",
+      "tags": [
+        "strings-and-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strings-loops-neighbours",
+      "prompt": "Task: return True if the string s has two equal letters next to each other, like \"book\" or \"hello\", else False. Is this implementation correct?",
+      "code": "def double_letter(s):\n    for i in range(len(s)):\n        if s[i] == s[i + 1]:\n            return True\n    return False",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "On the last round i is len(s) - 1, so s[i + 1] is past the end. A word without a double letter, like \"cat\", reaches that round and crashes with an IndexError; loop over range(len(s) - 1) instead.",
+      "tags": [
+        "strings-and-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strings-loops-initials",
+      "prompt": "Task: return the upper-case initials of the words in sentence; words may be separated by more than one space. For example initials(\"ada lovelace\") is \"AL\" and initials(\"\") is \"\". Is this implementation correct?",
+      "code": "def initials(sentence):\n    result = \"\"\n    for word in sentence.split():\n        result += word[0].upper()\n    return result",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "split() without an argument splits on any run of spaces and never gives back empty words, so word[0] is always safe, even with two spaces in a row. For an empty sentence split() gives [] and the result stays \"\".",
+      "tags": [
+        "strings-and-loops",
         "correct-or-wrong"
       ]
     },
@@ -452,6 +617,66 @@
       ]
     },
     {
+      "id": "dict-count-get",
+      "prompt": "Task: return a dictionary that maps each word in the list words to how many times it appears. Is this implementation correct?",
+      "code": "def count_words(words):\n    counts = {}\n    for w in words:\n        counts[w] = counts.get(w, 0) + 1\n    return counts",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "counts.get(w, 0) gives the count so far, or 0 for a word not seen yet, so the first time a word appears it becomes 1 instead of crashing. An empty list gives an empty dictionary.",
+      "tags": [
+        "dictionaries",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dict-missing-key",
+      "prompt": "Task: return a dictionary that maps each letter in the string s to how many times it appears. Is this implementation correct?",
+      "code": "def count_letters(s):\n    counts = {}\n    for ch in s:\n        counts[ch] += 1\n    return counts",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "counts[ch] += 1 first reads counts[ch], and the first time a letter appears that key does not exist yet, so it crashes with a KeyError. Use counts[ch] = counts.get(ch, 0) + 1, or check if ch in counts first.",
+      "tags": [
+        "dictionaries",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dict-best-items",
+      "prompt": "Task: grades is a non-empty dictionary from student name to grade, with no tie for the top grade. Return the name of the student with the highest grade. Is this implementation correct?",
+      "code": "def best(grades):\n    top = None\n    for name, grade in grades.items():\n        if top is None or grade > grades[top]:\n            top = name\n    return top",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "items() gives each name together with its grade. top starts as None, so the first student is always taken (or stops before grades[None] is ever read), and after that a student only replaces top with a higher grade. It even works when every grade is negative.",
+      "tags": [
+        "dictionaries",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dict-in-checks-keys",
+      "prompt": "Task: phone is a dictionary from name to phone number (both strings). Return True if the number num belongs to someone in phone, else False. Is this implementation correct?",
+      "code": "def has_number(phone, num):\n    return num in phone",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "in on a dictionary checks the keys, so num in phone asks whether \"0612\" is a name, and it returns False for a number that is in the dictionary. Check num in phone.values() instead.",
+      "tags": [
+        "dictionaries",
+        "correct-or-wrong"
+      ]
+    },
+    {
       "id": "functions-area-print-not-return",
       "prompt": "Task: return the area of a rectangle so it can be used in later calculations, for example area(2, 3) + 1 is 7. Is this implementation correct?",
       "code": "def area(w, h):\n    print(w * h)",
@@ -568,6 +793,126 @@
       "explanation": "The base case only catches exactly 0. For odd n the values go 5, 3, 1, -1, -3 and jump over 0, so the base case is never reached and it ends in a RecursionError. Use if n <= 0: return.",
       "tags": [
         "recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "design-digit-sum",
+      "prompt": "Task: return the sum of the digits of the whole number n (n >= 0), using recursion. For example digit_sum(2026) is 10 and digit_sum(0) is 0. Is this implementation correct?",
+      "code": "def digit_sum(n):\n    if n < 10:\n        return n\n    return n % 10 + digit_sum(n // 10)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Any number below 10 is a single digit and is its own digit sum, which also covers 0. Otherwise n % 10 is the last digit and n // 10 is the number without it, which is smaller, so every call gets closer to the base case.",
+      "tags": [
+        "designing-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "design-wrong-base-value",
+      "prompt": "Task: return the product of all the numbers in the list nums, using recursion. The product of an empty list is 1. Is this implementation correct?",
+      "code": "def product(nums):\n    if nums == []:\n        return 0\n    return nums[0] * product(nums[1:])",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The base case returns 0, and every call multiplies by the result below it, so the answer is always 0: product([2, 3, 4]) gives 0 instead of 24. The empty product must be 1, the number that changes nothing when you multiply by it.",
+      "tags": [
+        "designing-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "design-is-sorted",
+      "prompt": "Task: return True if the list nums is sorted from small to large (equal neighbours are allowed), else False, using recursion. Is this implementation correct?",
+      "code": "def is_sorted(nums):\n    if len(nums) <= 1:\n        return True\n    if nums[0] > nums[1]:\n        return False\n    return is_sorted(nums[1:])",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "A list with 0 or 1 items is always sorted, so len(nums) <= 1 is a safe base case, and nums[1] is only read when it exists. Each call checks the first pair and recurses on a list that is one item shorter.",
+      "tags": [
+        "designing-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "design-not-smaller",
+      "prompt": "Task: return how many times the character ch appears in the string s, using recursion. Is this implementation correct?",
+      "code": "def count(s, ch):\n    if s == \"\":\n        return 0\n    if s[0] == ch:\n        return 1 + count(s[1:], ch)\n    return count(s, ch)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "When s[0] is not ch, the last line calls count(s, ch) with the same s, so the problem never gets smaller. count(\"banana\", \"a\") keeps calling itself on \"banana\" and ends in a RecursionError; it must recurse on s[1:].",
+      "tags": [
+        "designing-recursion",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dc-binary-search-lo-hi",
+      "prompt": "Task: nums is sorted from small to large. Return True if target is in nums, else False. It is called as search(nums, target, 0, len(nums) - 1). Is this implementation correct?",
+      "code": "def search(nums, target, lo, hi):\n    if lo > hi:\n        return False\n    mid = (lo + hi) // 2\n    if nums[mid] == target:\n        return True\n    if nums[mid] < target:\n        return search(nums, target, mid + 1, hi)\n    return search(nums, target, lo, mid - 1)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Each call looks at the middle of nums[lo..hi] and keeps only the half that can still hold target, skipping mid itself with mid + 1 or mid - 1. When lo passes hi the range is empty, so target is not there; that also covers an empty list, where hi is -1.",
+      "tags": [
+        "divide-and-conquer",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dc-binary-search-forever",
+      "prompt": "Task: nums is sorted from small to large. Return the index of target in nums, or -1 if it is not there. Is this implementation correct?",
+      "code": "def find(nums, target):\n    lo, hi = 0, len(nums) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if nums[mid] == target:\n            return mid\n        if nums[mid] < target:\n            lo = mid\n        else:\n            hi = mid - 1\n    return -1",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "lo = mid does not move past mid, so the range can stop shrinking. For find([1, 3], 3): lo is 0, hi is 1, mid is 0 and nums[0] < 3, so lo stays 0 and the loop never stops. It needs lo = mid + 1, because mid has already been checked.",
+      "tags": [
+        "divide-and-conquer",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dc-merge-drops-leftovers",
+      "prompt": "Task: a and b are each sorted from small to large. Return one list, sorted from small to large, with all the items of a and b. Is this implementation correct?",
+      "code": "def merge(a, b):\n    result = []\n    i = j = 0\n    while i < len(a) and j < len(b):\n        if a[i] <= b[j]:\n            result.append(a[i])\n            i += 1\n        else:\n            result.append(b[j])\n            j += 1\n    return result",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The loop stops as soon as one list runs out, and whatever is left in the other list is never added: merge([1, 4], [2, 3]) gives [1, 2, 3] and loses the 4. After the loop it must add a[i:] and b[j:].",
+      "tags": [
+        "divide-and-conquer",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dc-merge-sort-correct",
+      "prompt": "Task: return the numbers of nums sorted from small to large, using merge sort, without changing nums itself. Is this implementation correct?",
+      "code": "def merge_sort(nums):\n    if len(nums) <= 1:\n        return nums\n    mid = len(nums) // 2\n    left = merge_sort(nums[:mid])\n    right = merge_sort(nums[mid:])\n    out = []\n    while left and right:\n        if left[0] <= right[0]:\n            out.append(left.pop(0))\n        else:\n            out.append(right.pop(0))\n    return out + left + right",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "A list of 0 or 1 items is already sorted; otherwise both halves are sorted by the recursion and merged by taking the smaller front item each time. while left and right stops when one is empty, and out + left + right adds what is left of the other. Only the slices made by nums[:mid] and nums[mid:] are popped, so nums never changes.",
+      "tags": [
+        "divide-and-conquer",
         "correct-or-wrong"
       ]
     },
@@ -718,6 +1063,81 @@
       "explanation": "It follows choose, explore, unchoose: append x, recurse, then pop x so the next choice starts clean. x not in path stops an item being used twice, and path[:] stores a copy, so later pops cannot change stored results.",
       "tags": [
         "combinations",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "backtracking-subset-sum-prune-bug",
+      "prompt": "Task: nums holds positive whole numbers in any order and target is a positive whole number. Return True if some of the numbers, each used at most once, add up to exactly target. It is called as can_make(nums, 0, target). Is this implementation correct?",
+      "code": "def can_make(nums, i, target):\n    if target == 0:\n        return True\n    if i == len(nums):\n        return False\n    if nums[i] > target:\n        return False\n    rest = target - nums[i]\n    return (can_make(nums, i + 1, rest)\n            or can_make(nums, i + 1, target))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "if nums[i] > target: return False gives up on the whole search, but a number that is too big only means you cannot take it; a later, smaller number may still work. can_make([5, 2], 0, 2) returns False although 2 alone makes 2, so the pruning should only skip taking nums[i].",
+      "tags": [
+        "backtracking",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "backtracking-subset-sum-correct",
+      "prompt": "Task: nums holds positive whole numbers in any order and target is a positive whole number. Return True if some of the numbers, each used at most once, add up to exactly target. It is called as can_make(nums, 0, target). Is this implementation correct?",
+      "code": "def can_make(nums, i, target):\n    if target == 0:\n        return True\n    if i == len(nums):\n        return False\n    if nums[i] <= target:\n        rest = target - nums[i]\n        if can_make(nums, i + 1, rest):\n            return True\n    return can_make(nums, i + 1, target)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Each call decides about nums[i]: take it (only when it still fits) or leave it, then moves on to i + 1. target == 0 means the numbers taken add up exactly, and i == len(nums) means nothing is left to try; a number that is too big is only not taken, so later numbers are still tried.",
+      "tags": [
+        "backtracking",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "backtracking-coins-orders",
+      "prompt": "Task: return the number of different ways to make amount from the coin values in coins, where only the combination counts, not the order: 1 + 2 and 2 + 1 are the same way. For example ways(4, [1, 2]) is 3 (1+1+1+1, 1+1+2 and 2+2). Is this implementation correct?",
+      "code": "def ways(amount, coins):\n    if amount == 0:\n        return 1\n    if amount < 0:\n        return 0\n    total = 0\n    for c in coins:\n        total += ways(amount - c, coins)\n    return total",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "The loop tries every coin at every step, so 1 + 2 and 2 + 1 are counted as two different ways: ways(4, [1, 2]) gives 5 instead of 3. To count each combination once, a call may only use coins from the current one onward.",
+      "tags": [
+        "backtracking",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "backtracking-word-search-no-undo",
+      "prompt": "Task: grid is a list of lists of letters. Return True if word can be spelled starting at (r, c), each next letter one step up, down, left or right, using every cell at most once. It is called as spell(grid, word, r, c). Is this implementation correct?",
+      "code": "def spell(grid, word, r, c):\n    if word == \"\":\n        return True\n    if r < 0 or r >= len(grid):\n        return False\n    if c < 0 or c >= len(grid[0]):\n        return False\n    if grid[r][c] != word[0]:\n        return False\n    grid[r][c] = \"#\"\n    rest = word[1:]\n    return (spell(grid, rest, r + 1, c)\n            or spell(grid, rest, r - 1, c)\n            or spell(grid, rest, r, c + 1)\n            or spell(grid, rest, r, c - 1))",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Each visited cell is marked \"#\" but never set back, so when one route hits a dead end its cells stay blocked for the next route. In the grid AAB / CBA, spelling AABABC from (0, 0) first tries a route that fails, and the route that works then needs a cell that is still \"#\", so it returns False. Before returning, it must set grid[r][c] back to word[0].",
+      "tags": [
+        "backtracking",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "backtracking-n-queens-count",
+      "prompt": "Task: return the number of ways to place n queens on an n by n chess board so that no two share a row, a column or a diagonal. It is called as place(n, []), and place(4, []) must give 2. Is this implementation correct?",
+      "code": "def safe(cols, c):\n    row = len(cols)\n    for r in range(row):\n        if cols[r] == c:\n            return False\n        if abs(cols[r] - c) == row - r:\n            return False\n    return True\n\n\ndef place(n, cols):\n    if len(cols) == n:\n        return 1\n    total = 0\n    for c in range(n):\n        if safe(cols, c):\n            cols.append(c)\n            total += place(n, cols)\n            cols.pop()\n    return total",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "place puts one queen per row, so rows never clash, and safe rejects a column that is taken (cols[r] == c) or on a diagonal (the column distance equals the row distance). Append, recurse, pop undoes each choice, so the same cols list can be reused and every board is counted once.",
+      "tags": [
+        "backtracking",
         "correct-or-wrong"
       ]
     }

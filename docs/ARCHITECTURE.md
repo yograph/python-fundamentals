@@ -15,7 +15,8 @@ features/          domain UI, grouped by the thing it serves
    ├── decks/      browsing, previewing and configuring a deck
    ├── study/      running a study session
    ├── practice/   running a practice set (grammar, translation, writing)
-   └── grammar/    the grammar course: levels, lesson pages, lesson progress
+   ├── grammar/    the grammar course: levels, lesson pages, lesson progress
+   └── labs/       coding labs: the editor, running and checking a step
    ↓
 components/        rich-text.tsx, code-block.tsx, plus ui/ design-system primitives
                    (domain-free, vendored from shadcn)
@@ -25,6 +26,7 @@ lib/               the only layer that talks to the network or localStorage
    ├── markup/     the inline-formatting parser and its plain-text projection
    ├── progress/   local learner progress: read, write, cache
    ├── audio/      clip playback
+   ├── python/     Python in the browser: Pyodide in a Web Worker, the harness
    └── query/      TanStack Query client + persistence wiring
    ↓
 types/             plain interfaces, zero runtime code
@@ -282,6 +284,29 @@ Looks up `` `${locale}:${text}` `` in the audio index and plays
 missing it falls back to the Web Speech API if the browser has a matching voice,
 and otherwise no-ops — a missing clip is never an error surfaced to the learner.
 
+## `lib/python/` — Python in the browser
+
+Coding labs run the learner's code with real CPython: Pyodide, loaded from the
+jsDelivr CDN on first use (about 10 MB once, then from the HTTP cache) inside
+a Web Worker.
+
+- `harness.py` runs a program with typed input and captured output, and runs
+  a step's tests. It is the single source of that logic: the worker loads it
+  as raw text, and `tools/course-check/check_labs.py` imports it under
+  CPython to prove every lab's solution passes its own tests. Pyodide is
+  pinned to the release built on Python 3.13, the version CI checks with.
+- `python-worker.ts` boots Pyodide and calls the harness's two JSON entry
+  points. Everything crosses the boundary as JSON strings.
+- `python-runner.ts` is the page's side: one shared worker, booted on demand
+  (the lab page preloads it), and `usePython()` for status and calls. A run
+  gets 5 seconds and a check 10, counted only once Python is ready; past that
+  the worker is terminated, because ending the worker is the only way to stop
+  a running Python program, and the next run boots a fresh one.
+
+Lab progress (`lib/progress/lab-store.ts`) is kept apart from practice
+progress, so lab steps never count toward a level's exercise score. Each
+step's code is saved as its own localStorage entry as the learner types.
+
 ## `routes/` — URL as state
 
 Code-based TanStack Router route tree (no codegen). The routes (the deck rows
@@ -294,6 +319,7 @@ predate the per-deck pages; `router.tsx` is the authority):
 | `/practice/$setId` | `lesson?: string` — narrows the round to one grammar lesson |
 | `/grammar/$setId` | none — a course level and its lessons |
 | `/grammar/$setId/$lessonId` | none — one lesson |
+| `/lab/$setId/$labId` | `step?: number` — 1-based; absent means the first step not yet passed, which the page then pins |
 
 Search params are validated with zod in `validateSearch`, so a hand-edited URL
 produces a typed default rather than a runtime crash. Study options live in the

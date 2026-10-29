@@ -9,6 +9,8 @@ interface CourseHeaderProps {
   level: string | undefined;
   lessonCount: number;
   exerciseCount: number;
+  /** Coding labs in the level; 0 hides the count. */
+  labCount?: number;
   correct: number;
 }
 
@@ -19,6 +21,7 @@ export function CourseHeader({
   level,
   lessonCount,
   exerciseCount,
+  labCount = 0,
   correct,
 }: CourseHeaderProps) {
   const clamped = Math.min(correct, exerciseCount);
@@ -43,6 +46,12 @@ export function CourseHeader({
             {lessonCount} lessons
             <span aria-hidden="true"> · </span>
             {exerciseCount} exercises
+            {labCount > 0 ? (
+              <>
+                <span aria-hidden="true"> · </span>
+                {labCount} labs
+              </>
+            ) : null}
             <span aria-hidden="true"> · </span>
             <span className="tabular-nums">{clamped}</span> correct
           </p>

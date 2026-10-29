@@ -9,6 +9,7 @@ import { STUDY_DIRECTIONS } from "@/features/study/directions";
 import { CoursePage } from "@/routes/course-route";
 import { DeckPage } from "@/routes/deck-route";
 import { OverviewPage } from "@/routes/index-route";
+import { LabPage } from "@/routes/lab-route";
 import { LessonPage } from "@/routes/lesson-route";
 import { PracticePage } from "@/routes/practice-route";
 import { NotFoundPage, RootLayout, RouteErrorPage } from "@/routes/root-layout";
@@ -23,6 +24,7 @@ import { StudyPage } from "@/routes/study-route";
  *   /practice/$setId     a practice set: grammar, translation or writing
  *   /grammar/$setId      a grammar course level: its lessons, in order
  *   /grammar/$setId/$lessonId   one lesson
+ *   /lab/$setId/$labId   a coding lab, one step at a time (?step=2)
  *
  * The deck used to open in a drawer over the grid, which capped how much could
  * be shown and nested a scroll area inside the page's own. A real page has the
@@ -122,6 +124,24 @@ const lessonRoute = createRoute({
   component: LessonPage,
 });
 
+/**
+ * A lab's one option is which step is on screen, 1-based. Absent or out of
+ * range means "the first step not yet passed", which the page then pins.
+ */
+const labSearchSchema = z.object({
+  step: z.coerce.number().int().positive().optional().catch(undefined),
+});
+
+export type LabSearch = z.output<typeof labSearchSchema>;
+
+const labRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/lab/$setId/$labId",
+  validateSearch: (search: Record<string, unknown>): LabSearch =>
+    labSearchSchema.parse(search),
+  component: LabPage,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   deckRoute,
@@ -129,6 +149,7 @@ const routeTree = rootRoute.addChildren([
   practiceRoute,
   courseRoute,
   lessonRoute,
+  labRoute,
 ]);
 
 export const router = createRouter({

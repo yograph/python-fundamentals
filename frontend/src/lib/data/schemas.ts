@@ -10,6 +10,7 @@ import type {
   Word,
 } from "@/types/deck";
 import type {
+  CodingLab,
   ExerciseSetSummary,
   GrammarExercise,
   GrammarLesson,
@@ -251,6 +252,42 @@ const lessonBlockSchema = z
     }
   });
 
+/**
+ * Coding labs. Structure only: whether a solution really passes its tests is
+ * proven at authoring time by tools/course-check, which runs every step.
+ */
+const labTestSchema = z.object({
+  name: nonEmptyText,
+  code: nonEmptyText,
+  fail: nonEmptyText,
+  inputs: z.array(z.string()).optional(),
+});
+
+const labStepSchema = z.object({
+  id: slugId,
+  mode: z.enum(["guided", "change", "write", "challenge"]),
+  title: nonEmptyText,
+  instructions: nonEmptyText,
+  guide: z
+    .array(z.object({ code: nonEmptyText, explain: nonEmptyText }))
+    .min(1)
+    .optional(),
+  starter: z.string().optional(),
+  carryOver: z.boolean().optional(),
+  inputs: z.array(z.string()).optional(),
+  hints: z.array(nonEmptyText).optional(),
+  solution: nonEmptyText,
+  tests: z.array(labTestSchema).min(1),
+});
+
+export const codingLabSchema = z.object({
+  id: slugId,
+  lesson: slugId,
+  title: nonEmptyText,
+  summary: nonEmptyText,
+  steps: z.array(labStepSchema).min(1),
+});
+
 export const grammarLessonSchema = z.object({
   id: slugId,
   title: nonEmptyText,
@@ -270,6 +307,7 @@ export const exerciseFileSchemas = {
     // is the plain quiz it was before lessons existed.
     lessons: z.array(grammarLessonSchema).default([]),
     exercises: z.array(grammarExerciseSchema),
+    labs: z.array(codingLabSchema).default([]),
   }),
   translation: z.object({
     schemaVersion,
@@ -291,6 +329,7 @@ const exerciseSetSummarySchema = z.object({
   revision: contentRevision,
   exerciseCount: z.number().int().nonnegative(),
   lessonCount: z.number().int().positive().optional(),
+  labCount: z.number().int().positive().optional(),
   // Same stance as a deck's icon: any string, unknown names fall back.
   icon: nonEmptyText.optional(),
 });
@@ -376,6 +415,9 @@ export type WritingExerciseSchemaMatches = Expect<
 >;
 export type LessonBlockSchemaMatches = Expect<
   Mutual<z.output<typeof lessonBlockSchema>, LessonBlock>
+>;
+export type CodingLabSchemaMatches = Expect<
+  Mutual<z.output<typeof codingLabSchema>, CodingLab>
 >;
 export type GrammarLessonSchemaMatches = Expect<
   Mutual<z.output<typeof grammarLessonSchema>, GrammarLesson>

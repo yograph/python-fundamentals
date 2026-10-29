@@ -110,6 +110,9 @@ function serveRepoData(): Plugin {
  */
 export default defineConfig({
   plugins: [react(), tailwindcss(), serveRepoData()],
+  // The Python worker imports Pyodide from its CDN at runtime, which needs an
+  // ES-module worker.
+  worker: { format: "es" },
   // "/" for local dev; the Deploy workflow passes "/<repo>/" for the GitHub
   // project page.
   base: process.env.VITE_BASE_PATH || "/",

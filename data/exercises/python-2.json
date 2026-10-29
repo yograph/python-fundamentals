@@ -47,6 +47,51 @@
         },
         {
           "type": "heading",
+          "text": "Trace it round by round"
+        },
+        {
+          "type": "table",
+          "caption": "The loop above, one check at a time. It checks the condition 4 times but runs the body only 3 times.",
+          "headers": [
+            "Check",
+            "i",
+            "i <= 3?",
+            "Prints",
+            "i after i += 1"
+          ],
+          "rows": [
+            [
+              "1st",
+              "1",
+              "True",
+              "1",
+              "2"
+            ],
+            [
+              "2nd",
+              "2",
+              "True",
+              "2",
+              "3"
+            ],
+            [
+              "3rd",
+              "3",
+              "True",
+              "3",
+              "4"
+            ],
+            [
+              "4th",
+              "4",
+              "False: the loop ends",
+              "nothing",
+              "nothing"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
           "text": "The condition is checked first"
         },
         {
@@ -202,6 +247,15 @@
         {
           "type": "tip",
           "text": "Use **for** whenever you know what you are stepping through: a list, a string or a range. Fewer lines that you write yourself means fewer places for bugs."
+        },
+        {
+          "type": "list",
+          "items": [
+            "A **for** loop starts at the first item, stops after the last one and steps to the next item for you.",
+            "The loop variable is the **item** itself, not its position.",
+            "Assigning to the loop variable does not change the list.",
+            "You can loop over lists, strings and **range()**, but not over an int."
+          ]
         }
       ]
     },
@@ -322,6 +376,193 @@
       ]
     },
     {
+      "id": "strings-and-loops",
+      "title": "Strings and loops",
+      "summary": "Walk through a string by character or by position, count characters, and build new strings with an accumulator.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "To process a string, loop over it: **for ch in s** gives you each character, **for i in range(len(s))** gives you each position. Strings can't be changed, so you **build a new string**, starting from **\"\"**."
+        },
+        {
+          "type": "text",
+          "text": "A string is a sequence of characters, so everything you learned about **for** loops works on it. The only question is whether you need the characters alone, or also their positions."
+        },
+        {
+          "type": "code",
+          "caption": "By character: **ch** is each character in turn.",
+          "code": "for ch in \"code\":\n    print(ch.upper())",
+          "output": "C\nO\nD\nE"
+        },
+        {
+          "type": "code",
+          "caption": "By position: **i** is 0, 1, 2 and **word[i]** is the character there.",
+          "code": "word = \"cat\"\nfor i in range(len(word)):\n    print(i, word[i])",
+          "output": "0 c\n1 a\n2 t"
+        },
+        {
+          "type": "table",
+          "caption": "Which loop when",
+          "headers": [
+            "You need",
+            "Loop",
+            "Example"
+          ],
+          "rows": [
+            [
+              "Only the characters",
+              "**for ch in s:**",
+              "count vowels, build a new string"
+            ],
+            [
+              "The position too",
+              "**for i in range(len(s)):**",
+              "find where a letter is"
+            ],
+            [
+              "A character and the next one",
+              "**for i in range(len(s) - 1):**",
+              "find double letters"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Counting characters"
+        },
+        {
+          "type": "code",
+          "caption": "The counter pattern, on a string. **ch in \"aeiou\"** is True when **ch** is a vowel.",
+          "code": "word = \"banana\"\nvowels = 0\nfor ch in word:\n    if ch in \"aeiou\":\n        vowels += 1\nprint(vowels)",
+          "output": "3"
+        },
+        {
+          "type": "heading",
+          "text": "Building a new string"
+        },
+        {
+          "type": "code",
+          "caption": "The accumulator pattern, with **\"\"** instead of **0**:",
+          "code": "word = \"hello\"\nshout = \"\"\nfor ch in word:\n    shout = shout + ch.upper() + \"!\"\nprint(shout)",
+          "output": "H!E!L!L!O!"
+        },
+        {
+          "type": "table",
+          "caption": "Tracing it: every round adds to the end of **shout**.",
+          "headers": [
+            "Round",
+            "ch",
+            "shout after the round"
+          ],
+          "rows": [
+            [
+              "before",
+              "",
+              "\"\""
+            ],
+            [
+              "1",
+              "h",
+              "\"H!\""
+            ],
+            [
+              "2",
+              "e",
+              "\"H!E!\""
+            ],
+            [
+              "3",
+              "l",
+              "\"H!E!L!\""
+            ],
+            [
+              "4",
+              "l",
+              "\"H!E!L!L!\""
+            ],
+            [
+              "5",
+              "o",
+              "\"H!E!L!L!O!\""
+            ]
+          ]
+        },
+        {
+          "type": "bug",
+          "wrong": "word = \"cat\"\nword[0] = \"b\"",
+          "right": "word = \"cat\"\nword = \"b\" + word[1:]",
+          "why": "Strings are immutable: **word[0] = \"b\"** is a **TypeError**. Build a new string and store it in the variable."
+        },
+        {
+          "type": "heading",
+          "text": "Reversing"
+        },
+        {
+          "type": "code",
+          "caption": "Adding each character to the **front** builds the string backwards. The slice **[::-1]** is the shortcut.",
+          "code": "word = \"stressed\"\nbackwards = \"\"\nfor ch in word:\n    backwards = ch + backwards\nprint(backwards)\nprint(word[::-1])",
+          "output": "desserts\ndesserts"
+        },
+        {
+          "type": "table",
+          "caption": "Checking a character",
+          "headers": [
+            "You write",
+            "True when",
+            "Example"
+          ],
+          "rows": [
+            [
+              "**ch.isdigit()**",
+              "**ch** is a digit 0 to 9",
+              "**\"7\".isdigit()** is **True**"
+            ],
+            [
+              "**ch.isalpha()**",
+              "**ch** is a letter",
+              "**\"x\".isalpha()** is **True**"
+            ],
+            [
+              "**ch.isupper()**",
+              "**ch** is an uppercase letter",
+              "**\"Q\".isupper()** is **True**"
+            ],
+            [
+              "**ch in \"aeiou\"**",
+              "**ch** is one of those characters",
+              "**\"e\" in \"aeiou\"** is **True**"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Comparing neighbours"
+        },
+        {
+          "type": "code",
+          "caption": "Each round looks at **word[i]** and the character after it.",
+          "code": "word = \"balloon\"\nfor i in range(len(word) - 1):\n    if word[i] == word[i + 1]:\n        print(\"double\", word[i])",
+          "output": "double l\ndouble o"
+        },
+        {
+          "type": "bug",
+          "wrong": "for i in range(len(word)):\n    if word[i] == word[i + 1]:",
+          "right": "for i in range(len(word) - 1):\n    if word[i] == word[i + 1]:",
+          "why": "In the last round **i** is the last position, so **word[i + 1]** is past the end: **IndexError**. When you look one ahead, stop one early with **range(len(word) - 1)**."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**for ch in s** when you only need the characters.",
+            "**for i in range(len(s))** when you need the position.",
+            "Start a new string with **\"\"** and add to it; you cannot change a string in place.",
+            "**result + ch** builds forwards; **ch + result** builds backwards.",
+            "Looking at **s[i + 1]**? Loop to **len(s) - 1**."
+          ]
+        }
+      ]
+    },
+    {
       "id": "lists",
       "title": "Lists",
       "summary": "Create, read and change lists, and tell a real copy from a second name for the same list.",
@@ -430,8 +671,23 @@
           "why": "**backup = scores** is a second name for the same list, so the backup gets the 0 too. **scores[:]** makes a real copy."
         },
         {
+          "type": "bug",
+          "wrong": "nums = [0, 0, 5]\nfor n in nums:\n    if n == 0:\n        nums.remove(n)",
+          "right": "nums = [0, 0, 5]\nwhile 0 in nums:\n    nums.remove(0)",
+          "why": "Removing items from the list a **for** loop is walking over shifts the rest to the left, so the loop **skips** the item right after each one it removes. Here **nums** ends up as **[0, 5]**. Loop until none is left, or build a new list with only the items you keep."
+        },
+        {
           "type": "tip",
           "text": "When a method seems to \"do nothing\", check what it gives back. String methods such as **upper()** return a **new** string you must store. List methods such as **append()** and **sort()** change the list and return **None**."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Indexes run from **0** to **len(x) - 1**; **x[-1]** is the last item.",
+            "**append**, **insert**, **remove** and **pop** change the list itself; **append** gives back **None**.",
+            "**b = a** gives the same list a second name; **a[:]** makes a real copy.",
+            "Don't remove items from a list while a **for** loop walks over it."
+          ]
         }
       ]
     },
@@ -456,6 +712,37 @@
           "type": "code",
           "code": "total = 0\nfor n in [4, 5, 6]:\n    total += n\nprint(total)",
           "output": "15"
+        },
+        {
+          "type": "table",
+          "caption": "Tracing the accumulator: **total** grows by **n** every round.",
+          "headers": [
+            "Round",
+            "n",
+            "total after the round"
+          ],
+          "rows": [
+            [
+              "before the loop",
+              "",
+              "0"
+            ],
+            [
+              "1",
+              "4",
+              "4"
+            ],
+            [
+              "2",
+              "5",
+              "9"
+            ],
+            [
+              "3",
+              "6",
+              "15"
+            ]
+          ]
         },
         {
           "type": "bug",
@@ -526,6 +813,16 @@
           "wrong": "def has_even(nums):\n    for n in nums:\n        if n % 2 == 0:\n            return True\n        else:\n            return False",
           "right": "def has_even(nums):\n    for n in nums:\n        if n % 2 == 0:\n            return True\n    return False",
           "why": "The wrong version decides after looking at the **first** number only. You may only say **False** once you have checked them all, so **return False** goes after the loop."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Accumulate**: **total = 0** before the loop, **total += n** inside, use **total** after.",
+            "**Count**: **count = 0** before, **count += 1** inside an **if**.",
+            "**Best so far**: start from the first item, not from 0.",
+            "**Search**: **return** or **break** as soon as you find it; decide \"not found\" only **after** the loop.",
+            "**Build**: **result = []** before, **result.append(x)** inside."
+          ]
         }
       ]
     },
@@ -637,6 +934,136 @@
       ]
     },
     {
+      "id": "dictionaries",
+      "title": "Tuples and dictionaries",
+      "summary": "Use tuples for fixed pairs like (row, column), and dictionaries to look values up by key and to count things.",
+      "blocks": [
+        {
+          "type": "rule",
+          "text": "A **tuple** is a list you cannot change, written with **( )**. A **dictionary** maps **keys** to **values**: **d[key]** looks a value up, and **d[key] = value** adds or changes one."
+        },
+        {
+          "type": "heading",
+          "text": "Tuples"
+        },
+        {
+          "type": "text",
+          "text": "A tuple holds a fixed group of values that belong together, such as a position **(row, column)**. You can index it, loop over it and take its **len**, like a list, but you cannot change it: no **append**, no **t[0] = ...**."
+        },
+        {
+          "type": "code",
+          "code": "pos = (2, 3)\nprint(pos[0], pos[1])\nr, c = pos\nprint(r + c)",
+          "output": "2 3\n5"
+        },
+        {
+          "type": "text",
+          "text": "**Unpacking**: **r, c = pos** puts the first item in **r** and the second in **c**. A **for** loop can unpack too. You will use exactly this in level 3 to try the four directions in a maze."
+        },
+        {
+          "type": "code",
+          "caption": "The four maze directions as (row change, column change): up, down, left, right.",
+          "code": "for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n    print(dr, dc)",
+          "output": "-1 0\n1 0\n0 -1\n0 1"
+        },
+        {
+          "type": "bug",
+          "wrong": "pos = (2, 3)\npos[0] = 5",
+          "right": "pos = (2, 3)\npos = (5, pos[1])",
+          "why": "Tuples are immutable, so item assignment is a **TypeError**. Make a new tuple and store it in the variable."
+        },
+        {
+          "type": "heading",
+          "text": "Dictionaries"
+        },
+        {
+          "type": "code",
+          "caption": "Look up by key, add a new key, change an existing one:",
+          "code": "ages = {\"Ana\": 20, \"Ben\": 25}\nprint(ages[\"Ana\"])\nages[\"Cas\"] = 31\nages[\"Ana\"] = 21\nprint(ages)",
+          "output": "20\n{'Ana': 21, 'Ben': 25, 'Cas': 31}"
+        },
+        {
+          "type": "table",
+          "caption": "The dictionary tools you need",
+          "headers": [
+            "You write",
+            "What it does"
+          ],
+          "rows": [
+            [
+              "**d[key]**",
+              "The value for **key**; a **KeyError** if the key is not there"
+            ],
+            [
+              "**d[key] = v**",
+              "Adds **key** with value **v**, or replaces its value if it is already there"
+            ],
+            [
+              "**key in d**",
+              "**True** if **key** is one of the keys (it does not look at the values)"
+            ],
+            [
+              "**d.get(key, default)**",
+              "The value for **key**, or **default** if the key is not there (no error)"
+            ],
+            [
+              "**len(d)**",
+              "The number of keys"
+            ],
+            [
+              "**for k in d:**",
+              "Each key"
+            ],
+            [
+              "**for k, v in d.items():**",
+              "Each key together with its value"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "caption": "Looking up a key that is not there:",
+          "code": "ages = {\"Ana\": 20}\nprint(ages[\"Zoe\"])",
+          "output": "KeyError: 'Zoe'"
+        },
+        {
+          "type": "code",
+          "caption": "To avoid the **KeyError**, check with **in** first or use **get**. Note that **20 in ages** is **False**: **in** checks keys.",
+          "code": "ages = {\"Ana\": 20, \"Ben\": 25}\nprint(\"Ana\" in ages, 20 in ages)\nprint(ages.get(\"Zoe\", 0))\nfor name, age in ages.items():\n    print(name, age)",
+          "output": "True False\n0\nAna 20\nBen 25"
+        },
+        {
+          "type": "heading",
+          "text": "Counting with a dictionary"
+        },
+        {
+          "type": "code",
+          "caption": "**get(ch, 0)** gives 0 the first time a letter appears, so every count starts from 0.",
+          "code": "counts = {}\nfor ch in \"banana\":\n    counts[ch] = counts.get(ch, 0) + 1\nprint(counts)",
+          "output": "{'b': 1, 'a': 3, 'n': 2}"
+        },
+        {
+          "type": "bug",
+          "wrong": "counts = {}\nfor ch in \"banana\":\n    counts[ch] += 1",
+          "right": "counts = {}\nfor ch in \"banana\":\n    counts[ch] = counts.get(ch, 0) + 1",
+          "why": "The first time a letter appears it is not a key yet, so **counts[ch] += 1** is a **KeyError**. Give new keys a starting value with **get(ch, 0)**, or check **if ch in counts** first."
+        },
+        {
+          "type": "tip",
+          "text": "Keys must be immutable, such as **str**, **int** or **tuple**. **{[1, 2]: \"x\"}** is a **TypeError** (unhashable type: 'list'). Use the tuple **(1, 2)** instead, which is also how you store grid positions as keys."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Tuples: **( )**, indexable, cannot change; **r, c = pos** unpacks.",
+            "Dictionaries: **{key: value}**; look up with **d[key]**, add or change with **d[key] = v**.",
+            "**in**, **for** and **len** work on the **keys**.",
+            "Missing key: **d[key]** is a **KeyError**, **d.get(key, default)** is not.",
+            "Counting: **counts[x] = counts.get(x, 0) + 1**."
+          ]
+        }
+      ]
+    },
+    {
       "id": "what-works-with-what",
       "title": "What works with what",
       "summary": "Know which operations each type allows, what raises a TypeError, and which loop fits which job.",
@@ -647,12 +1074,14 @@
         },
         {
           "type": "table",
-          "caption": "What works with what (✓ works, ✗ TypeError)",
+          "caption": "What works with what (✓ works, ✗ fails, usually with a TypeError)",
           "headers": [
             "Operation",
             "int / float",
             "str",
             "list",
+            "tuple",
+            "dict",
             "bool"
           ],
           "rows": [
@@ -661,6 +1090,8 @@
               "✗",
               "✓ number of characters",
               "✓ number of items",
+              "✓ number of items",
+              "✓ number of keys",
               "✗"
             ],
             [
@@ -668,6 +1099,8 @@
               "✗",
               "✓ one character",
               "✓ one item",
+              "✓ one item",
+              "✓ by key, not by position: **x[\"a\"]**",
               "✗"
             ],
             [
@@ -675,6 +1108,8 @@
               "✗",
               "✓ a new string",
               "✓ a new list",
+              "✓ a new tuple",
+              "✗",
               "✗"
             ],
             [
@@ -682,6 +1117,8 @@
               "✓ adds",
               "✓ joins",
               "✓ joins",
+              "✓ joins",
+              "✗",
               "✓ adds, as 0 and 1"
             ],
             [
@@ -689,6 +1126,8 @@
               "✓ multiplies",
               "✓ repeats",
               "✓ repeats",
+              "✓ repeats",
+              "✗",
               "✓ multiplies, as 0 and 1"
             ],
             [
@@ -696,6 +1135,8 @@
               "✗",
               "✓ each character",
               "✓ each item",
+              "✓ each item",
+              "✓ each key",
               "✗"
             ],
             [
@@ -703,6 +1144,8 @@
               "✗",
               "✓ is it a substring?",
               "✓ is it an item?",
+              "✓ is it an item?",
+              "✓ is it a key?",
               "✗"
             ],
             [
@@ -710,6 +1153,8 @@
               "✗",
               "✗ immutable",
               "✓ mutable",
+              "✗ immutable",
+              "✓ **x[key] = v** adds or changes a key",
               "✗"
             ]
           ]
@@ -750,6 +1195,10 @@
               "An index past the end: **x[len(x)]**"
             ],
             [
+              "**KeyError**",
+              "A dictionary key that is not there: **ages[\"Zoe\"]**"
+            ],
+            [
               "**ValueError**",
               "Right type, wrong value: **int(\"hello\")**, or **x.remove(99)** when 99 is not in the list"
             ],
@@ -769,7 +1218,7 @@
         },
         {
           "type": "text",
-          "text": "**Lists** are mutable: methods such as **append** change them in place. **int**, **float**, **str** and **bool** are immutable: every \"change\" makes a new value, so you must store the result, as in **name = name.upper()**."
+          "text": "**Lists** and **dictionaries** are mutable: **append** and **d[key] = v** change them in place. **int**, **float**, **str**, **bool** and **tuple** are immutable: every \"change\" makes a new value, so you must store the result, as in **name = name.upper()**. Only immutable values can be dictionary keys."
         },
         {
           "type": "code",
@@ -808,7 +1257,8 @@
           "type": "list",
           "items": [
             "**+** joins only the same kind: str + str, list + list, number + number.",
-            "Strings and lists both have **len**, indexing, slicing, **in** and **for**; only lists can change in place.",
+            "Strings, lists and tuples all have **len**, indexing, slicing, **in** and **for**; only lists can change in place.",
+            "Dictionaries look values up by **key**: **in**, **for** and **len** all work on the keys.",
             "Numbers have none of those: no **len(5)**, no **5[0]**, no **for x in 5**.",
             "Immutable means: store the result, as in **s = s.strip()**."
           ]
@@ -1017,6 +1467,71 @@
       ]
     },
     {
+      "id": "while-accumulate-trace",
+      "prompt": "What does this print?",
+      "code": "total = 0\nn = 1\nwhile n <= 4:\n    total += n\n    n += 2\nprint(total, n)",
+      "choices": [
+        "4 5",
+        "10 5",
+        "4 3",
+        "9 7"
+      ],
+      "answerIndex": 0,
+      "explanation": "n takes the values 1 and 3, so total becomes 1 and then 4. After the second round n is 5, the check 5 <= 4 is False and the loop ends with n at 5.",
+      "tags": [
+        "while-loops",
+        "output"
+      ]
+    },
+    {
+      "id": "while-digits-count-correct",
+      "prompt": "Task: return how many digits a positive whole number n has (count_digits(507) is 3). Is this implementation correct?",
+      "code": "def count_digits(n):\n    count = 0\n    while n > 0:\n        n = n // 10\n        count += 1\n    return count",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Correct. n // 10 drops the last digit, so the loop runs once per digit and stops when n reaches 0. Changing the parameter n inside the function is fine.",
+      "tags": [
+        "while-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "while-countdown-stops-early-wrong",
+      "prompt": "Task: print 5, 4, 3, 2, 1, one per line. Is this implementation correct?",
+      "code": "n = 5\nwhile n > 1:\n    print(n)\n    n -= 1",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Wrong. When n is 1, the check 1 > 1 is False, so 1 is never printed. The condition must let 1 through: while n >= 1 (or n > 0).",
+      "tags": [
+        "while-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "while-fill-update-by-ten",
+      "prompt": "Fill the gap so this prints 10, 20 and 30 and then stops.",
+      "code": "x = 10\nwhile x <= 30:\n    print(x)\n    ___",
+      "choices": [
+        "x + 10",
+        "x += 10",
+        "x == x + 10",
+        "x = 10"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "The update must change x and store the result. x + 10 computes a value and throws it away, x == x + 10 only compares, and x = 10 sets it back to 10: all three never stop.",
+      "tags": [
+        "while-loops",
+        "fill-in"
+      ]
+    },
+    {
       "id": "for-loop-does-three-jobs",
       "prompt": "A for loop does three jobs that you would write yourself in a while loop. Which three?",
       "choices": [
@@ -1211,6 +1726,72 @@
       "tags": [
         "for-loops",
         "fill-in"
+      ]
+    },
+    {
+      "id": "for-second-round-value",
+      "prompt": "In for x in [4, 7, 9]:, what is x during the second round?",
+      "choices": [
+        "1",
+        "7",
+        "The index 1",
+        "[4, 7, 9]"
+      ],
+      "answerIndex": 1,
+      "explanation": "x is the item itself: 4 in the first round, 7 in the second, 9 in the third. It is never the position.",
+      "tags": [
+        "for-loops",
+        "concept"
+      ]
+    },
+    {
+      "id": "for-total-lengths",
+      "prompt": "What does this print?",
+      "code": "words = [\"hi\", \"hello\", \"yo\"]\ntotal = 0\nfor w in words:\n    total += len(w)\nprint(total)",
+      "choices": [
+        "3",
+        "hihelloyo",
+        "TypeError",
+        "9"
+      ],
+      "answerIndex": 3,
+      "explanation": "Each round adds the length of one word: 2 + 5 + 2 is 9. len(w) is an int, so += adds numbers.",
+      "tags": [
+        "for-loops",
+        "output"
+      ]
+    },
+    {
+      "id": "for-variable-after-loop",
+      "prompt": "What does this print?",
+      "code": "for n in [3, 8, 5]:\n    print(\"checking\", n)\nprint(\"last:\", n)",
+      "choices": [
+        "checking 3\nchecking 8\nchecking 5\nlast: 3",
+        "checking 3\nchecking 8\nchecking 5\nlast: 5",
+        "checking 3\nchecking 8\nchecking 5\nlast: 8",
+        "checking 3\nlast: 3"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "The loop runs for every item, and after the loop the variable still holds the last item it was given: 5.",
+      "tags": [
+        "for-loops",
+        "output"
+      ]
+    },
+    {
+      "id": "for-longest-word-correct",
+      "prompt": "Task: return the longest word in a non-empty list; if there is a tie, return the first of them. Is this implementation correct?",
+      "code": "def longest(words):\n    best = words[0]\n    for w in words:\n        if len(w) > len(best):\n            best = w\n    return best",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Correct. best starts as the first word, and > (not >=) only replaces it with a strictly longer word, so the first of equally long words wins.",
+      "tags": [
+        "for-loops",
+        "correct-or-wrong"
       ]
     },
     {
@@ -1412,6 +1993,321 @@
       ]
     },
     {
+      "id": "range-which-call-one-to-five",
+      "prompt": "Which call gives the numbers 1, 2, 3, 4, 5?",
+      "choices": [
+        "range(5)",
+        "range(1, 5)",
+        "range(0, 6)",
+        "range(1, 6)"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "The start is included and the stop is not, so you need start 1 and stop 6. range(1, 5) stops at 4, and range(5) is 0 to 4.",
+      "tags": [
+        "range",
+        "concept"
+      ]
+    },
+    {
+      "id": "range-index-and-item",
+      "prompt": "What does this print?",
+      "code": "letters = [\"a\", \"b\", \"c\"]\nfor i in range(len(letters)):\n    print(i, letters[i])",
+      "choices": [
+        "0 a\n1 b\n2 c",
+        "1 a\n2 b\n3 c",
+        "a 0\nb 1\nc 2",
+        "0 a\n1 b\n2 c\n3"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "range(len(letters)) is range(3): the positions 0, 1 and 2. letters[i] is the item at each position.",
+      "tags": [
+        "range",
+        "output"
+      ]
+    },
+    {
+      "id": "range-every-other-correct",
+      "prompt": "Task: return a new list with the items at positions 0, 2, 4 and so on (every_other([1, 2, 3, 4, 5]) is [1, 3, 5]). Is this implementation correct?",
+      "code": "def every_other(items):\n    result = []\n    for i in range(0, len(items), 2):\n        result.append(items[i])\n    return result",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Correct. range(0, len(items), 2) gives 0, 2, 4, ... and never reaches len(items), so every index is valid. An empty list gives an empty range and so [].",
+      "tags": [
+        "range",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "range-backwards-start-wrong",
+      "prompt": "Task: print the items of the list from last to first, one per line. Is this implementation correct?",
+      "code": "items = [\"a\", \"b\", \"c\"]\nfor i in range(len(items), 0, -1):\n    print(items[i])",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Wrong. It starts at len(items), which is 3, and items[3] is past the end: IndexError. It also stops before index 0. Use range(len(items) - 1, -1, -1).",
+      "tags": [
+        "range",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strloop-for-ch-gives",
+      "prompt": "In for ch in \"hey\":, what is ch in each round?",
+      "choices": [
+        "0, then 1, then 2",
+        "'h', then 'e', then 'y'",
+        "'hey' three times",
+        "'h', then 'he', then 'hey'"
+      ],
+      "answerIndex": 1,
+      "explanation": "Looping over a string gives you its characters one by one. You only get positions with range(len(s)).",
+      "tags": [
+        "strings-and-loops",
+        "concept"
+      ]
+    },
+    {
+      "id": "strloop-when-index",
+      "prompt": "When do you need for i in range(len(s)) instead of for ch in s?",
+      "choices": [
+        "Always, because for ch in s is slower",
+        "When the string contains spaces",
+        "When you need the position, or the character next to the current one",
+        "Never: they give exactly the same values"
+      ],
+      "answerIndex": 2,
+      "explanation": "for ch in s gives only the characters. When you need to know where you are, or to look at s[i + 1], you need the index i.",
+      "tags": [
+        "strings-and-loops",
+        "concept"
+      ]
+    },
+    {
+      "id": "strloop-empty-start",
+      "prompt": "You build a new string in a loop with result = result + ch. What should result be before the loop?",
+      "choices": [
+        "0",
+        "None",
+        "[]",
+        "\"\""
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "An accumulator for text starts as the empty string \"\". With 0 or None, result + ch is a TypeError, and [] would build a list.",
+      "tags": [
+        "strings-and-loops",
+        "concept"
+      ]
+    },
+    {
+      "id": "strloop-immutable",
+      "prompt": "Why does word[0] = 'J' crash when word is a string?",
+      "choices": [
+        "Strings can't be changed in place: they are immutable",
+        "A string has no index 0",
+        "You must write word(0) for strings",
+        "Only numbers can be stored with ="
+      ],
+      "answerIndex": 0,
+      "explanation": "You can read word[0], but you cannot assign to it. Build a new string instead: word = 'J' + word[1:].",
+      "tags": [
+        "strings-and-loops",
+        "concept"
+      ]
+    },
+    {
+      "id": "strloop-upper-each",
+      "prompt": "What does this print?",
+      "code": "for ch in \"abc\":\n    print(ch.upper(), end=\"\")",
+      "choices": [
+        "A\nB\nC",
+        "ABC",
+        "abc",
+        "A B C"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "end=\"\" replaces the newline print normally adds, so the three letters land next to each other on one line.",
+      "tags": [
+        "strings-and-loops",
+        "output"
+      ]
+    },
+    {
+      "id": "strloop-count-letter",
+      "prompt": "What does this print?",
+      "code": "word = \"mississippi\"\ncount = 0\nfor ch in word:\n    if ch == \"s\":\n        count += 1\nprint(count)",
+      "choices": [
+        "4",
+        "2",
+        "11",
+        "1"
+      ],
+      "answerIndex": 0,
+      "explanation": "The counter goes up once for every 's' in the word, and mississippi has four of them.",
+      "tags": [
+        "strings-and-loops",
+        "output"
+      ]
+    },
+    {
+      "id": "strloop-build-backwards",
+      "prompt": "What does this print?",
+      "code": "result = \"\"\nfor ch in \"abc\":\n    result = ch + result\nprint(result)",
+      "choices": [
+        "abc",
+        "aabbcc",
+        "ccbbaa",
+        "cba"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "ch + result puts each new character in front of what you have so far: a, then ba, then cba.",
+      "tags": [
+        "strings-and-loops",
+        "output"
+      ]
+    },
+    {
+      "id": "strloop-index-loop",
+      "prompt": "What does this print?",
+      "code": "word = \"loop\"\nfor i in range(len(word)):\n    if word[i] == \"o\":\n        print(i)",
+      "choices": [
+        "1\n2",
+        "2\n3",
+        "o\no",
+        "1"
+      ],
+      "codeChoices": true,
+      "answerIndex": 0,
+      "explanation": "The loop goes over the positions 0 to 3. word[1] and word[2] are both 'o', so it prints the positions 1 and 2.",
+      "tags": [
+        "strings-and-loops",
+        "output"
+      ]
+    },
+    {
+      "id": "strloop-neighbour-indexerror",
+      "prompt": "What happens when this runs?",
+      "code": "word = \"abc\"\npairs = []\nfor i in range(len(word)):\n    pairs.append(word[i] + word[i + 1])\nprint(pairs)",
+      "choices": [
+        "['ab', 'bc']",
+        "['ab', 'bc', 'c']",
+        "IndexError: string index out of range",
+        "['a', 'b', 'c']"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "In the last round i is 2, and word[3] does not exist. When you look one ahead, loop with range(len(word) - 1).",
+      "tags": [
+        "strings-and-loops",
+        "output"
+      ]
+    },
+    {
+      "id": "strloop-count-upper-correct",
+      "prompt": "Task: return how many uppercase letters the string s has (count_upper('Hello World') is 2). Is this implementation correct?",
+      "code": "def count_upper(s):\n    count = 0\n    for ch in s:\n        if ch.isupper():\n            count += 1\n    return count",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Correct. The counter starts at 0 before the loop and goes up once for every character where isupper() is True. An empty string gives 0.",
+      "tags": [
+        "strings-and-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strloop-remove-spaces-wrong",
+      "prompt": "Task: return the string without its spaces (no_spaces('a b c') is 'abc'). Is this implementation correct?",
+      "code": "def no_spaces(s):\n    result = \"\"\n    for ch in s:\n        if ch != \" \":\n            result = ch\n    return result",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Wrong. result = ch replaces the whole result every round, so no_spaces('a b c') returns just 'c'. It needs result = result + ch.",
+      "tags": [
+        "strings-and-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strloop-reverse-correct",
+      "prompt": "Task: return the string reversed (reverse('abc') is 'cba'). Is this implementation correct?",
+      "code": "def reverse(s):\n    result = \"\"\n    for i in range(len(s) - 1, -1, -1):\n        result += s[i]\n    return result",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Correct. range(len(s) - 1, -1, -1) counts the positions down from the last one to 0 (the stop -1 is not included), and result + s[i] adds each character in that order. An empty string gives an empty range, so ''.",
+      "tags": [
+        "strings-and-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strloop-has-double-wrong",
+      "prompt": "Task: return True if the word has the same letter twice in a row (has_double('book') is True), otherwise False. Is this implementation correct?",
+      "code": "def has_double(word):\n    for i in range(len(word)):\n        if word[i] == word[i + 1]:\n            return True\n    return False",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Wrong. It works for 'book', because it returns before reaching the end. For 'cat' it reaches the last position, where word[i + 1] is past the end: IndexError. Loop with range(len(word) - 1).",
+      "tags": [
+        "strings-and-loops",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "strloop-fill-accumulate",
+      "prompt": "Fill the gap so this prints hhii (every letter twice).",
+      "code": "word = \"hi\"\nresult = \"\"\nfor ch in word:\n    result = ___\nprint(result)",
+      "choices": [
+        "ch + ch",
+        "result + ch",
+        "result + ch + ch",
+        "ch * 2 + result"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "The accumulator must keep what it has so far and add the doubled letter at the end. ch + ch forgets the earlier letters, and ch * 2 + result builds backwards (iihh).",
+      "tags": [
+        "strings-and-loops",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "strloop-fill-range-neighbours",
+      "prompt": "Fill the gap so this prints t (the doubled letter) and does not crash.",
+      "code": "word = \"letter\"\nfor i in ___:\n    if word[i] == word[i + 1]:\n        print(word[i])",
+      "choices": [
+        "range(len(word))",
+        "range(len(word) - 1)",
+        "range(1, len(word))",
+        "word"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "word[i + 1] must exist, so i may go up to len(word) - 2 at most: range(len(word) - 1). The other ranges reach the last position and crash with an IndexError, and looping over word gives characters, not positions.",
+      "tags": [
+        "strings-and-loops",
+        "fill-in"
+      ]
+    },
+    {
       "id": "lists-last-index",
       "prompt": "A list x has 5 items. Which index holds the last item?",
       "choices": [
@@ -1603,6 +2499,71 @@
       ],
       "answerIndex": 1,
       "explanation": "Wrong. append returns None, so after the first round result is None, and the next round crashes with an AttributeError. Write result.append(i * i) on its own.",
+      "tags": [
+        "lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "lists-which-changes-in-place",
+      "prompt": "Which line changes the list nums itself, instead of making a new list?",
+      "choices": [
+        "nums + [4]",
+        "nums[:]",
+        "nums * 2",
+        "nums.append(4)"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "append changes the list in place. +, * and slicing all build a new list and leave nums as it was.",
+      "tags": [
+        "lists",
+        "concept"
+      ]
+    },
+    {
+      "id": "lists-slice-copy-independent",
+      "prompt": "What does this print?",
+      "code": "a = [1, 2, 3]\nb = a[:]\nb.append(4)\nprint(a)\nprint(b)",
+      "choices": [
+        "[1, 2, 3, 4]\n[1, 2, 3, 4]",
+        "[1, 2, 3]\n[1, 2, 3, 4]",
+        "[1, 2, 3, 4]\n[1, 2, 3]",
+        "[1, 2, 3]\n[1, 2, 3]"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "a[:] makes a real copy, so b is a separate list. Appending to b does not touch a.",
+      "tags": [
+        "lists",
+        "output"
+      ]
+    },
+    {
+      "id": "lists-remove-while-looping-wrong",
+      "prompt": "Task: remove every 0 from the list nums (change the list itself). Is this implementation correct?",
+      "code": "def remove_zeros(nums):\n    for n in nums:\n        if n == 0:\n            nums.remove(n)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Wrong. Removing items from the list the for loop is walking over shifts the rest left, so the item right after each removed 0 is skipped. For [0, 0, 1, 0] the list ends up as [0, 1].",
+      "tags": [
+        "lists",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "lists-remove-zeros-while-correct",
+      "prompt": "Task: remove every 0 from the list nums (change the list itself). Is this implementation correct?",
+      "code": "def remove_zeros(nums):\n    while 0 in nums:\n        nums.remove(0)",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Correct. remove(0) takes away the first 0, and the while loop keeps going as long as a 0 is left. No for loop is walking over the list, so nothing gets skipped.",
       "tags": [
         "lists",
         "correct-or-wrong"
@@ -1806,6 +2767,71 @@
       ]
     },
     {
+      "id": "patterns-count-and-total",
+      "prompt": "What does this print?",
+      "code": "nums = [4, -2, 7, 0, -5]\ncount = 0\ntotal = 0\nfor n in nums:\n    if n > 0:\n        count += 1\n        total += n\nprint(count, total)",
+      "choices": [
+        "3 11",
+        "2 4",
+        "5 4",
+        "2 11"
+      ],
+      "answerIndex": 3,
+      "explanation": "Only 4 and 7 are greater than 0 (0 is not), so count is 2 and total is 4 + 7 = 11.",
+      "tags": [
+        "loop-patterns",
+        "output"
+      ]
+    },
+    {
+      "id": "patterns-flag-before-loop",
+      "prompt": "You search a list with found = False and set found = True when you see the item. Why must found = False go before the loop?",
+      "choices": [
+        "Python needs every variable before a loop",
+        "Inside the loop it would reset every round, so only the last item would count",
+        "Inside the loop it would never stop",
+        "It makes no difference where it goes"
+      ],
+      "answerIndex": 1,
+      "explanation": "Like total = 0, the starting value is set once before the loop. Inside, it would wipe a True found earlier as soon as the next item doesn't match.",
+      "tags": [
+        "loop-patterns",
+        "concept"
+      ]
+    },
+    {
+      "id": "patterns-lowest",
+      "prompt": "What does this print?",
+      "code": "temps = [12, 9, 15, 7, 10]\nlowest = temps[0]\nfor t in temps:\n    if t < lowest:\n        lowest = t\nprint(lowest)",
+      "choices": [
+        "12",
+        "7",
+        "10",
+        "9"
+      ],
+      "answerIndex": 1,
+      "explanation": "lowest starts as the first temperature and is replaced whenever a smaller one comes along: 9, then 7. Nothing after 7 is smaller.",
+      "tags": [
+        "loop-patterns",
+        "output"
+      ]
+    },
+    {
+      "id": "patterns-count-assigns-one-wrong",
+      "prompt": "Task: return how many even numbers the list has. Is this implementation correct?",
+      "code": "def count_evens(nums):\n    count = 0\n    for n in nums:\n        if n % 2 == 0:\n            count = 1\n    return count",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Wrong. count = 1 sets the count to 1 instead of adding 1, so the result is 1 as soon as there is any even number. count_evens([2, 4, 5, 6]) gives 1 instead of 3. It needs count += 1.",
+      "tags": [
+        "loop-patterns",
+        "correct-or-wrong"
+      ]
+    },
+    {
       "id": "grids-inner-runs-fully",
       "prompt": "An outer loop runs 4 times, and the loop inside it runs 5 times per round. How many times does the inner body run in total?",
       "choices": [
@@ -1999,6 +3025,320 @@
       "explanation": "The inner loop goes over the columns, and the number of columns is the length of a row: len(grid[0]). len(grid) is the number of rows (2 here), and range(grid[r]) is a TypeError because a row is a list, not an int.",
       "tags": [
         "nested-loops-and-grids",
+        "fill-in"
+      ]
+    },
+    {
+      "id": "grids-row-strings",
+      "prompt": "What does this print?",
+      "code": "grid = [[\"#\", \".\"], [\".\", \"#\"]]\nfor row in grid:\n    line = \"\"\n    for cell in row:\n        line += cell\n    print(line)",
+      "choices": [
+        "#.\n#.",
+        "#..#",
+        ".#\n#.",
+        "#.\n.#"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "For every row the inner loop glues its cells together into line, which starts again as \"\" for the next row. Row 0 is #. and row 1 is .#.",
+      "tags": [
+        "nested-loops-and-grids",
+        "output"
+      ]
+    },
+    {
+      "id": "grids-cell-above",
+      "prompt": "In a grid stored as a list of rows, which cell is directly above (r, c)?",
+      "choices": [
+        "(r + 1, c)",
+        "(r - 1, c)",
+        "(r, c - 1)",
+        "(r, c + 1)"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "Rows are numbered from the top, so going up means one row less: r - 1. The column stays the same.",
+      "tags": [
+        "nested-loops-and-grids",
+        "concept"
+      ]
+    },
+    {
+      "id": "grids-find-start-correct",
+      "prompt": "Task: return [row, column] of the 'S' in the grid (a list of strings), or None if there is no 'S'. Is this implementation correct?",
+      "code": "def find_start(grid):\n    for r in range(len(grid)):\n        for c in range(len(grid[r])):\n            if grid[r][c] == \"S\":\n                return [r, c]\n    return None",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Correct. The return inside both loops stops as soon as 'S' is found, and return None only runs after every cell was checked. Using len(grid[r]) for the columns is fine too.",
+      "tags": [
+        "nested-loops-and-grids",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "grids-up-neighbour-wraps-wrong",
+      "prompt": "Task: return how many of the four neighbours (up, down, left, right) of (r, c) are open '.', ignoring neighbours outside the grid. Is this implementation correct?",
+      "code": "def open_neighbours(grid, r, c):\n    count = 0\n    if grid[r - 1][c] == \".\":\n        count += 1\n    if r + 1 < len(grid) and grid[r + 1][c] == \".\":\n        count += 1\n    if c - 1 >= 0 and grid[r][c - 1] == \".\":\n        count += 1\n    if c + 1 < len(grid[0]) and grid[r][c + 1] == \".\":\n        count += 1\n    return count",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Wrong. The up neighbour is not bounds-checked. In the top row r - 1 is -1, and grid[-1] is the last row, so it counts a cell that is not a neighbour: open_neighbours(['#.', '..'], 0, 0) gives 3 instead of 2. No crash, just a wrong answer.",
+      "tags": [
+        "nested-loops-and-grids",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dict-tuple-vs-list",
+      "prompt": "What is the main difference between a tuple and a list?",
+      "choices": [
+        "A tuple can only hold numbers",
+        "A tuple has no indexes",
+        "A tuple can't be changed after it is made",
+        "A tuple is always shorter"
+      ],
+      "answerIndex": 2,
+      "explanation": "Tuples are immutable: no append, no t[0] = .... You can still index them, slice them and loop over them like a list.",
+      "tags": [
+        "dictionaries",
+        "concept"
+      ]
+    },
+    {
+      "id": "dict-in-checks-keys",
+      "prompt": "For a dictionary d, what does x in d check?",
+      "choices": [
+        "Whether x is one of the values",
+        "Whether x is one of the keys",
+        "Whether x is a key or a value",
+        "Whether d is empty"
+      ],
+      "answerIndex": 1,
+      "explanation": "in looks only at the keys. To look for a value, loop over d.items(), or use x in d.values().",
+      "tags": [
+        "dictionaries",
+        "concept"
+      ]
+    },
+    {
+      "id": "dict-get-default",
+      "prompt": "What does d.get('x', 0) give when 'x' is not a key of d?",
+      "choices": [
+        "KeyError",
+        "None",
+        "0",
+        "'x'"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "get gives back the default you passed when the key is missing, and never raises a KeyError. Without a default it would give None.",
+      "tags": [
+        "dictionaries",
+        "concept"
+      ]
+    },
+    {
+      "id": "dict-key-types",
+      "prompt": "Which of these can NOT be a dictionary key?",
+      "choices": [
+        "'Ana'",
+        "42",
+        "(1, 2)",
+        "[1, 2]"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "Keys must be immutable. A list can change, so using it as a key is a TypeError (unhashable type: 'list'). The tuple (1, 2) works fine.",
+      "tags": [
+        "dictionaries",
+        "concept"
+      ]
+    },
+    {
+      "id": "dict-unpack-output",
+      "prompt": "What does this print?",
+      "code": "pos = (4, 7)\nr, c = pos\nprint(c, r)",
+      "choices": [
+        "4 7",
+        "7 4",
+        "(4, 7)",
+        "TypeError"
+      ],
+      "answerIndex": 1,
+      "explanation": "r, c = pos puts 4 in r and 7 in c. The print shows c first, then r.",
+      "tags": [
+        "dictionaries",
+        "output"
+      ]
+    },
+    {
+      "id": "dict-lookup-update",
+      "prompt": "What does this print?",
+      "code": "stock = {\"apples\": 5, \"pears\": 2}\nstock[\"apples\"] = stock[\"apples\"] - 1\nstock[\"plums\"] = 8\nprint(stock)",
+      "choices": [
+        "{'apples': 5, 'pears': 2, 'plums': 8}",
+        "{'apples': 4, 'pears': 2}",
+        "KeyError: 'plums'",
+        "{'apples': 4, 'pears': 2, 'plums': 8}"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "The first assignment changes the value of the existing key 'apples'. Assigning to the new key 'plums' adds it; only reading a missing key is a KeyError.",
+      "tags": [
+        "dictionaries",
+        "output"
+      ]
+    },
+    {
+      "id": "dict-keyerror",
+      "prompt": "What happens when this runs?",
+      "code": "prices = {\"tea\": 2, \"coffee\": 3}\nprint(prices[\"juice\"])",
+      "choices": [
+        "KeyError: 'juice'",
+        "0",
+        "None",
+        "It prints nothing"
+      ],
+      "answerIndex": 0,
+      "explanation": "Reading a key that is not in the dictionary with [ ] raises a KeyError. prices.get('juice', 0) would give 0 instead.",
+      "tags": [
+        "dictionaries",
+        "output"
+      ]
+    },
+    {
+      "id": "dict-loop-keys",
+      "prompt": "What does this print?",
+      "code": "ages = {\"Ana\": 20, \"Ben\": 25}\nfor x in ages:\n    print(x)",
+      "choices": [
+        "20\n25",
+        "Ana\nBen",
+        "Ana 20\nBen 25",
+        "('Ana', 20)\n('Ben', 25)"
+      ],
+      "codeChoices": true,
+      "answerIndex": 1,
+      "explanation": "Looping over a dictionary gives its keys. To get the values too, loop over ages.items().",
+      "tags": [
+        "dictionaries",
+        "output"
+      ]
+    },
+    {
+      "id": "dict-count-words",
+      "prompt": "What does this print?",
+      "code": "counts = {}\nfor w in [\"a\", \"b\", \"a\", \"a\"]:\n    counts[w] = counts.get(w, 0) + 1\nprint(counts[\"a\"], len(counts))",
+      "choices": [
+        "3 2",
+        "3 4",
+        "1 2",
+        "KeyError: 'a'"
+      ],
+      "answerIndex": 0,
+      "explanation": "'a' is counted 3 times and 'b' once, so the dictionary is {'a': 3, 'b': 1}: counts['a'] is 3 and it has 2 keys. get(w, 0) avoids the KeyError for new words.",
+      "tags": [
+        "dictionaries",
+        "output"
+      ]
+    },
+    {
+      "id": "dict-tuple-assign",
+      "prompt": "What happens when this runs?",
+      "code": "point = (3, 4)\npoint[0] = 5\nprint(point)",
+      "choices": [
+        "(5, 4)",
+        "(3, 4)",
+        "[5, 4]",
+        "TypeError: 'tuple' object does not support item assignment"
+      ],
+      "codeChoices": true,
+      "answerIndex": 3,
+      "explanation": "Tuples are immutable. To 'change' one, make a new tuple: point = (5, point[1]).",
+      "tags": [
+        "dictionaries",
+        "output"
+      ]
+    },
+    {
+      "id": "dict-count-letters-correct",
+      "prompt": "Task: return a dictionary that counts how often each character appears (count_chars('aba') is {'a': 2, 'b': 1}). Is this implementation correct?",
+      "code": "def count_chars(s):\n    counts = {}\n    for ch in s:\n        if ch in counts:\n            counts[ch] += 1\n        else:\n            counts[ch] = 1\n    return counts",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Correct. The in check makes sure a new character starts at 1, and a character seen before goes up by 1. It is the longer version of counts.get(ch, 0) + 1.",
+      "tags": [
+        "dictionaries",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dict-count-default-one-wrong",
+      "prompt": "Task: return a dictionary that counts how often each character appears (count_chars('aba') is {'a': 2, 'b': 1}). Is this implementation correct?",
+      "code": "def count_chars(s):\n    counts = {}\n    for ch in s:\n        counts[ch] = counts.get(ch, 1) + 1\n    return counts",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Wrong. The default is 1 instead of 0, so the first time a character appears it is already counted as 2: count_chars('aba') gives {'a': 3, 'b': 2}. It needs counts.get(ch, 0) + 1.",
+      "tags": [
+        "dictionaries",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dict-price-or-zero-correct",
+      "prompt": "Task: return the price of item from the dictionary prices, or 0 if item is not in it. Is this implementation correct?",
+      "code": "def price_of(prices, item):\n    if item in prices:\n        return prices[item]\n    return 0",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 0,
+      "explanation": "Correct. item in prices checks the keys before looking up, so a missing item never reaches prices[item] and the function returns 0 instead of crashing.",
+      "tags": [
+        "dictionaries",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dict-in-values-wrong",
+      "prompt": "Task: grades maps each student's name to a grade. Return True if some student got exactly 10. Is this implementation correct?",
+      "code": "def someone_got_ten(grades):\n    return 10 in grades",
+      "choices": [
+        "Correct",
+        "Wrong"
+      ],
+      "answerIndex": 1,
+      "explanation": "Wrong. in checks the keys, which are names, so 10 in grades is always False here. Look at the values instead: 10 in grades.values(), or loop over grades.items().",
+      "tags": [
+        "dictionaries",
+        "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "dict-fill-items-loop",
+      "prompt": "Fill the gap so this prints Ana is 20 and then Ben is 25.",
+      "code": "ages = {\"Ana\": 20, \"Ben\": 25}\nfor name, age in ___:\n    print(name, \"is\", age)",
+      "choices": [
+        "ages",
+        "ages.keys()",
+        "ages.items()",
+        "range(len(ages))"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "items() gives (key, value) pairs, which name, age unpacks. Looping over ages or ages.keys() gives only the names, so the unpacking fails.",
+      "tags": [
+        "dictionaries",
         "fill-in"
       ]
     },
@@ -2199,6 +3539,1862 @@
       "tags": [
         "what-works-with-what",
         "correct-or-wrong"
+      ]
+    },
+    {
+      "id": "www-dict-by-position",
+      "prompt": "What happens when this runs?",
+      "code": "ages = {\"Ana\": 20, \"Ben\": 25}\nprint(ages[0])",
+      "choices": [
+        "20",
+        "Ana",
+        "KeyError: 0",
+        "It prints the first item"
+      ],
+      "answerIndex": 2,
+      "explanation": "A dictionary has no positions. ages[0] looks for the key 0, which is not there, so it is a KeyError. Use a key: ages['Ana'].",
+      "tags": [
+        "what-works-with-what",
+        "output"
+      ]
+    },
+    {
+      "id": "www-tuple-plus-list",
+      "prompt": "What happens when this runs?",
+      "code": "print((1, 2) + [3])",
+      "choices": [
+        "(1, 2, 3)",
+        "[1, 2, 3]",
+        "TypeError: can only concatenate tuple (not \"list\") to tuple",
+        "(1, 2, [3])"
+      ],
+      "codeChoices": true,
+      "answerIndex": 2,
+      "explanation": "+ joins only two things of the same kind. A tuple plus a list is a TypeError; (1, 2) + (3,) or [1, 2] + [3] both work.",
+      "tags": [
+        "what-works-with-what",
+        "output"
+      ]
+    },
+    {
+      "id": "www-dict-len-and-in",
+      "prompt": "What does this print?",
+      "code": "counts = {\"a\": 3, \"b\": 1}\nprint(len(counts), \"a\" in counts, 3 in counts)",
+      "choices": [
+        "4 True True",
+        "2 True False",
+        "2 True True",
+        "4 False False"
+      ],
+      "answerIndex": 1,
+      "explanation": "len counts the keys (2), and in checks the keys too: 'a' is a key, 3 is only a value.",
+      "tags": [
+        "what-works-with-what",
+        "output"
+      ]
+    },
+    {
+      "id": "www-both-immutable",
+      "prompt": "Which pair of types are both immutable?",
+      "choices": [
+        "str and tuple",
+        "list and dict",
+        "str and list",
+        "tuple and dict"
+      ],
+      "answerIndex": 0,
+      "explanation": "str and tuple cannot change after they are made. Lists and dictionaries are mutable: append and d[key] = v change them in place.",
+      "tags": [
+        "what-works-with-what",
+        "concept"
+      ]
+    }
+  ],
+  "labs": [
+    {
+      "id": "countdown-launch",
+      "lesson": "while-loops",
+      "title": "Countdown to liftoff",
+      "summary": "Write the three building blocks of a while loop yourself, then reuse them to count, check input and run a guessing game.",
+      "steps": [
+        {
+          "id": "type-it",
+          "mode": "guided",
+          "title": "Type a countdown",
+          "instructions": "Type this program piece by piece, then press **Run** and **Check**. A **while** loop needs three things that you write yourself: a **start**, a **condition** that decides when to stop, and an **update** that moves you forward. Each piece below is one of them.",
+          "guide": [
+            {
+              "code": "n = 5",
+              "explain": "**Start**: make a variable **n** and give it the first value, 5. A while loop never does this for you."
+            },
+            {
+              "code": "while n > 0:",
+              "explain": "**Condition**: the loop body runs again and again while **n > 0** is True. As soon as it is False, the loop stops. End the line with a colon."
+            },
+            {
+              "code": "    print(n)",
+              "explain": "Indent by 4 spaces: this line is inside the loop. It prints the current value of **n**."
+            },
+            {
+              "code": "    n -= 1",
+              "explain": "**Update**: make **n** one smaller every round, also indented. Without this line **n** stays 5 forever and the loop never stops."
+            },
+            {
+              "code": "print(\"Liftoff!\")",
+              "explain": "Not indented: this line is after the loop, so it runs once, when the countdown is over."
+            }
+          ],
+          "solution": "n = 5\nwhile n > 0:\n    print(n)\n    n -= 1\nprint(\"Liftoff!\")",
+          "tests": [
+            {
+              "name": "counts 5 down to 1, then Liftoff!",
+              "code": "assert LINES == ['5', '4', '3', '2', '1', 'Liftoff!']",
+              "fail": "Expected 5, 4, 3, 2, 1 on separate lines and then Liftoff! once, after the loop."
+            },
+            {
+              "name": "uses a while loop",
+              "code": "assert uses('While')",
+              "fail": "This lab is about while loops: count down with while."
+            }
+          ]
+        },
+        {
+          "id": "typed-start",
+          "mode": "change",
+          "title": "Start from a typed number",
+          "instructions": "Change only the **start**: instead of **n = 5**, ask the user where to start with **int(input(\"Start from: \"))**. Try typing 0: the condition is False straight away, so the loop body runs zero times.",
+          "carryOver": true,
+          "inputs": [
+            "3"
+          ],
+          "hints": [
+            "Replace the first line with **n = int(input(\"Start from: \"))**. Keep the condition and the update.",
+            "**int()** turns the typed text into a number, so **n > 0** and **n -= 1** work."
+          ],
+          "solution": "n = int(input(\"Start from: \"))\nwhile n > 0:\n    print(n)\n    n -= 1\nprint(\"Liftoff!\")",
+          "tests": [
+            {
+              "name": "counts down from 3",
+              "code": "assert LINES == ['3', '2', '1', 'Liftoff!']",
+              "fail": "With 3 typed it should print 3, 2, 1 and then Liftoff!."
+            },
+            {
+              "name": "counts down from 6",
+              "code": "assert LINES == ['6', '5', '4', '3', '2', '1', 'Liftoff!']",
+              "fail": "With 6 typed it should count down from 6. Is the start still fixed at 5?",
+              "inputs": [
+                "6"
+              ]
+            },
+            {
+              "name": "starting at 0 skips the loop",
+              "code": "assert LINES == ['Liftoff!']",
+              "fail": "With 0 typed the loop should run zero times and only Liftoff! is printed.",
+              "inputs": [
+                "0"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "count-up",
+          "mode": "change",
+          "title": "Count up in steps of 2",
+          "instructions": "Now change all three building blocks. Ask for a limit, **start** at 0, keep going **while n <= limit**, and **update** with **n += 2**. After the loop print **Done!**. With 6 typed, it prints 0, 2, 4, 6 and Done!.",
+          "carryOver": true,
+          "inputs": [
+            "6"
+          ],
+          "hints": [
+            "Store the typed number in **limit**, then set **n = 0**.",
+            "The condition is **while n <= limit:** and the update is **n += 2**."
+          ],
+          "solution": "limit = int(input(\"Up to: \"))\nn = 0\nwhile n <= limit:\n    print(n)\n    n += 2\nprint(\"Done!\")",
+          "tests": [
+            {
+              "name": "up to 6",
+              "code": "assert LINES == ['0', '2', '4', '6', 'Done!']",
+              "fail": "With 6 typed it should print 0, 2, 4, 6 and then Done!."
+            },
+            {
+              "name": "up to 7",
+              "code": "assert LINES == ['0', '2', '4', '6', 'Done!']",
+              "fail": "With 7 typed it should still stop at 6, because 8 is more than 7.",
+              "inputs": [
+                "7"
+              ]
+            },
+            {
+              "name": "up to 0",
+              "code": "assert LINES == ['0', 'Done!']",
+              "fail": "With 0 typed it should print 0 (0 <= 0 is True) and then Done!.",
+              "inputs": [
+                "0"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "valid-answer",
+          "mode": "write",
+          "title": "Keep asking until it is valid",
+          "instructions": "On your own: ask for a number from 1 to 10. While the typed number is outside 1 to 10, print **Try again.** and ask again. When it is valid, print **Thanks, you picked 7** (with the number they picked). The typed input box lets you test several answers in a row.",
+          "inputs": [
+            "12",
+            "0",
+            "7"
+          ],
+          "hints": [
+            "Ask once **before** the loop, so the condition has a value to test.",
+            "The condition is **n < 1 or n > 10**.",
+            "Inside the loop, print **Try again.** and ask again: the new answer is your update. Print the thanks after the loop with **print(\"Thanks, you picked\", n)**."
+          ],
+          "solution": "n = int(input(\"Pick 1 to 10: \"))\nwhile n < 1 or n > 10:\n    print(\"Try again.\")\n    n = int(input(\"Pick 1 to 10: \"))\nprint(\"Thanks, you picked\", n)",
+          "tests": [
+            {
+              "name": "two wrong answers, then 7",
+              "code": "assert LINES == ['Try again.', 'Try again.', 'Thanks, you picked 7']",
+              "fail": "With 12, 0, 7 typed it should print Try again. twice and then Thanks, you picked 7."
+            },
+            {
+              "name": "right the first time",
+              "code": "assert LINES == ['Thanks, you picked 5']",
+              "fail": "With 5 typed it should print only Thanks, you picked 5.",
+              "inputs": [
+                "5"
+              ]
+            },
+            {
+              "name": "10 is allowed",
+              "code": "assert LINES == ['Try again.', 'Thanks, you picked 10']",
+              "fail": "11 is too big but 10 is fine: with 11, 10 typed expect one Try again.",
+              "inputs": [
+                "11",
+                "10"
+              ]
+            },
+            {
+              "name": "uses a while loop",
+              "code": "assert uses('While')",
+              "fail": "Keep asking with a while loop."
+            }
+          ]
+        },
+        {
+          "id": "guessing-game",
+          "mode": "challenge",
+          "title": "A guessing game",
+          "instructions": "Experiment: start your program with **secret = 7**. Ask for guesses until the player types the secret. After each wrong guess print **Too low** or **Too high**. At the end print **Got it! Guesses: 3**, counting every guess including the right one. Compare guesses with **secret**, not with 7, so changing the first line changes the game.",
+          "inputs": [
+            "3",
+            "9",
+            "7"
+          ],
+          "hints": [
+            "A counter: **guesses = 1** after the first **input()**, and **guesses += 1** after each new guess inside the loop.",
+            "The loop runs **while guess != secret**.",
+            "Inside the loop use **if guess < secret:** ... **else:** ... and then ask again."
+          ],
+          "solution": "secret = 7\nguess = int(input(\"Guess: \"))\nguesses = 1\nwhile guess != secret:\n    if guess < secret:\n        print(\"Too low\")\n    else:\n        print(\"Too high\")\n    guess = int(input(\"Guess: \"))\n    guesses += 1\nprint(\"Got it! Guesses:\", guesses)",
+          "tests": [
+            {
+              "name": "3, 9, then 7",
+              "code": "assert LINES == ['Too low', 'Too high', 'Got it! Guesses: 3']",
+              "fail": "With 3, 9, 7 typed expect Too low, Too high, then Got it! Guesses: 3."
+            },
+            {
+              "name": "right first time",
+              "code": "assert LINES == ['Got it! Guesses: 1']",
+              "fail": "With 7 typed straight away expect only Got it! Guesses: 1.",
+              "inputs": [
+                "7"
+              ]
+            },
+            {
+              "name": "four guesses",
+              "code": "assert LINES == ['Too high', 'Too high', 'Too low', 'Got it! Guesses: 4']",
+              "fail": "With 10, 8, 1, 7 typed expect Too high, Too high, Too low and Got it! Guesses: 4.",
+              "inputs": [
+                "10",
+                "8",
+                "1",
+                "7"
+              ]
+            },
+            {
+              "name": "uses the secret variable",
+              "code": "out = run_source(SOURCE.replace('secret = 7', 'secret = 4'), ['1', '4'])\nassert out.split('\\n')[:2] == ['Too low', 'Got it! Guesses: 2']",
+              "fail": "Start with the line secret = 7 and compare guesses with secret: with secret = 4 the game should change too."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shopping-list",
+      "lesson": "for-loops",
+      "title": "Print a shopping list",
+      "summary": "Walk through a list with a for loop, then bend the loop into new shapes: numbering, counting, filtering and finding the longest.",
+      "steps": [
+        {
+          "id": "type-it",
+          "mode": "guided",
+          "title": "Type your first for loop",
+          "instructions": "Type this program exactly, piece by piece, then press **Run** and **Check**. A **for** loop does the three while-loop jobs for you: it **starts** at the first item, **stops** after the last one and **steps** to the next item every round.",
+          "guide": [
+            {
+              "code": "items = [\"milk\", \"eggs\", \"bread\"]",
+              "explain": "Make a list called **items** with three strings in it."
+            },
+            {
+              "code": "for item in items:",
+              "explain": "Start the loop. Each round, **item** is the next string in **items**: first milk, then eggs, then bread. Don't forget the colon."
+            },
+            {
+              "code": "    print(item)",
+              "explain": "Indent by 4 spaces: this line is the loop body, and it runs once per item."
+            }
+          ],
+          "solution": "items = [\"milk\", \"eggs\", \"bread\"]\nfor item in items:\n    print(item)",
+          "tests": [
+            {
+              "name": "prints each item on its own line",
+              "code": "assert LINES == ['milk', 'eggs', 'bread']",
+              "fail": "Your program should print milk, eggs and bread, each on its own line."
+            },
+            {
+              "name": "uses a for loop",
+              "code": "assert uses('For')",
+              "fail": "Use a for loop to go through the list."
+            }
+          ]
+        },
+        {
+          "id": "number-them",
+          "mode": "change",
+          "title": "Number the items",
+          "instructions": "Change the loop so each line starts with its number: **1. milk**, **2. eggs**, **3. bread**. A for loop gives you the items, not their numbers, so keep your own counter: it starts at 1 before the loop and grows by 1 inside it.",
+          "carryOver": true,
+          "hints": [
+            "Put **n = 1** before the loop.",
+            "Inside the loop: **print(f\"{n}. {item}\")**, then **n += 1**."
+          ],
+          "solution": "items = [\"milk\", \"eggs\", \"bread\"]\nn = 1\nfor item in items:\n    print(f\"{n}. {item}\")\n    n += 1",
+          "tests": [
+            {
+              "name": "numbers each item",
+              "code": "assert LINES == ['1. milk', '2. eggs', '3. bread']",
+              "fail": "Expected 1. milk, 2. eggs and 3. bread, one per line."
+            },
+            {
+              "name": "works for another list",
+              "code": "out = run_source(SOURCE.replace('[\"milk\", \"eggs\", \"bread\"]', '[\"tea\", \"jam\"]'))\nassert out.split('\\n')[:2] == ['1. tea', '2. jam']",
+              "fail": "With the list [\"tea\", \"jam\"] it should print 1. tea and 2. jam. Keep the first line of the program as it was."
+            }
+          ]
+        },
+        {
+          "id": "count-letters",
+          "mode": "write",
+          "title": "Count the letters",
+          "instructions": "On your own: with the same list, print the total number of letters in all the items together (milk + eggs + bread is 13). Print only the number. Keep the first line exactly as it is: the check swaps in another list.",
+          "starter": "items = [\"milk\", \"eggs\", \"bread\"]\n",
+          "hints": [
+            "An accumulator: **total = 0** before the loop.",
+            "**len(item)** gives the letters in one item; add it to **total** inside the loop with **total += len(item)**.",
+            "Print **total** after the loop, not inside it."
+          ],
+          "solution": "items = [\"milk\", \"eggs\", \"bread\"]\ntotal = 0\nfor item in items:\n    total += len(item)\nprint(total)",
+          "tests": [
+            {
+              "name": "prints 13",
+              "code": "assert LINES == ['13']",
+              "fail": "Print just the total, 13, once, after the loop."
+            },
+            {
+              "name": "works for any list",
+              "code": "out = run_source(SOURCE.replace('[\"milk\", \"eggs\", \"bread\"]', '[\"ab\", \"c\"]'))\nassert out.strip() == '3'",
+              "fail": "Your total should come from the list, not a number you typed in: for [\"ab\", \"c\"] it should print 3."
+            }
+          ]
+        },
+        {
+          "id": "items-with-e",
+          "mode": "challenge",
+          "title": "Only the items with an e",
+          "instructions": "Experiment: the list is longer now. Print only the items that contain the letter **e**, one per line, and after the loop print how many there were as **Count: 3**. Keep the first line as it is.",
+          "starter": "items = [\"milk\", \"eggs\", \"bread\", \"cheese\", \"jam\"]\n",
+          "hints": [
+            "**\"e\" in item** is True when the string contains an e.",
+            "Inside the loop: **if \"e\" in item:** print it and add 1 to a counter that started at 0."
+          ],
+          "solution": "items = [\"milk\", \"eggs\", \"bread\", \"cheese\", \"jam\"]\ncount = 0\nfor item in items:\n    if \"e\" in item:\n        print(item)\n        count += 1\nprint(\"Count:\", count)",
+          "tests": [
+            {
+              "name": "eggs, bread, cheese",
+              "code": "assert LINES == ['eggs', 'bread', 'cheese', 'Count: 3']",
+              "fail": "Expected eggs, bread and cheese, then Count: 3."
+            },
+            {
+              "name": "works for another list",
+              "code": "out = run_source(SOURCE.replace('[\"milk\", \"eggs\", \"bread\", \"cheese\", \"jam\"]', '[\"tea\", \"cola\", \"lemon\"]'))\nassert out.split('\\n')[:3] == ['tea', 'lemon', 'Count: 2']",
+              "fail": "For [\"tea\", \"cola\", \"lemon\"] expect tea, lemon and Count: 2. Check the list, not fixed words."
+            }
+          ]
+        },
+        {
+          "id": "longest-item",
+          "mode": "challenge",
+          "title": "Find the longest item",
+          "instructions": "Experiment: print the longest item in the list. Start with **longest = \"\"** before the loop, and replace it whenever you meet a longer item. If two items are equally long, keep the first one. Keep the first line as it is.",
+          "starter": "items = [\"milk\", \"eggs\", \"bread\", \"cheese\", \"jam\"]\n",
+          "hints": [
+            "Compare lengths: **if len(item) > len(longest):**.",
+            "Inside that if, store the new winner: **longest = item**. Print **longest** after the loop."
+          ],
+          "solution": "items = [\"milk\", \"eggs\", \"bread\", \"cheese\", \"jam\"]\nlongest = \"\"\nfor item in items:\n    if len(item) > len(longest):\n        longest = item\nprint(longest)",
+          "tests": [
+            {
+              "name": "cheese is the longest",
+              "code": "assert LINES == ['cheese']",
+              "fail": "In this list, cheese (6 letters) is the longest."
+            },
+            {
+              "name": "works for another list",
+              "code": "out = run_source(SOURCE.replace('[\"milk\", \"eggs\", \"bread\", \"cheese\", \"jam\"]', '[\"a\", \"abc\", \"ab\"]'))\nassert out.strip() == 'abc'",
+              "fail": "For [\"a\", \"abc\", \"ab\"] it should print abc."
+            },
+            {
+              "name": "a tie keeps the first",
+              "code": "out = run_source(SOURCE.replace('[\"milk\", \"eggs\", \"bread\", \"cheese\", \"jam\"]', '[\"ab\", \"cd\"]'))\nassert out.strip() == 'ab'",
+              "fail": "For [\"ab\", \"cd\"] both are 2 letters long: keep the first, ab. Use > rather than >=."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "times-table",
+      "lesson": "range",
+      "title": "Times tables with range()",
+      "summary": "Use range() to count exactly where you want: a times table, backwards, in steps of 2, and a running sum.",
+      "steps": [
+        {
+          "id": "type-it",
+          "mode": "guided",
+          "title": "The table of 3",
+          "instructions": "Type this program piece by piece. **range(1, 11)** gives the numbers 1 to 10: it starts at the first number and stops **before** the second. The for loop walks through them for you.",
+          "guide": [
+            {
+              "code": "for i in range(1, 11):",
+              "explain": "Loop over 1, 2, ..., 10. The stop value 11 is never included, so to end at 10 you write 11."
+            },
+            {
+              "code": "    print(3, \"x\", i, \"=\", 3 * i)",
+              "explain": "Indented, so it runs once per number. Commas in **print()** put a space between the values: **3 x 1 = 3**."
+            }
+          ],
+          "solution": "for i in range(1, 11):\n    print(3, \"x\", i, \"=\", 3 * i)",
+          "tests": [
+            {
+              "name": "ten lines from 3 x 1 to 3 x 10",
+              "code": "assert len(LINES) == 10 and LINES[0] == '3 x 1 = 3' and LINES[-1] == '3 x 10 = 30'",
+              "fail": "Expected 10 lines, from 3 x 1 = 3 to 3 x 10 = 30."
+            },
+            {
+              "name": "uses range",
+              "code": "assert calls('range') and uses('For')",
+              "fail": "Loop with for and range()."
+            }
+          ]
+        },
+        {
+          "id": "any-table",
+          "mode": "change",
+          "title": "Any table you like",
+          "instructions": "Change it so the user picks the table: ask with **int(input(\"Table of: \"))**, store it in **n**, and use **n** instead of 3 everywhere.",
+          "carryOver": true,
+          "inputs": [
+            "7"
+          ],
+          "hints": [
+            "Add **n = int(input(\"Table of: \"))** before the loop.",
+            "In the print, replace both 3s with **n**: **print(n, \"x\", i, \"=\", n \\* i)**."
+          ],
+          "solution": "n = int(input(\"Table of: \"))\nfor i in range(1, 11):\n    print(n, \"x\", i, \"=\", n * i)",
+          "tests": [
+            {
+              "name": "table of 7",
+              "code": "assert len(LINES) == 10 and LINES[0] == '7 x 1 = 7' and LINES[-1] == '7 x 10 = 70'",
+              "fail": "With 7 typed expect 7 x 1 = 7 up to 7 x 10 = 70."
+            },
+            {
+              "name": "table of 12",
+              "code": "assert LINES[-1] == '12 x 10 = 120'",
+              "fail": "With 12 typed the last line should be 12 x 10 = 120.",
+              "inputs": [
+                "12"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "backwards",
+          "mode": "change",
+          "title": "Backwards",
+          "instructions": "Print the same table backwards, from **n x 10** down to **n x 1**. Only the **range()** changes: start at 10, stop before 0, and step by -1.",
+          "carryOver": true,
+          "inputs": [
+            "7"
+          ],
+          "hints": [
+            "A negative step counts down: **range(10, 0, -1)** gives 10, 9, ..., 1.",
+            "The stop is still left out, so stop at 0 to end at 1."
+          ],
+          "solution": "n = int(input(\"Table of: \"))\nfor i in range(10, 0, -1):\n    print(n, \"x\", i, \"=\", n * i)",
+          "tests": [
+            {
+              "name": "from 7 x 10 down to 7 x 1",
+              "code": "assert len(LINES) == 10 and LINES[0] == '7 x 10 = 70' and LINES[-1] == '7 x 1 = 7'",
+              "fail": "With 7 typed expect 7 x 10 = 70 first and 7 x 1 = 7 last, 10 lines in all."
+            },
+            {
+              "name": "no 7 x 0",
+              "code": "assert '7 x 0 = 0' not in LINES",
+              "fail": "Stop before 0: the table ends at 7 x 1."
+            }
+          ]
+        },
+        {
+          "id": "even-numbers",
+          "mode": "write",
+          "title": "Even numbers",
+          "instructions": "On your own: ask for a number and print every even number from 2 up to and **including** that number, one per line. Use **range()** with a step of 2.",
+          "inputs": [
+            "10"
+          ],
+          "hints": [
+            "**range(start, stop, step)**: start at 2 and step by 2.",
+            "To include the typed number itself, stop at **n + 1**."
+          ],
+          "solution": "n = int(input(\"Up to: \"))\nfor i in range(2, n + 1, 2):\n    print(i)",
+          "tests": [
+            {
+              "name": "up to 10",
+              "code": "assert LINES == ['2', '4', '6', '8', '10']",
+              "fail": "With 10 typed expect 2, 4, 6, 8 and 10 (10 included)."
+            },
+            {
+              "name": "up to 7",
+              "code": "assert LINES == ['2', '4', '6']",
+              "fail": "With 7 typed expect 2, 4 and 6.",
+              "inputs": [
+                "7"
+              ]
+            },
+            {
+              "name": "up to 1 prints nothing",
+              "code": "assert LINES == []",
+              "fail": "With 1 typed there is no even number to print.",
+              "inputs": [
+                "1"
+              ]
+            },
+            {
+              "name": "uses range with a step",
+              "code": "assert calls('range')",
+              "fail": "Use range() with a step of 2."
+            }
+          ]
+        },
+        {
+          "id": "sum-to-n",
+          "mode": "challenge",
+          "title": "Add 1 up to n",
+          "instructions": "Experiment: ask for **n** and print the sum 1 + 2 + ... + n as **Sum: 55** (for n = 10). Add the numbers one by one with a for loop and an accumulator. Then try a big n, like 1000: the loop does the work instantly.",
+          "inputs": [
+            "10"
+          ],
+          "hints": [
+            "**total = 0** before the loop, **total += i** inside it.",
+            "Loop over **range(1, n + 1)** so that n itself is included."
+          ],
+          "solution": "n = int(input(\"n: \"))\ntotal = 0\nfor i in range(1, n + 1):\n    total += i\nprint(\"Sum:\", total)",
+          "tests": [
+            {
+              "name": "n = 10",
+              "code": "assert LINES == ['Sum: 55']",
+              "fail": "With 10 typed expect Sum: 55."
+            },
+            {
+              "name": "n = 1",
+              "code": "assert LINES == ['Sum: 1']",
+              "fail": "With 1 typed expect Sum: 1. Is n itself included?",
+              "inputs": [
+                "1"
+              ]
+            },
+            {
+              "name": "n = 0",
+              "code": "assert LINES == ['Sum: 0']",
+              "fail": "With 0 typed nothing is added: Sum: 0.",
+              "inputs": [
+                "0"
+              ]
+            },
+            {
+              "name": "uses a for loop",
+              "code": "assert uses('For')",
+              "fail": "Add the numbers one by one with a for loop."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "word-tools",
+      "lesson": "strings-and-loops",
+      "title": "Word tools",
+      "summary": "Walk through a word character by character to count vowels, reverse it, spot palindromes, alternate the case and find doubled letters.",
+      "steps": [
+        {
+          "id": "type-it",
+          "mode": "guided",
+          "title": "Count the vowels",
+          "instructions": "Type this program piece by piece. A **for** loop over a string gives you one character at a time, so you can check each one.",
+          "guide": [
+            {
+              "code": "word = input(\"Word: \")",
+              "explain": "Ask for a word. The typed input box below feeds it **banana**."
+            },
+            {
+              "code": "count = 0",
+              "explain": "A counter that starts at 0, **before** the loop."
+            },
+            {
+              "code": "for ch in word:",
+              "explain": "Each round, **ch** is the next character of **word**: b, a, n, a, n, a."
+            },
+            {
+              "code": "    if ch in \"aeiou\":",
+              "explain": "**in** checks whether **ch** is one of the characters in **\"aeiou\"**."
+            },
+            {
+              "code": "        count += 1",
+              "explain": "Indented twice (8 spaces): only runs for a vowel."
+            },
+            {
+              "code": "print(\"Vowels:\", count)",
+              "explain": "After the loop, print the result once."
+            }
+          ],
+          "inputs": [
+            "banana"
+          ],
+          "solution": "word = input(\"Word: \")\ncount = 0\nfor ch in word:\n    if ch in \"aeiou\":\n        count += 1\nprint(\"Vowels:\", count)",
+          "tests": [
+            {
+              "name": "banana has 3 vowels",
+              "code": "assert LINES == ['Vowels: 3']",
+              "fail": "With banana typed expect Vowels: 3."
+            },
+            {
+              "name": "rhythm has none",
+              "code": "assert LINES == ['Vowels: 0']",
+              "fail": "With rhythm typed expect Vowels: 0.",
+              "inputs": [
+                "rhythm"
+              ]
+            },
+            {
+              "name": "uses a for loop",
+              "code": "assert uses('For')",
+              "fail": "Go through the word with a for loop."
+            }
+          ]
+        },
+        {
+          "id": "capitals-too",
+          "mode": "change",
+          "title": "Count capital vowels too",
+          "instructions": "Try typing **Apple**: it says 1, but there are 2 vowels. Change the check so capital vowels count too.",
+          "carryOver": true,
+          "inputs": [
+            "Apple"
+          ],
+          "hints": [
+            "**ch.lower()** turns **A** into **a** before the check.",
+            "Or check against **\"aeiouAEIOU\"**."
+          ],
+          "solution": "word = input(\"Word: \")\ncount = 0\nfor ch in word:\n    if ch.lower() in \"aeiou\":\n        count += 1\nprint(\"Vowels:\", count)",
+          "tests": [
+            {
+              "name": "Apple has 2",
+              "code": "assert LINES == ['Vowels: 2']",
+              "fail": "With Apple typed expect Vowels: 2: the capital A counts."
+            },
+            {
+              "name": "AEIOU has 5",
+              "code": "assert LINES == ['Vowels: 5']",
+              "fail": "With AEIOU typed expect Vowels: 5.",
+              "inputs": [
+                "AEIOU"
+              ]
+            },
+            {
+              "name": "banana still 3",
+              "code": "assert LINES == ['Vowels: 3']",
+              "fail": "banana should still give Vowels: 3.",
+              "inputs": [
+                "banana"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "reverse",
+          "mode": "write",
+          "title": "Reverse a word",
+          "instructions": "On your own: ask for a word and print it backwards. Build the result one character at a time in a loop, starting from an empty string **\"\"**. Strings cannot be changed in place, so you make a new one. (No **[::-1]** this time: the point is the loop.)",
+          "inputs": [
+            "hello"
+          ],
+          "hints": [
+            "**result = \"\"** before the loop.",
+            "Put each new character in **front**: **result = ch + result**.",
+            "Print **result** after the loop."
+          ],
+          "solution": "word = input(\"Word: \")\nresult = \"\"\nfor ch in word:\n    result = ch + result\nprint(result)",
+          "tests": [
+            {
+              "name": "hello backwards",
+              "code": "assert LINES == ['olleh']",
+              "fail": "With hello typed expect olleh."
+            },
+            {
+              "name": "one letter",
+              "code": "assert LINES == ['a']",
+              "fail": "With a typed expect a.",
+              "inputs": [
+                "a"
+              ]
+            },
+            {
+              "name": "built with a loop",
+              "code": "assert uses('For') and '[::-1]' not in SOURCE",
+              "fail": "Build the reversed word with a for loop, without [::-1]."
+            }
+          ]
+        },
+        {
+          "id": "palindrome",
+          "mode": "change",
+          "title": "Is it a palindrome?",
+          "instructions": "Keep your reversing loop. After it, instead of printing the reversed word, print **Palindrome** if it is the same as the original, otherwise **Not a palindrome**.",
+          "carryOver": true,
+          "inputs": [
+            "level"
+          ],
+          "hints": [
+            "Compare with **if result == word:**.",
+            "Remove the **print(result)** line so only one line is printed."
+          ],
+          "solution": "word = input(\"Word: \")\nresult = \"\"\nfor ch in word:\n    result = ch + result\nif result == word:\n    print(\"Palindrome\")\nelse:\n    print(\"Not a palindrome\")",
+          "tests": [
+            {
+              "name": "level",
+              "code": "assert LINES == ['Palindrome']",
+              "fail": "level reads the same backwards: expect Palindrome."
+            },
+            {
+              "name": "hello",
+              "code": "assert LINES == ['Not a palindrome']",
+              "fail": "With hello typed expect Not a palindrome.",
+              "inputs": [
+                "hello"
+              ]
+            },
+            {
+              "name": "a single letter",
+              "code": "assert LINES == ['Palindrome']",
+              "fail": "One letter is always a palindrome.",
+              "inputs": [
+                "x"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "alternate-case",
+          "mode": "challenge",
+          "title": "AlTeRnAtInG cAsE",
+          "instructions": "Experiment: print the word with its letters alternating upper and lower case, starting with upper: **python** becomes **PyThOn**. You need each letter's position, so loop over **range(len(word))** and use **word[i]**.",
+          "inputs": [
+            "python"
+          ],
+          "hints": [
+            "An even position is **i % 2 == 0**.",
+            "Build a new string: **result += word[i].upper()** for even positions, **.lower()** for odd ones."
+          ],
+          "solution": "word = input(\"Word: \")\nresult = \"\"\nfor i in range(len(word)):\n    if i % 2 == 0:\n        result += word[i].upper()\n    else:\n        result += word[i].lower()\nprint(result)",
+          "tests": [
+            {
+              "name": "python",
+              "code": "assert LINES == ['PyThOn']",
+              "fail": "With python typed expect PyThOn."
+            },
+            {
+              "name": "HELLO",
+              "code": "assert LINES == ['HeLlO']",
+              "fail": "With HELLO typed expect HeLlO: odd positions become lower case.",
+              "inputs": [
+                "HELLO"
+              ]
+            },
+            {
+              "name": "one letter",
+              "code": "assert LINES == ['A']",
+              "fail": "With a typed expect A.",
+              "inputs": [
+                "a"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "doubles",
+          "mode": "challenge",
+          "title": "Find doubled letters",
+          "instructions": "Experiment: count the places where a letter is followed by the same letter: **balloon** has 2 (ll and oo). Compare each character with its right neighbour, **word[i]** with **word[i + 1]**. Careful: the last character has no right neighbour. Print **Doubles: 2**.",
+          "inputs": [
+            "balloon"
+          ],
+          "hints": [
+            "Loop over **range(len(word) - 1)** so **i + 1** never goes past the end.",
+            "With **range(len(word))** the last round asks for **word[len(word)]**: an IndexError."
+          ],
+          "solution": "word = input(\"Word: \")\ndoubles = 0\nfor i in range(len(word) - 1):\n    if word[i] == word[i + 1]:\n        doubles += 1\nprint(\"Doubles:\", doubles)",
+          "tests": [
+            {
+              "name": "balloon",
+              "code": "assert LINES == ['Doubles: 2']",
+              "fail": "With balloon typed expect Doubles: 2."
+            },
+            {
+              "name": "aaa",
+              "code": "assert LINES == ['Doubles: 2']",
+              "fail": "aaa has two neighbouring pairs: expect Doubles: 2.",
+              "inputs": [
+                "aaa"
+              ]
+            },
+            {
+              "name": "abc",
+              "code": "assert LINES == ['Doubles: 0']",
+              "fail": "With abc typed expect Doubles: 0.",
+              "inputs": [
+                "abc"
+              ]
+            },
+            {
+              "name": "a word ending in a double",
+              "code": "assert LINES == ['Doubles: 1']",
+              "fail": "With book typed expect Doubles: 1, and no IndexError at the end.",
+              "inputs": [
+                "book"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "todo-list",
+      "lesson": "lists",
+      "title": "A to-do list",
+      "summary": "Build a list from typed items, remove what is done, number it, copy it safely and move items around.",
+      "steps": [
+        {
+          "id": "type-it",
+          "mode": "guided",
+          "title": "Collect three tasks",
+          "instructions": "Type this program piece by piece. A list can grow: **append** adds an item to the end. The typed input box gives it three tasks.",
+          "guide": [
+            {
+              "code": "todo = []",
+              "explain": "Start with an empty list."
+            },
+            {
+              "code": "for i in range(3):",
+              "explain": "Run the body 3 times. **i** is 0, 1, 2, but we only need the repeating."
+            },
+            {
+              "code": "    task = input(\"Task: \")",
+              "explain": "Ask for one task each round."
+            },
+            {
+              "code": "    todo.append(task)",
+              "explain": "Add it to the end of the list. **append** changes the list itself; there is nothing to store."
+            },
+            {
+              "code": "print(todo)",
+              "explain": "After the loop, print the whole list: Python shows it with brackets and quotes."
+            }
+          ],
+          "inputs": [
+            "shop",
+            "cook",
+            "read"
+          ],
+          "solution": "todo = []\nfor i in range(3):\n    task = input(\"Task: \")\n    todo.append(task)\nprint(todo)",
+          "tests": [
+            {
+              "name": "three typed tasks",
+              "code": "assert LINES == [\"['shop', 'cook', 'read']\"]",
+              "fail": "With shop, cook, read typed expect ['shop', 'cook', 'read']."
+            },
+            {
+              "name": "other tasks",
+              "code": "assert LINES == [\"['a', 'b', 'c']\"]",
+              "fail": "With a, b, c typed expect ['a', 'b', 'c'].",
+              "inputs": [
+                "a",
+                "b",
+                "c"
+              ]
+            },
+            {
+              "name": "uses append",
+              "code": "assert calls('append')",
+              "fail": "Grow the list with append."
+            }
+          ]
+        },
+        {
+          "id": "how-many",
+          "mode": "change",
+          "title": "Ask how many first",
+          "instructions": "Change it so the user first says how many tasks there will be: **count = int(input(\"How many tasks? \"))**, then loop **count** times instead of 3.",
+          "carryOver": true,
+          "inputs": [
+            "2",
+            "shop",
+            "cook"
+          ],
+          "hints": [
+            "Ask for the count before the loop.",
+            "Loop over **range(count)**."
+          ],
+          "solution": "count = int(input(\"How many tasks? \"))\ntodo = []\nfor i in range(count):\n    task = input(\"Task: \")\n    todo.append(task)\nprint(todo)",
+          "tests": [
+            {
+              "name": "two tasks",
+              "code": "assert LINES == [\"['shop', 'cook']\"]",
+              "fail": "With 2, shop, cook typed expect ['shop', 'cook']."
+            },
+            {
+              "name": "no tasks",
+              "code": "assert LINES == ['[]']",
+              "fail": "With 0 typed the list stays empty: expect [].",
+              "inputs": [
+                "0"
+              ]
+            },
+            {
+              "name": "four tasks",
+              "code": "assert LINES == [\"['a', 'b', 'c', 'd']\"]",
+              "fail": "With 4, a, b, c, d typed expect ['a', 'b', 'c', 'd'].",
+              "inputs": [
+                "4",
+                "a",
+                "b",
+                "c",
+                "d"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tick-off",
+          "mode": "change",
+          "title": "Tick one off",
+          "instructions": "After building the list, ask which task is done (**input(\"Done: \")**). If it is in the list, **remove** it; if not, print **Not on the list**. Then print the list.",
+          "carryOver": true,
+          "inputs": [
+            "3",
+            "shop",
+            "cook",
+            "read",
+            "cook"
+          ],
+          "hints": [
+            "**if done in todo:** checks first, so **remove** never crashes.",
+            "**todo.remove(done)** removes the first item equal to **done**."
+          ],
+          "solution": "count = int(input(\"How many tasks? \"))\ntodo = []\nfor i in range(count):\n    task = input(\"Task: \")\n    todo.append(task)\ndone = input(\"Done: \")\nif done in todo:\n    todo.remove(done)\nelse:\n    print(\"Not on the list\")\nprint(todo)",
+          "tests": [
+            {
+              "name": "cook is done",
+              "code": "assert LINES == [\"['shop', 'read']\"]",
+              "fail": "With shop, cook, read and then cook done, expect ['shop', 'read']."
+            },
+            {
+              "name": "unknown task",
+              "code": "assert LINES == ['Not on the list', \"['a', 'b']\"]",
+              "fail": "With a, b and then z done, expect Not on the list and then ['a', 'b'].",
+              "inputs": [
+                "2",
+                "a",
+                "b",
+                "z"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "copy-not-alias",
+          "mode": "change",
+          "title": "Fix the backup",
+          "instructions": "This program should keep a **backup** of the original three tasks, but after adding **sleep** to **todo** the backup changes too. Run it and see. Fix it so **backup** stays **['shop', 'cook', 'read']**.",
+          "starter": "todo = [\"shop\", \"cook\", \"read\"]\nbackup = todo\ntodo.append(\"sleep\")\nprint(backup)\n",
+          "hints": [
+            "**backup = todo** does not copy: both names point at the same list.",
+            "Make a real copy: **todo[:]**, **list(todo)** or **todo.copy()**."
+          ],
+          "solution": "todo = [\"shop\", \"cook\", \"read\"]\nbackup = todo[:]\ntodo.append(\"sleep\")\nprint(backup)",
+          "tests": [
+            {
+              "name": "backup keeps three tasks",
+              "code": "assert LINES == [\"['shop', 'cook', 'read']\"]",
+              "fail": "The printed backup should be ['shop', 'cook', 'read'], without sleep."
+            },
+            {
+              "name": "todo still gets sleep",
+              "code": "assert todo == ['shop', 'cook', 'read', 'sleep']",
+              "fail": "todo itself should still end with sleep: only the backup must stay the same."
+            }
+          ]
+        },
+        {
+          "id": "numbered",
+          "mode": "write",
+          "title": "Print it numbered",
+          "instructions": "On your own: print each task with its number, starting at 1: **1. shop**, **2. cook**, **3. read**. This time use the positions: loop over **range(len(todo))** and use **todo[i]**. Keep the first line as it is.",
+          "starter": "todo = [\"shop\", \"cook\", \"read\"]\n",
+          "hints": [
+            "Positions start at 0, so the number to show is **i + 1**.",
+            "**print(f\"{i + 1}. {todo[i]}\")**"
+          ],
+          "solution": "todo = [\"shop\", \"cook\", \"read\"]\nfor i in range(len(todo)):\n    print(f\"{i + 1}. {todo[i]}\")",
+          "tests": [
+            {
+              "name": "numbered from 1",
+              "code": "assert LINES == ['1. shop', '2. cook', '3. read']",
+              "fail": "Expected 1. shop, 2. cook and 3. read."
+            },
+            {
+              "name": "works for another list",
+              "code": "out = run_source(SOURCE.replace('[\"shop\", \"cook\", \"read\"]', '[\"x\"]'))\nassert out.strip() == '1. x'",
+              "fail": "For the list [\"x\"] expect just 1. x."
+            }
+          ]
+        },
+        {
+          "id": "move-to-top",
+          "mode": "challenge",
+          "title": "Move a task to the top",
+          "instructions": "Experiment: ask for a task. If it is in the list, move it to the front (remove it, then **insert** it at position 0). If not, print **Not on the list**. Then print the list.",
+          "starter": "todo = [\"shop\", \"cook\", \"read\"]\n",
+          "inputs": [
+            "read"
+          ],
+          "hints": [
+            "**todo.insert(0, task)** puts **task** at the front and shifts the rest right.",
+            "Remove first, then insert, otherwise the task is in the list twice."
+          ],
+          "solution": "todo = [\"shop\", \"cook\", \"read\"]\ntask = input(\"Task: \")\nif task in todo:\n    todo.remove(task)\n    todo.insert(0, task)\nelse:\n    print(\"Not on the list\")\nprint(todo)",
+          "tests": [
+            {
+              "name": "read to the top",
+              "code": "assert LINES == [\"['read', 'shop', 'cook']\"]",
+              "fail": "With read typed expect ['read', 'shop', 'cook']."
+            },
+            {
+              "name": "already at the top",
+              "code": "assert LINES == [\"['shop', 'cook', 'read']\"]",
+              "fail": "With shop typed nothing changes: ['shop', 'cook', 'read'].",
+              "inputs": [
+                "shop"
+              ]
+            },
+            {
+              "name": "unknown task",
+              "code": "assert LINES == ['Not on the list', \"['shop', 'cook', 'read']\"]",
+              "fail": "With zzz typed expect Not on the list and the unchanged list.",
+              "inputs": [
+                "zzz"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grade-stats",
+      "lesson": "loop-patterns",
+      "title": "Grade statistics",
+      "summary": "Use the classic loop patterns on a list of grades: accumulate, find the highest, count, search with break, and read grades until done.",
+      "steps": [
+        {
+          "id": "type-it",
+          "mode": "guided",
+          "title": "The average",
+          "instructions": "Type this program piece by piece. It is the **accumulator** pattern: a total that starts at 0 **before** the loop and grows **inside** it.",
+          "guide": [
+            {
+              "code": "grades = [7, 4, 9, 6, 8]",
+              "explain": "The grades to work with."
+            },
+            {
+              "code": "total = 0",
+              "explain": "The accumulator starts at 0, before the loop. Inside the loop it would be reset every round."
+            },
+            {
+              "code": "for g in grades:",
+              "explain": "Visit every grade."
+            },
+            {
+              "code": "    total += g",
+              "explain": "Add the grade to the running total."
+            },
+            {
+              "code": "print(\"Average:\", total / len(grades))",
+              "explain": "After the loop, divide by how many grades there are. **/** always gives a float."
+            }
+          ],
+          "solution": "grades = [7, 4, 9, 6, 8]\ntotal = 0\nfor g in grades:\n    total += g\nprint(\"Average:\", total / len(grades))",
+          "tests": [
+            {
+              "name": "average 6.8",
+              "code": "assert LINES == ['Average: 6.8']",
+              "fail": "Expected Average: 6.8 (34 / 5)."
+            },
+            {
+              "name": "works for other grades",
+              "code": "out = run_source(SOURCE.replace('[7, 4, 9, 6, 8]', '[10, 6]'))\nassert out.strip() == 'Average: 8.0'",
+              "fail": "For the grades [10, 6] expect Average: 8.0. Keep the first line as it is."
+            }
+          ]
+        },
+        {
+          "id": "highest",
+          "mode": "change",
+          "title": "The highest grade",
+          "instructions": "In the same loop, also find the highest grade and print **Highest: 9** after the average. Start with the first grade, **grades[0]**, and replace it whenever you see a bigger one. Do it with the loop, not **max()**.",
+          "carryOver": true,
+          "hints": [
+            "**highest = grades[0]** before the loop.",
+            "Inside the loop: **if g > highest:** then **highest = g**."
+          ],
+          "solution": "grades = [7, 4, 9, 6, 8]\ntotal = 0\nhighest = grades[0]\nfor g in grades:\n    total += g\n    if g > highest:\n        highest = g\nprint(\"Average:\", total / len(grades))\nprint(\"Highest:\", highest)",
+          "tests": [
+            {
+              "name": "highest is 9",
+              "code": "assert LINES == ['Average: 6.8', 'Highest: 9']",
+              "fail": "Expected Average: 6.8 and then Highest: 9."
+            },
+            {
+              "name": "works for other grades",
+              "code": "out = run_source(SOURCE.replace('[7, 4, 9, 6, 8]', '[5, 10, 1]'))\nassert out.splitlines()[1] == 'Highest: 10'",
+              "fail": "For the grades [5, 10, 1] the second line should be Highest: 10."
+            },
+            {
+              "name": "found with the loop",
+              "code": "assert not calls('max')",
+              "fail": "Find the highest with the loop, not with max()."
+            }
+          ]
+        },
+        {
+          "id": "count-passed",
+          "mode": "change",
+          "title": "Count the passes",
+          "instructions": "Also count the grades of 5.5 or more and print **Passed: 4** as a third line. That is the **counter** pattern: a count that starts at 0 and grows by 1 when the condition is True.",
+          "carryOver": true,
+          "hints": [
+            "**passed = 0** before the loop.",
+            "Inside the loop: **if g >= 5.5:** then **passed += 1**."
+          ],
+          "solution": "grades = [7, 4, 9, 6, 8]\ntotal = 0\nhighest = grades[0]\npassed = 0\nfor g in grades:\n    total += g\n    if g > highest:\n        highest = g\n    if g >= 5.5:\n        passed += 1\nprint(\"Average:\", total / len(grades))\nprint(\"Highest:\", highest)\nprint(\"Passed:\", passed)",
+          "tests": [
+            {
+              "name": "4 passed",
+              "code": "assert len(LINES) == 3 and LINES[2] == 'Passed: 4'",
+              "fail": "Expected three lines, the last one Passed: 4."
+            },
+            {
+              "name": "5.5 counts as a pass",
+              "code": "out = run_source(SOURCE.replace('[7, 4, 9, 6, 8]', '[5, 6, 5.5]'))\nassert out.splitlines()[2] == 'Passed: 2'",
+              "fail": "For [5, 6, 5.5] expect Passed: 2: 5.5 itself is a pass (>=)."
+            }
+          ]
+        },
+        {
+          "id": "first-fail",
+          "mode": "write",
+          "title": "Find the first fail",
+          "instructions": "On your own: find the **first** grade below 5.5 and print **First fail: 4**, then stop looking with **break**. If there is no fail at all, print **No fails**. Keep the first line as it is.",
+          "starter": "grades = [7, 4, 9, 3, 8]\n",
+          "hints": [
+            "A flag: **found = False** before the loop.",
+            "When you find a fail: print it, set **found = True** and **break**.",
+            "After the loop: **if not found:** print **No fails**."
+          ],
+          "solution": "grades = [7, 4, 9, 3, 8]\nfound = False\nfor g in grades:\n    if g < 5.5:\n        print(\"First fail:\", g)\n        found = True\n        break\nif not found:\n    print(\"No fails\")",
+          "tests": [
+            {
+              "name": "first fail is 4",
+              "code": "assert LINES == ['First fail: 4']",
+              "fail": "Expected only First fail: 4. Did the loop stop, or did it also report 3?"
+            },
+            {
+              "name": "no fails",
+              "code": "out = run_source(SOURCE.replace('[7, 4, 9, 3, 8]', '[8, 9]'))\nassert out.strip() == 'No fails'",
+              "fail": "For [8, 9] expect No fails."
+            },
+            {
+              "name": "another first fail",
+              "code": "out = run_source(SOURCE.replace('[7, 4, 9, 3, 8]', '[6, 2, 1]'))\nassert out.strip() == 'First fail: 2'",
+              "fail": "For [6, 2, 1] expect First fail: 2."
+            },
+            {
+              "name": "stops with break",
+              "code": "assert uses('Break')",
+              "fail": "Stop the loop with break as soon as you find the first fail."
+            }
+          ]
+        },
+        {
+          "id": "typed-grades",
+          "mode": "challenge",
+          "title": "Type the grades in",
+          "instructions": "Experiment: read whole-number grades with **input()** until the user types **done**. Then print the average rounded to 1 decimal (**round(average, 1)**), the highest and the number of passes, like **Average: 6.7**, **Highest: 9**, **Passed: 2**. If no grades were typed, print only **No grades**.",
+          "inputs": [
+            "7",
+            "4",
+            "9",
+            "done"
+          ],
+          "hints": [
+            "Read into a list with a while loop: ask once before it, and **while text != \"done\":** append **int(text)** and ask again.",
+            "Check **if len(grades) == 0:** before dividing, or you divide by zero.",
+            "Then reuse your loop from step 3."
+          ],
+          "solution": "grades = []\ntext = input(\"Grade (or done): \")\nwhile text != \"done\":\n    grades.append(int(text))\n    text = input(\"Grade (or done): \")\nif len(grades) == 0:\n    print(\"No grades\")\nelse:\n    total = 0\n    highest = grades[0]\n    passed = 0\n    for g in grades:\n        total += g\n        if g > highest:\n            highest = g\n        if g >= 5.5:\n            passed += 1\n    print(\"Average:\", round(total / len(grades), 1))\n    print(\"Highest:\", highest)\n    print(\"Passed:\", passed)",
+          "tests": [
+            {
+              "name": "7, 4, 9",
+              "code": "assert LINES == ['Average: 6.7', 'Highest: 9', 'Passed: 2']",
+              "fail": "With 7, 4, 9, done typed expect Average: 6.7, Highest: 9 and Passed: 2."
+            },
+            {
+              "name": "no grades",
+              "code": "assert LINES == ['No grades']",
+              "fail": "With only done typed expect No grades (and no ZeroDivisionError).",
+              "inputs": [
+                "done"
+              ]
+            },
+            {
+              "name": "5 and 6",
+              "code": "assert LINES == ['Average: 5.5', 'Highest: 6', 'Passed: 1']",
+              "fail": "With 5, 6, done typed expect Average: 5.5, Highest: 6 and Passed: 1.",
+              "inputs": [
+                "5",
+                "6",
+                "done"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "maze-map",
+      "lesson": "nested-loops-and-grids",
+      "title": "Map out a maze",
+      "summary": "Use a loop inside a loop to draw shapes, count the walls of a maze, find its start, and list the cells you can step to: the groundwork for maze recursion.",
+      "steps": [
+        {
+          "id": "type-it",
+          "mode": "guided",
+          "title": "A rectangle of stars",
+          "instructions": "Type this program piece by piece. The **inner** loop runs completely for every round of the **outer** loop: here the outer loop makes the rows and the inner loop fills one row.",
+          "guide": [
+            {
+              "code": "rows = 3",
+              "explain": "How many rows to draw."
+            },
+            {
+              "code": "cols = 5",
+              "explain": "How many stars in each row."
+            },
+            {
+              "code": "for r in range(rows):",
+              "explain": "The outer loop: one round per row."
+            },
+            {
+              "code": "    line = \"\"",
+              "explain": "Each row starts as an empty string."
+            },
+            {
+              "code": "    for c in range(cols):",
+              "explain": "The inner loop, indented: it runs **cols** times for every row."
+            },
+            {
+              "code": "        line += \"*\"",
+              "explain": "Indented twice: add one star (\\*) to the row."
+            },
+            {
+              "code": "    print(line)",
+              "explain": "Back to one indent: after the inner loop is done, print the finished row."
+            }
+          ],
+          "solution": "rows = 3\ncols = 5\nfor r in range(rows):\n    line = \"\"\n    for c in range(cols):\n        line += \"*\"\n    print(line)",
+          "tests": [
+            {
+              "name": "3 rows of 5 stars",
+              "code": "assert LINES == ['*****', '*****', '*****']",
+              "fail": "Expected 3 rows of 5 stars."
+            },
+            {
+              "name": "works for other sizes",
+              "code": "out = run_source(SOURCE.replace('rows = 3', 'rows = 2').replace('cols = 5', 'cols = 4'))\nassert out.split() == ['****', '****']",
+              "fail": "With rows = 2 and cols = 4 expect 2 rows of 4 stars. Use rows and cols in your loops."
+            },
+            {
+              "name": "a loop inside a loop",
+              "code": "assert SOURCE.count('for ') >= 2",
+              "fail": "Use one for loop inside another."
+            }
+          ]
+        },
+        {
+          "id": "frame",
+          "mode": "change",
+          "title": "Only the frame",
+          "instructions": "Change the inner loop so it draws only the border: a star (\\*) on the first and last row and in the first and last column, and a space everywhere else. For 3 rows and 5 columns that is a full row of 5 stars, then a star, 3 spaces and a star, then a full row again.",
+          "carryOver": true,
+          "hints": [
+            "A cell is on the border when it is in the first or last row (**r == 0 or r == rows - 1**) or in the first or last column (**c == 0 or c == cols - 1**).",
+            "Inside the inner loop: **if** border, add **\"\\*\"**, **else** add **\" \"**."
+          ],
+          "solution": "rows = 3\ncols = 5\nfor r in range(rows):\n    line = \"\"\n    for c in range(cols):\n        edge_row = r == 0 or r == rows - 1\n        edge_col = c == 0 or c == cols - 1\n        if edge_row or edge_col:\n            line += \"*\"\n        else:\n            line += \" \"\n    print(line)",
+          "tests": [
+            {
+              "name": "3 by 5 frame",
+              "code": "assert LINES == ['*****', '*   *', '*****']",
+              "fail": "Expected a full row of 5 stars, then a star, 3 spaces and a star, then a full row of 5 stars again."
+            },
+            {
+              "name": "4 by 4 frame",
+              "code": "out = run_source(SOURCE.replace('rows = 3', 'rows = 4').replace('cols = 5', 'cols = 4'))\nassert out.splitlines() == ['****', '*  *', '*  *', '****']",
+              "fail": "With rows = 4 and cols = 4 the frame should have two middle rows of * with 2 spaces and *."
+            }
+          ]
+        },
+        {
+          "id": "count-walls",
+          "mode": "write",
+          "title": "Count the walls",
+          "instructions": "On your own: the maze is a list of strings, so **maze[r][c]** is the cell in row **r**, column **c**. Use a loop over the rows with a loop over the columns inside it, count the **#** cells and print **Walls: 15**. Keep the maze as it is.",
+          "starter": "maze = [\n    \"#####\",\n    \"#S..#\",\n    \"#.#E#\",\n    \"#####\",\n]\n",
+          "hints": [
+            "**len(maze)** is the number of rows, **len(maze[0])** the number of columns.",
+            "**walls = 0** before the loops; inside: **if maze[r][c] == \"#\":** then **walls += 1**.",
+            "Print after both loops."
+          ],
+          "solution": "maze = [\n    \"#####\",\n    \"#S..#\",\n    \"#.#E#\",\n    \"#####\",\n]\nwalls = 0\nfor r in range(len(maze)):\n    for c in range(len(maze[0])):\n        if maze[r][c] == \"#\":\n            walls += 1\nprint(\"Walls:\", walls)",
+          "tests": [
+            {
+              "name": "15 walls",
+              "code": "assert LINES == ['Walls: 15']",
+              "fail": "Count every # in the grid: expect Walls: 15."
+            },
+            {
+              "name": "works for another maze",
+              "code": "out = run_source(SOURCE.replace('''maze = [\n    \"#####\",\n    \"#S..#\",\n    \"#.#E#\",\n    \"#####\",\n]''', '''maze = [\n    \"....\",\n    \"#..S\",\n    \"##..\",\n]'''))\nassert out.strip() == 'Walls: 3'",
+              "fail": "For a different maze the count should change: count the cells, don't print a fixed number."
+            }
+          ]
+        },
+        {
+          "id": "find-start",
+          "mode": "change",
+          "title": "Find the start",
+          "instructions": "In the same loops, also look for the **S**. When you find it, print its row and column as **Start: 1 1**, right away inside the loop. The walls line still comes after the loops.",
+          "carryOver": true,
+          "hints": [
+            "Add a second check inside the inner loop: **if maze[r][c] == \"S\":**.",
+            "**print(\"Start:\", r, c)** prints Start: 1 1."
+          ],
+          "solution": "maze = [\n    \"#####\",\n    \"#S..#\",\n    \"#.#E#\",\n    \"#####\",\n]\nwalls = 0\nfor r in range(len(maze)):\n    for c in range(len(maze[0])):\n        if maze[r][c] == \"#\":\n            walls += 1\n        if maze[r][c] == \"S\":\n            print(\"Start:\", r, c)\nprint(\"Walls:\", walls)",
+          "tests": [
+            {
+              "name": "start at row 1, column 1",
+              "code": "assert LINES == ['Start: 1 1', 'Walls: 15']",
+              "fail": "Expected Start: 1 1 and then Walls: 15."
+            },
+            {
+              "name": "works for another maze",
+              "code": "out = run_source(SOURCE.replace('''maze = [\n    \"#####\",\n    \"#S..#\",\n    \"#.#E#\",\n    \"#####\",\n]''', '''maze = [\n    \"....\",\n    \"#..S\",\n    \"##..\",\n]'''))\nassert out.splitlines() == ['Start: 1 3', 'Walls: 3']",
+              "fail": "In a maze with S in row 1, column 3 expect Start: 1 3."
+            }
+          ]
+        },
+        {
+          "id": "neighbours",
+          "mode": "challenge",
+          "title": "Where can I step?",
+          "instructions": "Experiment: ask for a row and a column. Print every neighbour you can step to (up, down, left, right, in that order) as **row col**: it must be **inside** the maze and **not a wall**. If there are none, print **No way out**. Check the bounds **before** you look at the cell, or the edge of the maze crashes your program.",
+          "starter": "maze = [\n    \"#####\",\n    \"#S..#\",\n    \"#.#E#\",\n    \"#####\",\n]\n",
+          "inputs": [
+            "1",
+            "1"
+          ],
+          "hints": [
+            "Two lists hold the moves: **drs = [-1, 1, 0, 0]** and **dcs = [0, 0, -1, 1]**; loop **for i in range(4):** and compute **nr = r + drs[i]**, **nc = c + dcs[i]**.",
+            "Inside the maze means **0 <= nr < len(maze) and 0 <= nc < len(maze[0])**. Test that first, then **maze[nr][nc] != \"#\"**.",
+            "A flag **found = False** tells you at the end whether to print No way out."
+          ],
+          "solution": "maze = [\n    \"#####\",\n    \"#S..#\",\n    \"#.#E#\",\n    \"#####\",\n]\nr = int(input(\"Row: \"))\nc = int(input(\"Col: \"))\ndrs = [-1, 1, 0, 0]\ndcs = [0, 0, -1, 1]\nfound = False\nfor i in range(4):\n    nr = r + drs[i]\n    nc = c + dcs[i]\n    if 0 <= nr < len(maze) and 0 <= nc < len(maze[0]):\n        if maze[nr][nc] != \"#\":\n            print(nr, nc)\n            found = True\nif not found:\n    print(\"No way out\")",
+          "tests": [
+            {
+              "name": "from the start",
+              "code": "assert LINES == ['2 1', '1 2']",
+              "fail": "From 1 1 you can step down to 2 1 and right to 1 2, in that order."
+            },
+            {
+              "name": "from the exit",
+              "code": "assert LINES == ['1 3']",
+              "fail": "From 2 3 the only open neighbour is up, 1 3.",
+              "inputs": [
+                "2",
+                "3"
+              ]
+            },
+            {
+              "name": "a corner on the edge",
+              "code": "assert LINES == ['No way out']",
+              "fail": "From 3 4 (bottom-right corner) there is no open neighbour, and the rows below and the columns to the right don't exist: check bounds first.",
+              "inputs": [
+                "3",
+                "4"
+              ]
+            },
+            {
+              "name": "top-left corner",
+              "code": "assert LINES == ['No way out']",
+              "fail": "From 0 0 every neighbour inside the maze is a wall: expect No way out.",
+              "inputs": [
+                "0",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "word-counter",
+      "lesson": "dictionaries",
+      "title": "Count words with a dictionary",
+      "summary": "Count how often each word appears, print it neatly, look words up safely, keep a phone book, and find the most common word.",
+      "steps": [
+        {
+          "id": "type-it",
+          "mode": "guided",
+          "title": "Count every word",
+          "instructions": "Type this program piece by piece. A dictionary maps a **key** to a **value**: here each word to how many times it appears.",
+          "guide": [
+            {
+              "code": "text = input(\"Text: \")",
+              "explain": "Ask for a sentence."
+            },
+            {
+              "code": "counts = {}",
+              "explain": "An empty dictionary: no words counted yet."
+            },
+            {
+              "code": "for word in text.split():",
+              "explain": "**split()** cuts the text at the spaces into a list of words."
+            },
+            {
+              "code": "    counts[word] = counts.get(word, 0) + 1",
+              "explain": "**counts.get(word, 0)** is the count so far, or 0 for a new word. Add 1 and store it back under that word."
+            },
+            {
+              "code": "print(counts)",
+              "explain": "Print the whole dictionary: each key with its value."
+            }
+          ],
+          "inputs": [
+            "the cat and the hat"
+          ],
+          "solution": "text = input(\"Text: \")\ncounts = {}\nfor word in text.split():\n    counts[word] = counts.get(word, 0) + 1\nprint(counts)",
+          "tests": [
+            {
+              "name": "the cat and the hat",
+              "code": "assert LINES == [\"{'the': 2, 'cat': 1, 'and': 1, 'hat': 1}\"]",
+              "fail": "With the cat and the hat typed expect {'the': 2, 'cat': 1, 'and': 1, 'hat': 1}."
+            },
+            {
+              "name": "a a a",
+              "code": "assert LINES == [\"{'a': 3}\"]",
+              "fail": "With a a a typed expect {'a': 3}.",
+              "inputs": [
+                "a a a"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "one-per-line",
+          "mode": "change",
+          "title": "One word per line",
+          "instructions": "Instead of printing the whole dictionary, print one line per word as **the: 2**. Loop over **counts.items()**: it gives you each key together with its value.",
+          "carryOver": true,
+          "inputs": [
+            "the cat and the hat"
+          ],
+          "hints": [
+            "**for word, n in counts.items():** unpacks each pair into two names.",
+            "**print(f\"{word}: {n}\")**"
+          ],
+          "solution": "text = input(\"Text: \")\ncounts = {}\nfor word in text.split():\n    counts[word] = counts.get(word, 0) + 1\nfor word, n in counts.items():\n    print(f\"{word}: {n}\")",
+          "tests": [
+            {
+              "name": "one line per word",
+              "code": "assert LINES == ['the: 2', 'cat: 1', 'and: 1', 'hat: 1']",
+              "fail": "Expected the: 2, cat: 1, and: 1 and hat: 1, in that order."
+            },
+            {
+              "name": "another text",
+              "code": "assert LINES == ['b: 2', 'a: 1']",
+              "fail": "With b a b typed expect b: 2 and a: 1.",
+              "inputs": [
+                "b a b"
+              ]
+            },
+            {
+              "name": "uses items()",
+              "code": "assert calls('items')",
+              "fail": "Loop over counts.items()."
+            }
+          ]
+        },
+        {
+          "id": "look-up",
+          "mode": "change",
+          "title": "Look a word up",
+          "instructions": "Replace the printing loop: ask which word to look up and print **the appears 2 times**. For a word that is not in the text, **counts[word]** would crash with a KeyError, so use **counts.get(word, 0)** and print **dog appears 0 times**.",
+          "carryOver": true,
+          "inputs": [
+            "the cat and the hat",
+            "the"
+          ],
+          "hints": [
+            "**look = input(\"Look up: \")** after counting.",
+            "**print(look, \"appears\", counts.get(look, 0), \"times\")**"
+          ],
+          "solution": "text = input(\"Text: \")\ncounts = {}\nfor word in text.split():\n    counts[word] = counts.get(word, 0) + 1\nlook = input(\"Look up: \")\nprint(look, \"appears\", counts.get(look, 0), \"times\")",
+          "tests": [
+            {
+              "name": "the appears twice",
+              "code": "assert LINES == ['the appears 2 times']",
+              "fail": "Looking up the in the cat and the hat should print the appears 2 times."
+            },
+            {
+              "name": "a missing word",
+              "code": "assert LINES == ['dog appears 0 times']",
+              "fail": "Looking up dog should print dog appears 0 times, not crash.",
+              "inputs": [
+                "the cat and the hat",
+                "dog"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "phone-book",
+          "mode": "write",
+          "title": "A phone book",
+          "instructions": "On your own: the book maps names to numbers. Ask for a name. If the name is **in** the book, print its number. If not, ask for a number, add it to the book and print **Added cas**. At the end print how many names the book has: **3 names**. Keep the first line as it is.",
+          "starter": "book = {\"ana\": \"0612\", \"ben\": \"0634\"}\n",
+          "inputs": [
+            "ana"
+          ],
+          "hints": [
+            "**if name in book:** checks the keys.",
+            "Add or update an entry with **book[name] = number**.",
+            "**len(book)** counts the keys: **print(len(book), \"names\")**."
+          ],
+          "solution": "book = {\"ana\": \"0612\", \"ben\": \"0634\"}\nname = input(\"Name: \")\nif name in book:\n    print(book[name])\nelse:\n    book[name] = input(\"Number: \")\n    print(\"Added\", name)\nprint(len(book), \"names\")",
+          "tests": [
+            {
+              "name": "a known name",
+              "code": "assert LINES == ['0612', '2 names']",
+              "fail": "With ana typed expect 0612 and then 2 names."
+            },
+            {
+              "name": "a new name",
+              "code": "assert LINES == ['Added cas', '3 names'] and book['cas'] == '0655'",
+              "fail": "With cas and 0655 typed expect Added cas, 3 names, and book['cas'] should be '0655'.",
+              "inputs": [
+                "cas",
+                "0655"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "most-common",
+          "mode": "challenge",
+          "title": "The most common word",
+          "instructions": "Experiment: count the words of a typed text again, then print the most common word and its count: **the 2**. If two words are tied, print the one that appeared first in the text.",
+          "inputs": [
+            "the cat and the hat"
+          ],
+          "hints": [
+            "Count with **get** like in step 1.",
+            "Then loop over **counts.items()** keeping a best word and a best count; replace them only when **n > best\\_count**.",
+            "Using **>** (not **>=**) keeps the first word in a tie, because a dictionary remembers the order keys were added."
+          ],
+          "solution": "text = input(\"Text: \")\ncounts = {}\nfor word in text.split():\n    counts[word] = counts.get(word, 0) + 1\nbest = \"\"\nbest_count = 0\nfor word, n in counts.items():\n    if n > best_count:\n        best = word\n        best_count = n\nprint(best, best_count)",
+          "tests": [
+            {
+              "name": "the wins",
+              "code": "assert LINES == ['the 2']",
+              "fail": "With the cat and the hat typed expect the 2."
+            },
+            {
+              "name": "a tie keeps the first",
+              "code": "assert LINES == ['a 2']",
+              "fail": "With a b b a typed both a and b appear twice: print the first, a 2.",
+              "inputs": [
+                "a b b a"
+              ]
+            },
+            {
+              "name": "one word",
+              "code": "assert LINES == ['x 1']",
+              "fail": "With x typed expect x 1.",
+              "inputs": [
+                "x"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "type-fixer",
+      "lesson": "what-works-with-what",
+      "title": "Fix the type errors",
+      "summary": "Repair programs that mix types: text and numbers, lengths of numbers, loops over numbers, and dictionaries used like lists.",
+      "steps": [
+        {
+          "id": "type-it",
+          "mode": "guided",
+          "title": "Convert before you combine",
+          "instructions": "Type this program piece by piece. Every value has a type, and many errors come from mixing them. Here you convert on purpose at each step.",
+          "guide": [
+            {
+              "code": "age = int(input(\"Age: \"))",
+              "explain": "**input()** always gives a str. **int()** converts it, so you can do maths with it."
+            },
+            {
+              "code": "next_year = age + 1",
+              "explain": "int + int is fine: 18."
+            },
+            {
+              "code": "print(\"Next year you are \" + str(next_year))",
+              "explain": "**+** joins only str with str, so convert the number with **str()** first."
+            },
+            {
+              "code": "print(\"Next year you are\", next_year)",
+              "explain": "Or let commas do it: **print()** converts every value and puts spaces between them."
+            }
+          ],
+          "inputs": [
+            "17"
+          ],
+          "solution": "age = int(input(\"Age: \"))\nnext_year = age + 1\nprint(\"Next year you are \" + str(next_year))\nprint(\"Next year you are\", next_year)",
+          "tests": [
+            {
+              "name": "both lines with 18",
+              "code": "assert LINES == ['Next year you are 18', 'Next year you are 18']",
+              "fail": "With 17 typed both lines should say Next year you are 18."
+            },
+            {
+              "name": "another age",
+              "code": "assert LINES == ['Next year you are 41', 'Next year you are 41']",
+              "fail": "With 40 typed both lines should say 41.",
+              "inputs": [
+                "40"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "len-of-number",
+          "mode": "change",
+          "title": "Fix: the length of a number",
+          "instructions": "This program should print how many digits the number has, **Digits: 5**. Run it: **len()** works on strings and lists, not on an int. Fix it.",
+          "starter": "number = 12345\nprint(\"Digits:\", len(number))\n",
+          "hints": [
+            "Turn the number into text first: **str(number)** is **\"12345\"**.",
+            "**len(str(number))**"
+          ],
+          "solution": "number = 12345\nprint(\"Digits:\", len(str(number)))",
+          "tests": [
+            {
+              "name": "5 digits",
+              "code": "assert LINES == ['Digits: 5']",
+              "fail": "Expected Digits: 5."
+            },
+            {
+              "name": "works for another number",
+              "code": "out = run_source(SOURCE.replace('12345', '987'))\nassert out.strip() == 'Digits: 3'",
+              "fail": "For 987 expect Digits: 3. Keep number = 12345 on the first line."
+            }
+          ]
+        },
+        {
+          "id": "loop-over-int",
+          "mode": "change",
+          "title": "Fix: looping over a number",
+          "instructions": "This program should print the squares of 0 up to n - 1 (for n = 4: 0, 1, 4, 9). Run it: a for loop needs something with items, and an int has none. Fix it.",
+          "starter": "n = int(input(\"n: \"))\nfor i in n:\n    print(i * i)\n",
+          "inputs": [
+            "4"
+          ],
+          "hints": [
+            "**range(n)** gives the numbers 0 to n - 1 to loop over."
+          ],
+          "solution": "n = int(input(\"n: \"))\nfor i in range(n):\n    print(i * i)",
+          "tests": [
+            {
+              "name": "n = 4",
+              "code": "assert LINES == ['0', '1', '4', '9']",
+              "fail": "With 4 typed expect 0, 1, 4 and 9."
+            },
+            {
+              "name": "n = 1",
+              "code": "assert LINES == ['0']",
+              "fail": "With 1 typed expect just 0.",
+              "inputs": [
+                "1"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "dict-position",
+          "mode": "change",
+          "title": "Fix: a dictionary has no positions",
+          "instructions": "This program should print the price of the fruit the user types, or **Unknown fruit** if it is not in the dictionary. Run it: **prices[0]** looks for the **key** 0, which does not exist. Fix it.",
+          "starter": "prices = {\"apple\": 0.5, \"pear\": 0.75}\nfruit = input(\"Fruit: \")\nprint(prices[0])\n",
+          "inputs": [
+            "pear"
+          ],
+          "hints": [
+            "Look up by key: **prices[fruit]**.",
+            "Check **if fruit in prices:** first, so an unknown fruit does not raise a KeyError."
+          ],
+          "solution": "prices = {\"apple\": 0.5, \"pear\": 0.75}\nfruit = input(\"Fruit: \")\nif fruit in prices:\n    print(prices[fruit])\nelse:\n    print(\"Unknown fruit\")",
+          "tests": [
+            {
+              "name": "pear",
+              "code": "assert LINES == ['0.75']",
+              "fail": "With pear typed expect 0.75."
+            },
+            {
+              "name": "apple",
+              "code": "assert LINES == ['0.5']",
+              "fail": "With apple typed expect 0.5.",
+              "inputs": [
+                "apple"
+              ]
+            },
+            {
+              "name": "kiwi",
+              "code": "assert LINES == ['Unknown fruit']",
+              "fail": "With kiwi typed expect Unknown fruit, not a KeyError.",
+              "inputs": [
+                "kiwi"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mixed-list",
+          "mode": "write",
+          "title": "Add up a mixed list",
+          "instructions": "On your own: this list mixes strings and ints. Print the sum of all of them as one number: **18**. Convert each item with **int()** inside the loop (int works on both \"3\" and 4). Keep the first line as it is.",
+          "starter": "items = [\"3\", 4, \"5\", 6]\n",
+          "hints": [
+            "**total = 0** before the loop.",
+            "Inside the loop: **total += int(item)**."
+          ],
+          "solution": "items = [\"3\", 4, \"5\", 6]\ntotal = 0\nfor item in items:\n    total += int(item)\nprint(total)",
+          "tests": [
+            {
+              "name": "sum is 18",
+              "code": "assert LINES == ['18']",
+              "fail": "Expected 18."
+            },
+            {
+              "name": "works for another list",
+              "code": "out = run_source(SOURCE.replace('[\"3\", 4, \"5\", 6]', '[\"1\", 2]'))\nassert out.strip() == '3'",
+              "fail": "For [\"1\", 2] expect 3."
+            },
+            {
+              "name": "uses a loop",
+              "code": "assert uses('For')",
+              "fail": "Add the items up with a for loop."
+            }
+          ]
+        },
+        {
+          "id": "join-numbers",
+          "mode": "challenge",
+          "title": "Join numbers with commas",
+          "instructions": "Experiment: print the numbers as one line, **3, 1, 4**. The string method **\", \".join(...)** glues a list of **strings** together, so you first need a list of strings. Try **\", \".join(numbers)** first and read the error.",
+          "starter": "numbers = [3, 1, 4]\n",
+          "hints": [
+            "Build a new list: **texts = []**, then **texts.append(str(n))** for each number.",
+            "**print(\", \".join(texts))**"
+          ],
+          "solution": "numbers = [3, 1, 4]\ntexts = []\nfor n in numbers:\n    texts.append(str(n))\nprint(\", \".join(texts))",
+          "tests": [
+            {
+              "name": "3, 1, 4",
+              "code": "assert LINES == ['3, 1, 4']",
+              "fail": "Expected 3, 1, 4 on one line."
+            },
+            {
+              "name": "one number",
+              "code": "out = run_source(SOURCE.replace('[3, 1, 4]', '[7]'))\nassert out.strip() == '7'",
+              "fail": "For [7] expect just 7, with no comma."
+            },
+            {
+              "name": "another list",
+              "code": "out = run_source(SOURCE.replace('[3, 1, 4]', '[10, 20]'))\nassert out.strip() == '10, 20'",
+              "fail": "For [10, 20] expect 10, 20."
+            }
+          ]
+        }
       ]
     }
   ]

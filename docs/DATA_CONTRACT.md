@@ -213,6 +213,74 @@ with a page per lesson, instead of as a bare quiz.
   per-exercise progress the whole set uses — there is no separate lesson
   progress to drift.
 
+### Coding labs (optional, grammar sets with lessons only)
+
+A set file with lessons may also carry `labs`: small programs the learner
+types and runs in the browser, each growing over a few steps while the support
+fades.
+
+```json
+{
+  "labs": [
+    {
+      "id": "shopping-list",
+      "lesson": "for-loops",
+      "title": "Print a shopping list",
+      "summary": "Walk through a list with a for loop, then bend the loop.",
+      "steps": [
+        {
+          "id": "type-it",
+          "mode": "guided",
+          "title": "Type your first for loop",
+          "instructions": "Type this program exactly, piece by piece.",
+          "guide": [
+            { "code": "items = [\"milk\", \"eggs\"]", "explain": "Make a list." },
+            { "code": "for item in items:\n    print(item)", "explain": "Loop over it." }
+          ],
+          "solution": "items = [\"milk\", \"eggs\"]\nfor item in items:\n    print(item)",
+          "tests": [
+            {
+              "name": "prints each item",
+              "code": "assert LINES == ['milk', 'eggs']",
+              "fail": "Print milk and eggs, each on its own line."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+- `id` — lowercase slug, unique within the set; the lab's URL segment.
+- `lesson` — the id of the lesson in this set the lab practises.
+- `title`, `summary` — plain text.
+- `steps` — in order. Each step:
+  - `id` — slug, unique within the lab; with the lab id, the progress key.
+  - `mode` — `guided` (the whole program, in `guide` pieces), `change` (alter
+    the previous program or a starter), `write` (on your own) or `challenge`.
+  - `title` plain; `instructions`, every `guide[].explain` and every `hints[]`
+    entry are rich text, with the lesson markup rules.
+  - `guide` — guided steps only: `{code, explain}` pieces that, joined with
+    newlines, are exactly `solution`.
+  - `starter` — the editor's code when the step opens; or `carryOver: true`
+    (not on the first step, not with `starter`) to open with the learner's
+    code from the previous step.
+  - `inputs` — typed input, one string per `input()` call, for Run and as
+    the tests' default.
+  - `solution` — a program that passes every test.
+  - `tests` — `{name, code, fail, inputs?}`. Each test runs the learner's
+    program afresh, then `code` in its namespace, and passes when `code`
+    raises nothing. `name` and `fail` are plain text.
+    `frontend/src/lib/python/harness.py` documents what else is in scope
+    (`OUT`, `LINES`, `SOURCE`, `uses`, `calls`, `defines`, `is_recursive`,
+    `output_of`, `run_source`).
+
+The validator checks the shape (invariant 10). Whether every solution passes
+its tests, and no step is already solved when it opens, is proven by running
+them: `tools/course-check/check_labs.py`, through the same harness the browser
+uses.
+
 ## Manifest `exerciseSets` (generated)
 
 When the library lists exercise sets, the manifest carries them after `decks`,
@@ -220,7 +288,8 @@ each entry being the authored fields (`id`, `name`, `kind`, `level`,
 `course`, `color`, `icon`, in that order, optional ones only when authored)
 plus derived `exerciseCount`,
 `lessonCount` (only for a grammar set whose file carries lessons — absent
-otherwise, so a set without lessons keeps its exact bytes) and `revision` (first 12 hex of sha256 of the set file's exact bytes — the cache
+otherwise, so a set without lessons keeps its exact bytes), `labCount` (likewise,
+only when the file carries labs) and `revision` (first 12 hex of sha256 of the set file's exact bytes — the cache
 key, same mechanism as decks). When the library lists none, the key is absent
 entirely, so a library without sets produces byte-identical output to one
 predating the field.
@@ -440,3 +509,8 @@ display order; only the hash input is sorted.
    are unique slugs; every block has a known type and its required fields;
    every table row has one cell per header; every exercise names exactly one
    lesson id in its tags; and every lesson has at least one exercise.
+10. A set file's `labs`, when present, belong to a grammar set with lessons;
+    lab ids are unique slugs naming one of the set's lessons; every step has a
+    unique slug id, a known mode, a title, instructions, a solution and at
+    least one well-formed test; a guide adds up to its solution; and
+    `carryOver` is never on a first step or alongside a `starter`.
