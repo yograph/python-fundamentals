@@ -232,6 +232,10 @@ export function useResetDeckProgress(
 `createSyncStoragePersister` over localStorage under key `python-fundamentals:query:v1`.
 
 Persistence is what lets the app open offline with the decks it already had.
+The persisted cache is discarded whenever the data schema version or the
+build commit changes (the persister's `buster`), because it holds data after
+parsing: a cache written by an older build can lack fields the current code
+relies on.
 Only `data` queries are persisted (`dehydrateOptions.shouldDehydrateQuery`);
 `progress` queries are not, since localStorage already owns that state and
 persisting it would create two writers for one fact.

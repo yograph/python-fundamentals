@@ -2,6 +2,7 @@ import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persist
 import type { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { type ReactNode, useState } from "react";
+import { APP_COMMIT } from "@/build-info";
 import { DATA_SCHEMA_VERSION } from "@/lib/data/schemas";
 import { createQueryClient } from "./client";
 
@@ -14,11 +15,15 @@ const PERSIST_KEY = "python-fundamentals:query:v1";
 /** A week of offline grace. Older caches are dropped rather than restored. */
 const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 /**
- * Bumping the data schema version invalidates every persisted cache, so a
- * client that restores an old cache after a breaking data change throws it away
- * instead of rendering shapes it no longer understands.
+ * A cache from another schema version or another build is thrown away rather
+ * than restored. The cache holds data *after* parsing, so its shape follows the
+ * code, not just the files: when a release adds a field that the schema fills
+ * in by default (as coding labs did), a cache written by the previous build
+ * lacks it, and restoring it crashed the lab page until the refetch landed.
+ * Keying on the commit costs only one offline-unavailable first load per
+ * deploy.
  */
-const BUSTER = `data-v${DATA_SCHEMA_VERSION}`;
+const BUSTER = `data-v${DATA_SCHEMA_VERSION}:${APP_COMMIT}`;
 
 const persister = createSyncStoragePersister({
   storage: typeof window === "undefined" ? undefined : window.localStorage,
