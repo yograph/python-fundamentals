@@ -18,13 +18,13 @@ jobs:
     name: Check, typecheck, validate, build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # No version input: pnpm/action-setup reads packageManager from the root
       # package.json, so the lockfile and CI can never disagree about pnpm.
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -44,7 +44,7 @@ jobs:
 
       # Runs the code behind every question: an answer key that disagrees with
       # Python would teach the wrong thing, so it fails the build.
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
 
